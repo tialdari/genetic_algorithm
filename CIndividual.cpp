@@ -6,11 +6,7 @@ using namespace std;
 
 #define DEBUG true
 
-class ~CIndividual::CIndividual{
-  if(DEBUG) cout << "Deleting an CIndividual object" << endl;
-}
-
-CIndividual CIndividual::mutate{
+CIndividual CIndividual::mutate(){
 
   if(DEBUG) cout << "Default mutate method" << endl;
   CIndividual testIndividual;

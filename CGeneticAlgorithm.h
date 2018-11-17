@@ -1,26 +1,30 @@
 #ifndef CGENETICALGORITHM_H
 #define CGENETICALGORITHM_H
 
+#include <vector>
+#include "CIndividual.h"
+#include "CProblem.h"
+
 using namespace std;
 
-#define DEBUG false
+#define DEBUG true
 
 class CGeneticAlgorithm{
 
   public:
-    //CGeneticAlgorithm();
-    //~CGeneticAlgorithm();
-    //void genereteParameters();
-    //void generateProb();
-    //void generatePopulation();
-    //vector<float> run();
+    CGeneticAlgorithm();
+    ~CGeneticAlgorithm();
+    void genereteParameters();
+    void generateProb();
+    void generatePopulation();
+    Individual* run();
 
   private:
-    //CProblem problem;
-    //int popSize;
-    //vector<vector<float>> population;
-    //float crossProb;
-    //float mutProb;
+    CProblem* problem;
+    int popSize;
+    vector<CIndividual*> population;
+    float crossProb;
+    float mutProb;
 
 };
 
