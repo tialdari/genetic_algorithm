@@ -23,3 +23,5 @@ class CGeneticAlgorithm{
     //float mutProb;
 
 };
+
+#endif

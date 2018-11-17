@@ -1,31 +1,35 @@
 #ifndef CINDIVIDUAL_H
 #define CINDIVIDUAL_H
 
+#include <vector>
+
 using namespace std;
 
-#define DEBUG false
+#define DEBUG true
 
 class CIndividual{
 
   public:
-    //virtual ~CIndividual();
-    //virtual float fitness() = 0;
-    //CIndividual mutate() = 0;
-    //CIndividual cross(CIndividual otherParent) = 0;
-    //void setGenotype(vector<float> newGenotype) = 0;
+    virtual ~CIndividual();
+    virtual float fitness() = 0;
+    CIndividual* mutate();
+    CIndividual* cross(CIndividual* otherParent);
+    void setGenotype(vector<float> newGenotype);
 
   protected:
-    //CProblem problem;
-    //vector<float> genotype;
+  //  CProblem problem;
+    vector<float> genotype;
 
 };
 
 class CKnapsackIndividual: public CIndividual{
 
   public:
-      //CKnapsackIndividual();
-      //~CKnapsackIndividual();
+      CKnapsackIndividual();
+      ~CKnapsackIndividual();
       //CKnapsackIndividual(CProblem(CKnapsackProblem?) problem, vector<float> genotype)
-      //:CIndividual(problem, genotype);
-      //float fitness();
-}
+      //CIndividual(problem, genotype);
+      float fitness();
+};
+
+#endif
