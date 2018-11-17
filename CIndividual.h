@@ -9,10 +9,10 @@ class CIndividual{
 
   public:
     //virtual ~CIndividual();
-    //virtual float fitness(){}
-    //CIndividual mutate();
-    //CIndividual cross(CIndividual otherParent);
-    //void setGenotype(vector<float> newGenotype);
+    //virtual float fitness() = 0;
+    //CIndividual mutate() = 0;
+    //CIndividual cross(CIndividual otherParent) = 0;
+    //void setGenotype(vector<float> newGenotype) = 0;
 
   protected:
     //CProblem problem;

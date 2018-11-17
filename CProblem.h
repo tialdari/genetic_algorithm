@@ -9,9 +9,9 @@ class CProblem{
 
   public:
     //virtual ~CProblem();
-    //virtual CIndividual solution(){}
-    //virtual float solutionValue(CIndividual solution){};
-    //virtual bool isValid(CIndividual solution){};
+    //virtual CIndividual solution() = 0;
+    //virtual float solutionValue(CIndividual solution){} = 0;
+    //virtual bool isValid(CIndividual solution){} = 0;
 
 };
 
