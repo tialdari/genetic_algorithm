@@ -7,7 +7,7 @@ using namespace std;
 
 CProblem::~CProblem(){
 
-  if(DEBUG) cout << "Deleting a CProblem object" << endl;
+  if(DEBUG) cout << "- Deleting a CProblem object" << endl;
 }
 
 
@@ -27,29 +27,36 @@ CKnapsackProblem::~CKnapsackProblem(){
   if(DEBUG) cout << "- Deleting a CKnapsackProblem object\n" << endl;
 }
 
-void CKnapsackProblem::setMaxItemsNum(int num){
-  if(DEBUG) cout << "~ Setting itersNum to: " << num << "\n" << endl;
-  this -> maxItemsNum = num;
+void CKnapsackProblem::setMaxItemsNum(int maxItemsNum){
+  if(DEBUG) cout << "~ Setting itemsNum to: " << maxItemsNum << "\n" << endl;
+  this -> maxItemsNum = maxItemsNum;
 }
 
 void CKnapsackProblem::setItemsParameters(float** newParameters){
-  if(DEBUG) cout << "Setting itemsParameters" << endl;
+  if(DEBUG) cout << "~ Setting itemsParameters" << "\n" << endl;
   this -> itemsParameters = newParameters;
 }
 
-void CKnapsackProblem::setMaxVolume(int maxVolume){
-  if(DEBUG) cout << "Setting maxVolume to: " << maxVolume << endl;
+void CKnapsackProblem::setGivenItemsNum(int givenItemsNum){
+  if(DEBUG) cout << "~ Setting givenItemsNum to: "
+                 << givenItemsNum << "\n" << endl;
+  this -> givenItemsNum = givenItemsNum;
+}
+
+void CKnapsackProblem::setMaxVolume(float maxVolume){
+  if(DEBUG) cout << "~ Setting maxVolume to: " << maxVolume << "\n" << endl;
   maxVolume = maxVolume;
 }
 
-void CKnapsackProblem::setNewProblemParameters(int num, float** newParameters, int maxVolume){
-  if(DEBUG) cout << "~ Setting problem's parameters to: " << maxVolume << "\n" << endl;
-  setMaxItemsNum(num);
+void CKnapsackProblem::setNewProblemParameters(int maxItemsNum, float** newParameters, int givenItemsNum, int maxVolume){
+  if(DEBUG) cout << "~ Setting problem's parameters to: " << "\n" << endl;
+  setMaxItemsNum(maxItemsNum);
   setItemsParameters(newParameters);
+  setGivenItemsNum(givenItemsNum);
   setMaxVolume(maxVolume);
 }
 
-CIndividual* CKnapsackProblem::solution(){
+CIndividual* CKnapsackProblem::solution(int solutionSize){
   if(DEBUG) cout << "Default solution method" << endl;
   CIndividual* testIndividual;
   return testIndividual;
@@ -94,7 +101,7 @@ string CKnapsackProblem::itemsParametersToString(){
        if(j != 1) parametersString += ",";
     }
     parametersString += ")";
-    if(i != maxItemsNum - 1) parametersString += ",";
+    if(i != givenItemsNum - 1) parametersString += ",";
   }
   parametersString += "}";
 

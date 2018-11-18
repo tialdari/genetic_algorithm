@@ -14,6 +14,7 @@ class CIndividual{
     CIndividual* mutate();
     CIndividual* cross(CIndividual* otherParent);
     void setGenotype(vector<float> newGenotype);
+    virtual vector<float> generateGenotype(int size);
 
   protected:
     CIndividual(vector<float> genotype):genotype(genotype){}
@@ -27,6 +28,8 @@ class CKnapsackIndividual: public CIndividual{
         this -> genotype = genotype;}
       ~CKnapsackIndividual();
       float fitness();
+      vector<float> generateGenotype(int size);
+
 };
 
 #endif

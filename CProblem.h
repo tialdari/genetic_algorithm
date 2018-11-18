@@ -13,7 +13,7 @@ class CProblem{
 
   public:
     virtual ~CProblem();
-    virtual CIndividual* solution() = 0;
+    virtual CIndividual* solution(int solutionSize) = 0;
     virtual float solutionValue(CIndividual* solution) = 0;
     virtual bool isValid(CIndividual* solution) = 0;
 
@@ -26,11 +26,12 @@ class CKnapsackProblem: public CProblem{
       CKnapsackProblem();
       CKnapsackProblem(int maxItemsNum, float** itemsParameters, int givenItemsNum, float maxVolume);
       ~CKnapsackProblem();
-      void setMaxItemsNum(int num);
+      void setMaxItemsNum(int maxItemsNum);
       void setItemsParameters(float** newParameters);
-      void setMaxVolume(int maxVolume);
-      void setNewProblemParameters(int num, float** newParameters, int maxVolume);
-      CIndividual* solution();
+      void setGivenItemsNum(int givenItemsNum);
+      void setMaxVolume(float maxVolume);
+      void setNewProblemParameters(int maxItemsNum, float** newParameters, int givenItemsNum, int maxVolume);
+      CIndividual* solution(int solutionSize);
       float solutionValue(CIndividual* solution);
       bool isValid(CIndividual* solution);
       string toString();

@@ -6,15 +6,11 @@
 #include "CGeneticAlgorithm.h"
 #include "CGeneticAlgorithm.cpp"
 
-#define DEBUG false
+#define DEBUG true
 
 using namespace std;
 
 int main(){
-
-
-
-  //float params[5][2] = {{5.0,4.0},{1.0,1.0},{4.0,3.0},{3.0,2.0},{2.0,1.0}};
 
   int paramSize = 2;
   float** pParameters = new float*[paramSize];
@@ -31,13 +27,11 @@ int main(){
   pParameters[2][0] = 2.0;
   pParameters[2][1] = 2.0;
 
-  CKnapsackProblem cKnapsackProblem(3, pParameters, 3, 3.75);
+  CKnapsackProblem cKnapsackProblem(2, pParameters, 3, 4.0);
   cout << cKnapsackProblem.toString();
-
 
   return 0;
 }
 
-/*
-
-*/
+//test setters in CProblem
+//implement CKnapsackIndividual

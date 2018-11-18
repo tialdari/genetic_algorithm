@@ -31,3 +31,11 @@ float CKnapsackIndividual::fitness(){
   if(DEBUG) cout << "~ Default fitness method\n" << endl;
   return 0.0f;
 }
+
+vector<float> CKnapsackIndividual::generateGenotype(int size){
+
+  if(DEBUG) cout << "~ Default generateGenotype method\n" << endl;
+  vector<float> genotype;
+
+  return genotype;
+};
