@@ -7,6 +7,7 @@
 using namespace std;
 
 #define DEBUG true
+#define itemsCharacteritics 2
 
 class CProblem{
 
@@ -23,20 +24,23 @@ class CKnapsackProblem: public CProblem{
 
     public:
       CKnapsackProblem();
-      CKnapsackProblem(int itemsNum, float** itemsParameters, float maxVolume);
+      CKnapsackProblem(int maxItemsNum, float** itemsParameters, int givenItemsNum, float maxVolume);
       ~CKnapsackProblem();
-      void setItemsNum(int num);
+      void setMaxItemsNum(int num);
       void setItemsParameters(float** newParameters);
       void setMaxVolume(int maxVolume);
       void setNewProblemParameters(int num, float** newParameters, int maxVolume);
       CIndividual* solution();
       float solutionValue(CIndividual* solution);
       bool isValid(CIndividual* solution);
+      string toString();
+      string itemsParametersToString();
 
 
     private:
-      int itemsNum;
+      int maxItemsNum;
       float** itemsParameters;
+      int givenItemsNum;
       float maxVolume;
 
 };

@@ -16,16 +16,16 @@ class CIndividual{
     void setGenotype(vector<float> newGenotype);
 
   protected:
+    CIndividual(vector<float> genotype):genotype(genotype){}
     vector<float> genotype;
-
 };
 
 class CKnapsackIndividual: public CIndividual{
 
   public:
-      CKnapsackIndividual();
+      CKnapsackIndividual(vector<float> genotype):CIndividual(genotype){
+        this -> genotype = genotype;}
       ~CKnapsackIndividual();
-      CKnapsackIndividual(vector<float> genotype);
       float fitness();
 };
 

@@ -4,36 +4,35 @@
 
 using namespace std;
 
-#define DEBUG true
 
 CGeneticAlgorithm::CGeneticAlgorithm(){
 
-  if(DEBUG) cout << "New CGeneticAlgorithm object" << endl;
+  if(DEBUG) cout << "+ New CGeneticAlgorithm object\n" << endl;
 }
 
 CGeneticAlgorithm::~CGeneticAlgorithm(){
 
-  if(DEBUG) cout << "Deleting a CGeneticAlgorithm object" << endl;
+  if(DEBUG) cout << "- Deleting a CGeneticAlgorithm object\n" << endl;
 }
 
 void CGeneticAlgorithm::genereteParameters(){
 
-  if(DEBUG) cout << "Default generate parameters method" << endl;
+  if(DEBUG) cout << "~ Default generate parameters method\n" << endl;
 }
 
 void CGeneticAlgorithm::generateProb(){
 
-  if(DEBUG) cout << "Default generate probability method" << endl;
+  if(DEBUG) cout << "~ Default generate probability method\n" << endl;
 }
 
 void CGeneticAlgorithm::generatePopulation(){
 
-  if(DEBUG) cout << "Default generate population method" << endl;
+  if(DEBUG) cout << "~ Default generate population method\n" << endl;
 }
 
-Individual* CGeneticAlgorithm::run(){
+CIndividual* CGeneticAlgorithm::run(){
 
-  if(DEBUG) cout << "Default run method" << endl;
-  CIndividual testIndividual;
+  if(DEBUG) cout << "~ Default run method\n" << endl;
+  CIndividual* testIndividual;
   return testIndividual;
 }

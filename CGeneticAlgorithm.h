@@ -17,7 +17,7 @@ class CGeneticAlgorithm{
     void genereteParameters();
     void generateProb();
     void generatePopulation();
-    Individual* run();
+    CIndividual* run();
 
   private:
     CProblem* problem;
