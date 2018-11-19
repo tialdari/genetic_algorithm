@@ -10,7 +10,7 @@ CProblem::~CProblem(){
   if(DEBUG) cout << "- Deleting a CProblem object" << endl;
 }
 
-
+ 
 CKnapsackProblem::CKnapsackProblem(){
   if(DEBUG) cout << "New CKnapsackProblem object" << endl;
 }
