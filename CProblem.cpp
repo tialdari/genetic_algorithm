@@ -58,7 +58,7 @@ void CKnapsackProblem::setNewProblemParameters(int maxItemsNum, float** newParam
 
 float CKnapsackProblem::solutionValue(vector<float> solution){
 
-  if(DEBUG) cout << "~ Solution value method" << endl;
+  if(DEBUG) cout << "~ Solution value method " << endl;
   float value;
 
   for(int i = 0; i < maxItemsNum; i++){
@@ -67,8 +67,12 @@ float CKnapsackProblem::solutionValue(vector<float> solution){
   return value;
 }
 
-bool CKnapsackProblem::isValid(vector<float> solution){
+bool CKnapsackProblem::isValid(float f_solutionValue){
   if(DEBUG) cout << "Default isValid value" << endl;
+
+  if(f_solutionValue > maxVolume) return false;
+  else return true;
+  
   return true;
 }
 

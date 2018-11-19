@@ -16,7 +16,7 @@ int main(){
   float** pParameters = new float*[paramSize];
 
   pParameters[0] = new float[paramSize];
-  pParameters[0][0] = 5.0;
+  pParameters[0][0] = 5.3;
   pParameters[0][1] = 4.0;
 
   pParameters[1] = new float[paramSize];
@@ -27,8 +27,15 @@ int main(){
   pParameters[2][0] = 2.0;
   pParameters[2][1] = 2.0;
 
-  CKnapsackProblem cKnapsackProblem(2, pParameters, 3, 4.0);
+  CKnapsackProblem cKnapsackProblem(3, pParameters, 3, 4.0);
   cout << cKnapsackProblem.toString();
+
+  vector<float> testSolution;
+  testSolution.push_back(1.0);
+  testSolution.push_back(0.0);
+  testSolution.push_back(1.0);
+  float result = cKnapsackProblem.solutionValue(testSolution);
+  cout << cKnapsackProblem.isValid(result) << endl;
 
   return 0;
 }
