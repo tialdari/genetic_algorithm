@@ -3,7 +3,6 @@
 
 #include <vector>
 #include "CIndividual.h"
-#include "CProblem.h"
 
 using namespace std;
 
@@ -20,8 +19,8 @@ class CGeneticAlgorithm{
     CIndividual* run();
 
   private:
-    CProblem* problem;
     int popSize;
+    CIndividual* CKnapsackIndividual;
     vector<CIndividual*> population;
     float crossProb;
     float mutProb;

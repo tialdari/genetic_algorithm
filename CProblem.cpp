@@ -10,7 +10,7 @@ CProblem::~CProblem(){
   if(DEBUG) cout << "- Deleting a CProblem object" << endl;
 }
 
- 
+
 CKnapsackProblem::CKnapsackProblem(){
   if(DEBUG) cout << "New CKnapsackProblem object" << endl;
 }
@@ -56,19 +56,18 @@ void CKnapsackProblem::setNewProblemParameters(int maxItemsNum, float** newParam
   setMaxVolume(maxVolume);
 }
 
-CIndividual* CKnapsackProblem::solution(int solutionSize){
-  if(DEBUG) cout << "Default solution method" << endl;
-  CIndividual* testIndividual;
-  return testIndividual;
+float CKnapsackProblem::solutionValue(vector<float> solution){
+
+  if(DEBUG) cout << "~ Solution value method" << endl;
+  float value;
+
+  for(int i = 0; i < maxItemsNum; i++){
+    value += itemsParameters[i][0] * solution[i];
+  }
+  return value;
 }
 
-float CKnapsackProblem::solutionValue(CIndividual* solution){
-
-  if(DEBUG) cout << "Default solution value" << endl;
-  return 0.0f;
-}
-
-bool CKnapsackProblem::isValid(CIndividual* solution){
+bool CKnapsackProblem::isValid(vector<float> solution){
   if(DEBUG) cout << "Default isValid value" << endl;
   return true;
 }

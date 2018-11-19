@@ -2,7 +2,6 @@
 #define CPROBLEM_H
 
 #include <vector>
-#include "CIndividual.h"
 
 using namespace std;
 
@@ -13,9 +12,8 @@ class CProblem{
 
   public:
     virtual ~CProblem();
-    virtual CIndividual* solution(int solutionSize) = 0;
-    virtual float solutionValue(CIndividual* solution) = 0;
-    virtual bool isValid(CIndividual* solution) = 0;
+    virtual float solutionValue(vector<float> solution) = 0;
+    virtual bool isValid(vector<float> solution) = 0;
 
 };
 
@@ -31,9 +29,8 @@ class CKnapsackProblem: public CProblem{
       void setGivenItemsNum(int givenItemsNum);
       void setMaxVolume(float maxVolume);
       void setNewProblemParameters(int maxItemsNum, float** newParameters, int givenItemsNum, int maxVolume);
-      CIndividual* solution(int solutionSize);
-      float solutionValue(CIndividual* solution);
-      bool isValid(CIndividual* solution);
+      float solutionValue(vector<float> solution);
+      bool isValid(vector<float> solution);
       string toString();
       string itemsParametersToString();
 

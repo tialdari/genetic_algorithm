@@ -4,6 +4,7 @@
 using namespace std;
 
 #include <vector>
+#include "CProblem.h"
 #define DEBUG true
 
 class CIndividual{
@@ -14,21 +15,25 @@ class CIndividual{
     CIndividual* mutate();
     CIndividual* cross(CIndividual* otherParent);
     void setGenotype(vector<float> newGenotype);
-    virtual vector<float> generateGenotype(int size);
+    virtual vector<float> generateGenotype();
 
   protected:
-    CIndividual(vector<float> genotype):genotype(genotype){}
+    CIndividual(CProblem* cProblem, vector<float> genotype)
+    :cProblem(cProblem),genotype(genotype){}
     vector<float> genotype;
+    CProblem* cProblem;
 };
 
 class CKnapsackIndividual: public CIndividual{
 
   public:
-      CKnapsackIndividual(vector<float> genotype):CIndividual(genotype){
-        this -> genotype = genotype;}
+      CKnapsackIndividual(CProblem* cProblem, vector<float> genotype)
+      :CIndividual(cProblem, genotype)
+      {this -> genotype = genotype;}
       ~CKnapsackIndividual();
       float fitness();
       vector<float> generateGenotype(int size);
+
 
 };
 
