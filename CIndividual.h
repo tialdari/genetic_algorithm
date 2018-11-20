@@ -16,6 +16,7 @@ class CIndividual{
       return testVec;
     };
     void setGenotype(vector<float> newGenotype);
+    vector<float> getGenotype();
     CIndividual* cross(CIndividual* otherParent);
     CIndividual* mutate();
     virtual float fitness() = 0;

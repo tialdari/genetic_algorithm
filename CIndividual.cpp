@@ -1,5 +1,8 @@
 #include <iostream>
 #include <vector>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 #include "CIndividual.h"
 
 using namespace std;
@@ -10,6 +13,11 @@ void CIndividual::setGenotype(vector<float> newGenotype){
     if(DEBUG) cout << "~ Setting new genotype\n" << endl;
     genotype = newGenotype;
 }
+
+vector<float> CIndividual::getGenotype(){
+  return genotype;
+}
+
 
 CIndividual* CIndividual::cross(CIndividual* otherParent){
 
@@ -34,8 +42,18 @@ CKnapsackIndividual::~CKnapsackIndividual(){
 
 vector<float> CKnapsackIndividual::generateGenotype(){
 
-  if(DEBUG) cout << "~ Default generateGenotype method\n" << endl;
+  if(DEBUG) cout << "~ generateGenotype method\n" << endl;
   vector<float> genotype;
+  int size = cProblem -> getSolutionSize();
+  float randNum;
+
+  srand (time(NULL));
+  for(int i = 0; i < size; i++){
+    for(int j = 0; j < 3; j++){
+      randNum = rand() % 2;
+    }
+    genotype.push_back(randNum);
+  }
 
   return genotype;
 };

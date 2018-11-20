@@ -5,6 +5,10 @@
 
 using namespace std;
 
+CProblem::CProblem(){
+  if(DEBUG) cout << "+ New cProblem object" << endl;
+}
+
 CProblem::~CProblem(){
 
   if(DEBUG) cout << "- Deleting a CProblem object" << endl;
@@ -15,22 +19,16 @@ CKnapsackProblem::CKnapsackProblem(){
   if(DEBUG) cout << "New CKnapsackProblem object" << endl;
 }
 
-CKnapsackProblem::CKnapsackProblem(int maxItemsNum, float** itemsParameters, int givenItemsNum, float maxVolume){
-  if(DEBUG) cout << "+ New CKnapsackProblem object with parameters\n" << endl;
-  this -> maxItemsNum = maxItemsNum;
-  this -> itemsParameters = itemsParameters;
-  this -> givenItemsNum = givenItemsNum;
-  this -> maxVolume = maxVolume;
-}
-
 CKnapsackProblem::~CKnapsackProblem(){
   if(DEBUG) cout << "- Deleting a CKnapsackProblem object\n" << endl;
 }
 
+/*
 void CKnapsackProblem::setMaxItemsNum(int maxItemsNum){
   if(DEBUG) cout << "~ Setting itemsNum to: " << maxItemsNum << "\n" << endl;
   this -> maxItemsNum = maxItemsNum;
 }
+*/
 
 void CKnapsackProblem::setItemsParameters(float** newParameters){
   if(DEBUG) cout << "~ Setting itemsParameters" << "\n" << endl;
@@ -48,9 +46,9 @@ void CKnapsackProblem::setMaxVolume(float maxVolume){
   maxVolume = maxVolume;
 }
 
-void CKnapsackProblem::setNewProblemParameters(int maxItemsNum, float** newParameters, int givenItemsNum, int maxVolume){
+void CKnapsackProblem::setNewProblemParameters(int solutionSize, float** newParameters, int givenItemsNum, int maxVolume){
   if(DEBUG) cout << "~ Setting problem's parameters to: " << "\n" << endl;
-  setMaxItemsNum(maxItemsNum);
+  setSolutionSize(solutionSize);
   setItemsParameters(newParameters);
   setGivenItemsNum(givenItemsNum);
   setMaxVolume(maxVolume);
@@ -61,7 +59,7 @@ float CKnapsackProblem::solutionValue(vector<float> solution){
   if(DEBUG) cout << "~ Solution value method " << endl;
   float value;
 
-  for(int i = 0; i < maxItemsNum; i++){
+  for(int i = 0; i < solutionSize; i++){
     value += itemsParameters[i][0] * solution[i];
   }
   return value;
@@ -80,7 +78,7 @@ string CKnapsackProblem::toString(){
 
   string result;
   stringstream itemsNumber;
-  itemsNumber << maxItemsNum;
+  itemsNumber << solutionSize;
   result = itemsNumber.str();
 
   string result2;
@@ -89,7 +87,7 @@ string CKnapsackProblem::toString(){
   result2 = volume.str();
 
 
-  return "~ CKnapsackProblem object\n -> maxItemsNum: " + result +
+  return "~ CKnapsackProblem object\n -> solutionSize: " + result +
           "\n -> givenItemsParameters: " + itemsParametersToString() +
           "\n -> max volume: " + result2 + "\n\n";
 }

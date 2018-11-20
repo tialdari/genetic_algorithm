@@ -33,16 +33,21 @@ int main(){
   CKnapsackProblem* cKnapsackProblem = new CKnapsackProblem(3, pParameters, 3, 4.0);
   cout << cKnapsackProblem -> toString();
 
+/*
   vector<float> testSolution;
   testSolution.push_back(1.0);
   testSolution.push_back(0.0);
   testSolution.push_back(1.0);
   float result = cKnapsackProblem -> solutionValue(testSolution);
   cout << cKnapsackProblem -> isValid(result) << endl;
+*/
 
   CIndividual* cKnapsackIndividual = new CKnapsackIndividual(cKnapsackProblem);
-  cKnapsackIndividual -> generateGenotype();
+  vector<float> testSolution = cKnapsackIndividual -> generateGenotype();
 
+  for(int i = 0; i < cKnapsackProblem -> getSolutionSize(); i++){
+    cout << testSolution[i] << " ";
+  }
   return 0;
 }
 
