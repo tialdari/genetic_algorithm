@@ -23,13 +23,6 @@ CKnapsackProblem::~CKnapsackProblem(){
   if(DEBUG) cout << "- Deleting a CKnapsackProblem object\n" << endl;
 }
 
-/*
-void CKnapsackProblem::setMaxItemsNum(int maxItemsNum){
-  if(DEBUG) cout << "~ Setting itemsNum to: " << maxItemsNum << "\n" << endl;
-  this -> maxItemsNum = maxItemsNum;
-}
-*/
-
 void CKnapsackProblem::setItemsParameters(float** newParameters){
   if(DEBUG) cout << "~ Setting itemsParameters" << "\n" << endl;
   this -> itemsParameters = newParameters;
@@ -65,13 +58,25 @@ float CKnapsackProblem::solutionValue(vector<float> solution){
   return value;
 }
 
-bool CKnapsackProblem::isValid(float f_solutionValue){
-  if(DEBUG) cout << "~ Default isValid method" << endl;
+bool CKnapsackProblem::isValid(vector<float> solution){
+  if(DEBUG) cout << "~ isValid method" << endl;
 
-  if(f_solutionValue > maxVolume) return false;
-  else return true;
+  float solutionVolume;
 
-  return true;
+  for(int i = 0; i < solutionSize; i++){
+    solutionVolume += itemsParameters[i][1] * solution[i];
+  }
+
+  if(DEBUG) cout << " solution volume: " << solutionVolume << endl;
+  if(DEBUG) cout << " solution volume is ";
+
+  if(solutionVolume > maxVolume){
+    if(DEBUG) cout << "not valid" << endl;
+    return false;
+  }else {
+    if(DEBUG) cout << "valid" << endl;
+    return true;
+  }
 }
 
 string CKnapsackProblem::toString(){

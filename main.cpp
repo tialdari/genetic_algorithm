@@ -48,6 +48,9 @@ int main(){
   for(int i = 0; i < cKnapsackProblem -> getSolutionSize(); i++){
     cout << testSolution[i] << " ";
   }
+  cout << endl;
+  cKnapsackIndividual -> fitness();
+
   return 0;
 }
 

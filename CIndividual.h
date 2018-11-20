@@ -17,8 +17,8 @@ class CIndividual{
     };
     void setGenotype(vector<float> newGenotype);
     vector<float> getGenotype();
-    CIndividual* cross(CIndividual* otherParent);
-    CIndividual* mutate();
+    vector<CIndividual*> cross(float globalProb, float givenProb, CIndividual* otherParent);
+    CIndividual* mutate(float globalProb, float givenProb);
     virtual float fitness() = 0;
 
 
@@ -27,6 +27,7 @@ class CIndividual{
     :cProblem(cProblem){}
     vector<float> genotype;
     CProblem* cProblem;
+    float f_fitness;
 };
 
 class CKnapsackIndividual: public CIndividual{
@@ -34,7 +35,9 @@ class CKnapsackIndividual: public CIndividual{
   public:
       CKnapsackIndividual(CProblem* cProblem)
       :CIndividual(cProblem)
-      {this -> cProblem = cProblem;};
+      {this -> cProblem = cProblem;
+       vector<float> initalGenotype;
+       genotype = initalGenotype;};
       ~CKnapsackIndividual();
       vector<float> generateGenotype();
       float fitness();

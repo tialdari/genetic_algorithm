@@ -14,7 +14,7 @@ class CProblem{
     CProblem();
     virtual ~CProblem();
     virtual float solutionValue(vector<float> solution) = 0;
-    virtual bool isValid(float f_solutionValue) = 0;
+    virtual bool isValid(vector<float> solution) = 0;
     void setSolutionSize(int solutionSize){
       this -> solutionSize = solutionSize;
     };
@@ -46,7 +46,7 @@ class CKnapsackProblem: public CProblem{
       void setMaxVolume(float maxVolume);
       void setNewProblemParameters(int solutionSize, float** newParameters, int givenItemsNum, int maxVolume);
       float solutionValue(vector<float> solution);
-      bool isValid(float f_solutionValue);
+      bool isValid(vector<float> solution);
       string toString();
       string itemsParametersToString();
 
