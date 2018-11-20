@@ -5,11 +5,10 @@
 using namespace std;
 
 
-CIndividual* CIndividual::mutate(){
+void CIndividual::setGenotype(vector<float> newGenotype){
 
-  if(DEBUG) cout << "~ Default mutate method\n" << endl;
-  CIndividual* testIndividual;
-  return testIndividual;
+    if(DEBUG) cout << "~ Setting new genotype\n" << endl;
+    genotype = newGenotype;
 }
 
 CIndividual* CIndividual::cross(CIndividual* otherParent){
@@ -20,22 +19,29 @@ CIndividual* CIndividual::cross(CIndividual* otherParent){
 
 }
 
-void CIndividual::setGenotype(vector<float> newGenotype){
+CIndividual* CIndividual::mutate(){
 
-    if(DEBUG) cout << "~ Setting new genotype\n" << endl;
-    genotype = newGenotype;
+  if(DEBUG) cout << "~ Default mutate method\n" << endl;
+  CIndividual* testIndividual;
+  return testIndividual;
 }
 
-float CKnapsackIndividual::fitness(){
+CKnapsackIndividual::~CKnapsackIndividual(){
 
-  if(DEBUG) cout << "~ Default fitness method\n" << endl;
-  return 0.0f;
-}
+  if(DEBUG) cout << "- Deleting CKnapsackIndividual object\n" << endl;
 
-vector<float> CKnapsackIndividual::generateGenotype(int size){
+};
+
+vector<float> CKnapsackIndividual::generateGenotype(){
 
   if(DEBUG) cout << "~ Default generateGenotype method\n" << endl;
   vector<float> genotype;
 
   return genotype;
 };
+
+float CKnapsackIndividual::fitness(){
+
+  if(DEBUG) cout << "~ Default fitness method\n" << endl;
+  return 0.0f;
+}

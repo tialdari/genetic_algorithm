@@ -1,4 +1,7 @@
 #include <iostream>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 #include "CIndividual.h"
 #include "CIndividual.cpp"
 #include "CProblem.h"
@@ -27,15 +30,18 @@ int main(){
   pParameters[2][0] = 2.0;
   pParameters[2][1] = 2.0;
 
-  CKnapsackProblem cKnapsackProblem(3, pParameters, 3, 4.0);
-  cout << cKnapsackProblem.toString();
+  CKnapsackProblem* cKnapsackProblem = new CKnapsackProblem(3, pParameters, 3, 4.0);
+  cout << cKnapsackProblem -> toString();
 
   vector<float> testSolution;
   testSolution.push_back(1.0);
   testSolution.push_back(0.0);
   testSolution.push_back(1.0);
-  float result = cKnapsackProblem.solutionValue(testSolution);
-  cout << cKnapsackProblem.isValid(result) << endl;
+  float result = cKnapsackProblem -> solutionValue(testSolution);
+  cout << cKnapsackProblem -> isValid(result) << endl;
+
+  CIndividual* cKnapsackIndividual = new CKnapsackIndividual(cKnapsackProblem);
+  cKnapsackIndividual -> generateGenotype();
 
   return 0;
 }

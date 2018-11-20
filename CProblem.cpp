@@ -68,11 +68,11 @@ float CKnapsackProblem::solutionValue(vector<float> solution){
 }
 
 bool CKnapsackProblem::isValid(float f_solutionValue){
-  if(DEBUG) cout << "Default isValid value" << endl;
+  if(DEBUG) cout << "~ Default isValid method" << endl;
 
   if(f_solutionValue > maxVolume) return false;
   else return true;
-  
+
   return true;
 }
 

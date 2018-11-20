@@ -11,15 +11,19 @@ class CIndividual{
 
   public:
     virtual ~CIndividual(){};
-    virtual float fitness() = 0;
-    CIndividual* mutate();
-    CIndividual* cross(CIndividual* otherParent);
+    virtual vector<float> generateGenotype(){
+      vector<float> testVec;
+      return testVec;
+    };
     void setGenotype(vector<float> newGenotype);
-    virtual vector<float> generateGenotype();
+    CIndividual* cross(CIndividual* otherParent);
+    CIndividual* mutate();
+    virtual float fitness() = 0;
+
 
   protected:
-    CIndividual(CProblem* cProblem, vector<float> genotype)
-    :cProblem(cProblem),genotype(genotype){}
+    CIndividual(CProblem* cProblem)
+    :cProblem(cProblem){}
     vector<float> genotype;
     CProblem* cProblem;
 };
@@ -27,12 +31,12 @@ class CIndividual{
 class CKnapsackIndividual: public CIndividual{
 
   public:
-      CKnapsackIndividual(CProblem* cProblem, vector<float> genotype)
-      :CIndividual(cProblem, genotype)
-      {this -> genotype = genotype;}
+      CKnapsackIndividual(CProblem* cProblem)
+      :CIndividual(cProblem)
+      {this -> cProblem = cProblem;};
       ~CKnapsackIndividual();
+      vector<float> generateGenotype();
       float fitness();
-      vector<float> generateGenotype(int size);
 
 
 };
