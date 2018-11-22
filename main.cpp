@@ -72,6 +72,20 @@ int main(){
   }
   cout << endl;
 
+  vector<float> testGenotype4;
+  testGenotype4.push_back(1);
+  testGenotype4.push_back(0);
+  testGenotype4.push_back(0);
+  testGenotype4.push_back(0);
+  testGenotype4.push_back(1);
+  testGenotype4.push_back(0);
+
+  testInd1 -> setGenotype(testGenotype4);
+  testInd1 -> printGenotype();
+  testInd1 -> mutate(0.70);
+  testInd1 -> printGenotype();
+
+
 
   return 0;
 }

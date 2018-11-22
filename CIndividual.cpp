@@ -12,10 +12,20 @@ void CIndividual::setGenotype(vector<float> newGenotype){
 
   if(DEBUG) cout << "~ Setting new genotype\n" << endl;
   genotype = newGenotype;
+
 }
 
 vector<float> CIndividual::getGenotype(){
   return genotype;
+}
+
+void CIndividual::printGenotype(){
+
+  if(DEBUG) cout << "~ individual's genotype:\n" << endl;
+  for(int i = 0; i < genotype.size(); i++){
+    cout << genotype[i];
+  }
+  cout << "\n\n";
 }
 
 vector<CIndividual*> CIndividual::cross(float globalProb, float givenProb, CIndividual* otherParent){
@@ -95,11 +105,29 @@ vector<float> CIndividual::mergeGenotypes(vector<float> fstGenotype, vector<floa
   return fstGenotype;
 }
 
-CIndividual* CIndividual::mutate(float globalProb, float givenProb){
+void CIndividual::mutate(float globalProb){
 
-  if(DEBUG) cout << "~ Default mutate method\n" << endl;
-  CIndividual* testIndividual;
-  return testIndividual;
+  if(DEBUG) cout << "~ Mutate method\n" << endl;
+
+  srand (time(NULL));
+  float randProb = randFloat();
+  int genotypeSize = genotype.size();
+
+  for(int i = 0; i < genotypeSize; i++){
+    if(randProb <= globalProb){
+      negate(genotype[i]);
+      randProb = randFloat();
+    }
+  }
+}
+
+void CIndividual::negate(float &number){
+
+  if(number == 1.0) number = 0.0;
+  else if(number == 0.0) number = 1.0;
+  else{
+    if(DEBUG) cout << " ERROR: [negation] number not allowed " << endl;
+  }
 }
 
 int CIndividual::randInt(int range){

@@ -17,10 +17,12 @@ class CIndividual{
     };
     void setGenotype(vector<float> newGenotype);
     vector<float> getGenotype();
+    void printGenotype();
     vector<CIndividual*> cross(float globalProb, float givenProb, CIndividual* otherParent);
     vector<vector<float> > cutParent(CIndividual* parent, int cutIndex);
     vector<float> mergeGenotypes(vector<float> fstChild, vector<float> sndChild);
-    CIndividual* mutate(float globalProb, float givenProb);
+    void mutate(float globalProb);
+    void negate(float &number);
     virtual float fitness() = 0;
     int randInt(int range);
     float randFloat();
