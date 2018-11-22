@@ -22,42 +22,78 @@ vector<CIndividual*> CIndividual::cross(float globalProb, float givenProb, CIndi
 
   if(DEBUG) cout << "~ Cross method\n" << endl;
 
-  int ownSize = getGenotype().size();
+  int ownSize = genotype.size();
   int otherSize = otherParent -> getGenotype().size();
+
   if(ownSize != otherSize)
     if(DEBUG) {cout << "ERROR: [cross] different genotypes size";
                cout << "ownSize: " << ownSize << " otherSize: " << otherSize << endl;
-    }
-  vector<CIndividual*> testChildren;
-  return testChildren;
+  }
+
+  vector<CIndividual*> resultChildren;
+  if(givenProb > globalProb){
+    if(DEBUG) cout << " ERROR: [cross] Too big probability\n" << endl;
+    return resultChildren;
+  }
+
+  srand (time(NULL));
+  int cutIndex = randInt(genotype.size() - 1);
+  if(DEBUG) cout << " cutIndex: " << cutIndex << endl;
+
+  vector<vector<float> > firstGenotypeParts = cutParent(this, cutIndex);
+  vector<vector<float> > secondGenotypeParts = cutParent(otherParent, cutIndex);
+
+  vector<float> fstGenotype = mergeGenotypes(firstGenotypeParts[0],secondGenotypeParts[1]);
+  vector<float> sndGenotype = mergeGenotypes(firstGenotypeParts[1],secondGenotypeParts[0]);
+
+  CIndividual* fstChild = new CKnapsackIndividual(cProblem, fstGenotype);
+  CIndividual* sndChild = new CKnapsackIndividual(cProblem, sndGenotype);
+
+  resultChildren.push_back(fstChild);
+  resultChildren.push_back(sndChild);
+
+  return resultChildren;
 }
 
 vector<vector<float> > CIndividual::cutParent(CIndividual* parent, int cutIndex){
 
-  vector<vector<float> > firstChildrenParts;
+  if(DEBUG) cout << "~ Cut parent method\n" << endl;
+
+  vector<vector<float> > genotypeParts;
   vector<float> parentGenotype = parent -> getGenotype();
   int parentGenSize = parentGenotype.size();
 
   if(cutIndex >= parentGenSize){
     if(DEBUG) cout << "ERROR: [cutParent] cutIndec out of range\n" << endl;
-    return firstChildrenParts;
+    return genotypeParts;
   }
 
-  vector<float> children1;
-  vector<float> children2;
+  vector<float> genotypePart1;
+  vector<float> genotypePart2;
 
   for(int i = 0; i < parentGenSize; i++){
 
-    if(i <= cutIndex) children1.push_back(parentGenotype[i]);
-    else children2.push_back(parentGenotype[i]);
+    if(i <= cutIndex) genotypePart1.push_back(parentGenotype[i]);
+    else genotypePart2.push_back(parentGenotype[i]);
   }
 
-  firstChildrenParts.push_back(children1);
-  firstChildrenParts.push_back(children2);
+  genotypeParts.push_back(genotypePart1);
+  genotypeParts.push_back(genotypePart2);
 
-  return firstChildrenParts;
+  return genotypeParts;
 }
 
+vector<float> CIndividual::mergeGenotypes(vector<float> fstGenotype, vector<float> sndGenotype){
+
+  if(DEBUG) cout << "~ Merge children method\n" << endl;
+
+  int sndGenotypeSize = sndGenotype.size();
+
+  for(int i = 0; i < sndGenotypeSize; i++){
+    fstGenotype.push_back(sndGenotype[i]);
+  }
+  return fstGenotype;
+}
 
 CIndividual* CIndividual::mutate(float globalProb, float givenProb){
 

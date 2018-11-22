@@ -34,46 +34,43 @@ int main(){
   CKnapsackProblem* cKnapsackProblem = new CKnapsackProblem(3, pParameters, 3, 4.0);
   cout << cKnapsackProblem -> toString();
 
-/*
-  vector<float> testSolution;
-  testSolution.push_back(1.0);
-  testSolution.push_back(0.0);
-  testSolution.push_back(1.0);
-  float result = cKnapsackProblem -> solutionValue(testSolution);
-  cout << cKnapsackProblem -> isValid(result) << endl;
-*/
 
-  CIndividual* cKnapsackIndividual = new CKnapsackIndividual(cKnapsackProblem);
-  vector<float> testSolution = cKnapsackIndividual -> generateGenotype();
+  vector<float> testGenotype;
+  testGenotype.push_back(2);
+  testGenotype.push_back(2);
+  testGenotype.push_back(2);
+  testGenotype.push_back(2);
+  testGenotype.push_back(2);
+  CIndividual* testInd1 = new CKnapsackIndividual(cKnapsackProblem, testGenotype);
 
-  for(int i = 0; i < cKnapsackProblem -> getSolutionSize(); i++){
-    cout << testSolution[i] << " ";
+  vector<float> testGenotype2;
+  testGenotype2.push_back(4);
+  testGenotype2.push_back(4);
+  testGenotype2.push_back(4);
+  testGenotype2.push_back(4);
+  testGenotype2.push_back(4);
+  CIndividual* testInd2 = new CKnapsackIndividual(cKnapsackProblem, testGenotype2);
+
+  vector<CIndividual*> resultChildren = testInd1 -> cross(0.66, 0.55, testInd2);
+
+  int size = resultChildren.size();
+  vector<float> child1 = resultChildren[0] -> getGenotype();
+  int childSize1 = child1.size();
+
+  vector<float> child2 = resultChildren[1] -> getGenotype();
+  int childSize2 = child2.size();
+
+  cout << "child one: ";
+  for(int i = 0; i < childSize1; i++){
+      cout << child1[i];
   }
   cout << endl;
-  cKnapsackIndividual -> fitness();
 
-  float f_rand = cKnapsackIndividual -> randFloat();
-  cout << "rand float: " << f_rand;
-
-  vector<vector<float> >  firstChildrenParts = cKnapsackIndividual -> cutParent(cKnapsackIndividual, 0);
-  cout << endl;
-
-  vector<float> firstChildPart = firstChildrenParts[0];
-  int fstChildSize = firstChildPart.size();
-  vector<float> secondChildPart = firstChildrenParts[1];
-  int sndChildSize = secondChildPart.size();
-
-  cout << "first child: ";
-  for(int i = 0; i < fstChildSize; i++){
-    cout << firstChildPart[i];
+  cout << "child two: ";
+  for(int i = 0; i < childSize2; i++){
+      cout << child2[i];
   }
-
   cout << endl;
-
-  cout << "second child: ";
-  for(int i = 0; i < sndChildSize; i++){
-    cout << secondChildPart[i];
-  }
 
 
   return 0;

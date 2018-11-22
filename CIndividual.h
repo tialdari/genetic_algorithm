@@ -19,6 +19,7 @@ class CIndividual{
     vector<float> getGenotype();
     vector<CIndividual*> cross(float globalProb, float givenProb, CIndividual* otherParent);
     vector<vector<float> > cutParent(CIndividual* parent, int cutIndex);
+    vector<float> mergeGenotypes(vector<float> fstChild, vector<float> sndChild);
     CIndividual* mutate(float globalProb, float givenProb);
     virtual float fitness() = 0;
     int randInt(int range);
@@ -28,6 +29,8 @@ class CIndividual{
   protected:
     CIndividual(CProblem* cProblem)
     :cProblem(cProblem){}
+    CIndividual(CProblem* cProblem, vector<float> genotype)
+    :cProblem(cProblem),genotype(genotype){}
     vector<float> genotype;
     CProblem* cProblem;
     float f_fitness;
@@ -41,6 +44,11 @@ class CKnapsackIndividual: public CIndividual{
       {this -> cProblem = cProblem;
        vector<float> initalGenotype;
        genotype = initalGenotype;};
+       CKnapsackIndividual(CProblem* cProblem, vector<float> genotype)
+       :CIndividual(cProblem, genotype){
+         this -> cProblem = cProblem;
+         this -> genotype = genotype;
+       };
       ~CKnapsackIndividual();
       vector<float> generateGenotype();
       float fitness();
