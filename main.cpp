@@ -1,3 +1,4 @@
+
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
@@ -51,8 +52,29 @@ int main(){
   cout << endl;
   cKnapsackIndividual -> fitness();
 
+  float f_rand = cKnapsackIndividual -> randFloat();
+  cout << "rand float: " << f_rand;
+
+  vector<vector<float> >  firstChildrenParts = cKnapsackIndividual -> cutParent(cKnapsackIndividual, 0);
+  cout << endl;
+
+  vector<float> firstChildPart = firstChildrenParts[0];
+  int fstChildSize = firstChildPart.size();
+  vector<float> secondChildPart = firstChildrenParts[1];
+  int sndChildSize = secondChildPart.size();
+
+  cout << "first child: ";
+  for(int i = 0; i < fstChildSize; i++){
+    cout << firstChildPart[i];
+  }
+
+  cout << endl;
+
+  cout << "second child: ";
+  for(int i = 0; i < sndChildSize; i++){
+    cout << secondChildPart[i];
+  }
+
+
   return 0;
 }
-
-//test setters in CProblem
-//implement CKnapsackIndividual

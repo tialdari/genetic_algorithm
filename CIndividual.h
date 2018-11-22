@@ -18,8 +18,11 @@ class CIndividual{
     void setGenotype(vector<float> newGenotype);
     vector<float> getGenotype();
     vector<CIndividual*> cross(float globalProb, float givenProb, CIndividual* otherParent);
+    vector<vector<float> > cutParent(CIndividual* parent, int cutIndex);
     CIndividual* mutate(float globalProb, float givenProb);
     virtual float fitness() = 0;
+    int randInt(int range);
+    float randFloat();
 
 
   protected:
