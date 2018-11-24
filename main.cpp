@@ -33,10 +33,38 @@ int main(){
   pParameters[2][0] = 2.0;
   pParameters[2][1] = 2.0;
 
-  CKnapsackProblem* cKnapsackProblem = new CKnapsackProblem(3, pParameters, 3, 4.0);
+  pParameters[3] = new float[paramSize];
+  pParameters[3][0] = 2.0;
+  pParameters[3][1] = 2.0;
+
+  pParameters[4] = new float[paramSize];
+  pParameters[4][0] = 2.0;
+  pParameters[4][1] = 2.0;
+
+  pParameters[5] = new float[paramSize];
+  pParameters[5][0] = 2.0;
+  pParameters[5][1] = 2.0;
+
+  pParameters[6] = new float[paramSize];
+  pParameters[6][0] = 2.0;
+  pParameters[6][1] = 2.0;
+
+  pParameters[7] = new float[paramSize];
+  pParameters[7][0] = 2.0;
+  pParameters[7][1] = 2.0;
+
+  pParameters[8] = new float[paramSize];
+  pParameters[8][0] = 2.0;
+  pParameters[8][1] = 2.0;
+
+  pParameters[9] = new float[paramSize];
+  pParameters[9][0] = 2.0;
+  pParameters[9][1] = 2.0;
+
+  CKnapsackProblem* cKnapsackProblem = new CKnapsackProblem(6, pParameters, 10, 4.0);
   cout << cKnapsackProblem -> toString();
 
-
+/*
   vector<float> testGenotype;
   testGenotype.push_back(2);
   testGenotype.push_back(2);
@@ -86,6 +114,12 @@ int main(){
   testInd1 -> printGenotype();
   testInd1 -> mutate(0.70);
   testInd1 -> printGenotype();
+*/
+
+  CGeneticAlgorithm cGeneticAlgorithm(cKnapsackProblem);
+  cGeneticAlgorithm.setPopSize();
+  cGeneticAlgorithm.generateParameters();
+  cGeneticAlgorithm.generatePopulation();
 
 
 

@@ -3,6 +3,8 @@
 
 #include <vector>
 #include "CIndividual.h"
+#include "CProblem.h"
+
 
 using namespace std;
 
@@ -12,16 +14,22 @@ class CGeneticAlgorithm{
 
   public:
     CGeneticAlgorithm();
+    CGeneticAlgorithm(CProblem* cKnapsackProblem);
     ~CGeneticAlgorithm();
-    void genereteParameters();
-    void generateProb();
+    void generateParameters();
     void generatePopulation();
     CIndividual* run();
-    
+    int getInt();
+    void setPopSize();
+    int randInt(int range);
+    float randFloat();
+    string toString();
+
 
   private:
     int popSize;
-    CIndividual* CKnapsackIndividual;
+    //CIndividual* CKnapsackIndividual;
+    CProblem* cKnapsackProblem;
     vector<CIndividual*> population;
     float crossProb;
     float mutProb;

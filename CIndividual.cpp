@@ -154,8 +154,8 @@ CKnapsackIndividual::~CKnapsackIndividual(){
 
 vector<float> CKnapsackIndividual::generateGenotype(){
 
-  if(DEBUG) cout << "~ generateGenotype method\n" << endl;
-  vector<float> genotype;
+  if(DEBUG) cout << "~ Generate genotype method\n" << endl;
+
   int size = cProblem -> getSolutionSize();
   float randNum;
 
