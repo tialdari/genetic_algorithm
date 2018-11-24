@@ -57,23 +57,12 @@ CIndividual* CGeneticAlgorithm::run(int times){
   CIndividual* testIndividual;
 
   /*
-  population = generatePopulation();
-  vector<CIndividual*> nextPopulation;
-  vector<CIndividual*> children;
-
-  int counter = 0;
-  while(counter <= times){
-    for(int i = 0; i < popSize; i++){
-      population[i] -> fitness();
-    }
-
-    for(int i = 0; i < 2; i++){
-      newPop
-    }
-    counter++;
+  CIndividual* pp_population;
+  for(int i = 0; i < popSize; i++){
+    pp_population = population[i];
   }
 
-
+  
 
   */
   return testIndividual;
