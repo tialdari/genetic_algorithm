@@ -16,6 +16,8 @@ using namespace std;
 
 int main(){
 
+  srand (time(NULL));
+
   int paramSize = 2;
   float** pParameters = new float*[paramSize];
 

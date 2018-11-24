@@ -17,6 +17,7 @@ class CGeneticAlgorithm{
     void generateProb();
     void generatePopulation();
     CIndividual* run();
+    
 
   private:
     int popSize;

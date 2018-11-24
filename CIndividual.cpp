@@ -46,7 +46,6 @@ vector<CIndividual*> CIndividual::cross(float globalProb, float givenProb, CIndi
     return resultChildren;
   }
 
-  srand (time(NULL));
   int cutIndex = randInt(genotype.size() - 1);
   if(DEBUG) cout << " cutIndex: " << cutIndex << endl;
 
@@ -109,7 +108,6 @@ void CIndividual::mutate(float globalProb){
 
   if(DEBUG) cout << "~ Mutate method\n" << endl;
 
-  srand (time(NULL));
   float randProb = randFloat();
   int genotypeSize = genotype.size();
 
@@ -160,7 +158,6 @@ vector<float> CKnapsackIndividual::generateGenotype(){
   vector<float> genotype;
   int size = cProblem -> getSolutionSize();
   float randNum;
-  srand (time(NULL));
 
   for(int i = 0; i < size; i++){
     randNum = randInt(1);
