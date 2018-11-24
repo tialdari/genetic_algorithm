@@ -18,7 +18,9 @@ class CGeneticAlgorithm{
     ~CGeneticAlgorithm();
     void generateParameters();
     void generatePopulation();
-    CIndividual* run();
+    CIndividual* run(int times);
+    CIndividual* randIndividual();
+    vector<CIndividual*> crossIndividuals();
     int getInt();
     void setPopSize();
     int randInt(int range);

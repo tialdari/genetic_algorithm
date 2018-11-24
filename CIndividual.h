@@ -24,6 +24,7 @@ class CIndividual{
     void mutate(float globalProb);
     void negate(float &number);
     virtual float fitness() = 0;
+    float getFitness();
     int randInt(int range);
     float randFloat();
 
@@ -50,6 +51,7 @@ class CKnapsackIndividual: public CIndividual{
        :CIndividual(cProblem, genotype){
          this -> cProblem = cProblem;
          this -> genotype = genotype;
+         f_fitness = 0.0;
        };
       ~CKnapsackIndividual();
       vector<float> generateGenotype();

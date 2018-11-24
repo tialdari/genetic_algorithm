@@ -146,6 +146,11 @@ float CIndividual::randFloat(){
   return randNum;
 }
 
+float CIndividual::getFitness(){
+  return f_fitness;
+}
+
+
 CKnapsackIndividual::~CKnapsackIndividual(){
 
   if(DEBUG) cout << "- Deleting CKnapsackIndividual object\n" << endl;
@@ -173,7 +178,6 @@ float CKnapsackIndividual::fitness(){
 
   if(cProblem -> isValid(genotype)){
     f_fitness = cProblem -> solutionValue(genotype);
-    if(DEBUG) cout << "~ fitness: " << f_fitness << endl;
     return f_fitness;
   }
   else return 0.0;

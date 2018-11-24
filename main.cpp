@@ -30,38 +30,38 @@ int main(){
   pParameters[1][1] = 3.0;
 
   pParameters[2] = new float[paramSize];
-  pParameters[2][0] = 2.0;
+  pParameters[2][0] = 1.5;
   pParameters[2][1] = 2.0;
 
   pParameters[3] = new float[paramSize];
-  pParameters[3][0] = 2.0;
-  pParameters[3][1] = 2.0;
+  pParameters[3][0] = 2.5;
+  pParameters[3][1] = 3.0;
 
   pParameters[4] = new float[paramSize];
-  pParameters[4][0] = 2.0;
-  pParameters[4][1] = 2.0;
+  pParameters[4][0] = 1.2;
+  pParameters[4][1] = 2.9;
 
   pParameters[5] = new float[paramSize];
-  pParameters[5][0] = 2.0;
-  pParameters[5][1] = 2.0;
+  pParameters[5][0] = 1.2;
+  pParameters[5][1] = 1.4;
 
   pParameters[6] = new float[paramSize];
-  pParameters[6][0] = 2.0;
-  pParameters[6][1] = 2.0;
+  pParameters[6][0] = 3.0;
+  pParameters[6][1] = 1.0;
 
   pParameters[7] = new float[paramSize];
-  pParameters[7][0] = 2.0;
-  pParameters[7][1] = 2.0;
+  pParameters[7][0] = 5.0;
+  pParameters[7][1] = 6.0;
 
   pParameters[8] = new float[paramSize];
-  pParameters[8][0] = 2.0;
+  pParameters[8][0] = 4.0;
   pParameters[8][1] = 2.0;
 
   pParameters[9] = new float[paramSize];
-  pParameters[9][0] = 2.0;
-  pParameters[9][1] = 2.0;
+  pParameters[9][0] = 2.3;
+  pParameters[9][1] = 2.2;
 
-  CKnapsackProblem* cKnapsackProblem = new CKnapsackProblem(6, pParameters, 10, 4.0);
+  CKnapsackProblem* cKnapsackProblem = new CKnapsackProblem(10, pParameters, 12.0);
   cout << cKnapsackProblem -> toString();
 
 /*

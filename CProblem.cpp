@@ -14,7 +14,6 @@ CProblem::~CProblem(){
   if(DEBUG) cout << "- Deleting a CProblem object" << endl;
 }
 
-
 CKnapsackProblem::CKnapsackProblem(){
   if(DEBUG) cout << "New CKnapsackProblem object" << endl;
 }
@@ -28,22 +27,16 @@ void CKnapsackProblem::setItemsParameters(float** newParameters){
   this -> itemsParameters = newParameters;
 }
 
-void CKnapsackProblem::setGivenItemsNum(int givenItemsNum){
-  if(DEBUG) cout << "~ Setting givenItemsNum to: "
-                 << givenItemsNum << "\n" << endl;
-  this -> givenItemsNum = givenItemsNum;
-}
 
 void CKnapsackProblem::setMaxVolume(float maxVolume){
   if(DEBUG) cout << "~ Setting maxVolume to: " << maxVolume << "\n" << endl;
   maxVolume = maxVolume;
 }
 
-void CKnapsackProblem::setNewProblemParameters(int solutionSize, float** newParameters, int givenItemsNum, int maxVolume){
+void CKnapsackProblem::setNewProblemParameters(int solutionSize, float** newParameters, int maxVolume){
   if(DEBUG) cout << "~ Setting problem's parameters to: " << "\n" << endl;
   setSolutionSize(solutionSize);
   setItemsParameters(newParameters);
-  setGivenItemsNum(givenItemsNum);
   setMaxVolume(maxVolume);
 }
 
@@ -93,21 +86,20 @@ string CKnapsackProblem::toString(){
 
 
   return "~ CKnapsackProblem object\n -> solutionSize: " + result +
-          "\n -> givenItemsParameters: " + itemsParametersToString() +
           "\n -> max volume: " + result2 + "\n\n";
 }
 
 string CKnapsackProblem::itemsParametersToString(){
 
   string parametersString = "{";
-  for(int i = 0; i < givenItemsNum; i++){
+  for(int i = 0; i < solutionSize; i++){
     parametersString += "(";
     for(int j = 0; j < itemsCharacteritics; j++){
        parametersString += to_string(itemsParameters[i][j]);
        if(j != 1) parametersString += ",";
     }
     parametersString += ")";
-    if(i != givenItemsNum - 1) parametersString += ",";
+    if(i != solutionSize - 1) parametersString += ",";
   }
   parametersString += "}";
 

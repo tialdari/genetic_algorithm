@@ -31,20 +31,18 @@ class CKnapsackProblem: public CProblem{
 
     public:
       CKnapsackProblem();
-      CKnapsackProblem(int solutionSize, float** itemsParameters, int givenItemsNum, float maxVolume)
+      CKnapsackProblem(int solutionSize, float** itemsParameters, float maxVolume)
       :CProblem(solutionSize){
         if(DEBUG) cout << "+ New CKnapsackProblem object with parameters\n" << endl;
         this -> solutionSize = solutionSize;
         this -> itemsParameters = itemsParameters;
-        this -> givenItemsNum = givenItemsNum;
         this -> maxVolume = maxVolume;
       };
       ~CKnapsackProblem();
       //void setMaxItemsNum(int maxItemsNum);
       void setItemsParameters(float** newParameters);
-      void setGivenItemsNum(int givenItemsNum);
       void setMaxVolume(float maxVolume);
-      void setNewProblemParameters(int solutionSize, float** newParameters, int givenItemsNum, int maxVolume);
+      void setNewProblemParameters(int solutionSize, float** newParameters, int maxVolume);
       float solutionValue(vector<float> solution);
       bool isValid(vector<float> solution);
       string toString();
@@ -52,7 +50,6 @@ class CKnapsackProblem: public CProblem{
 
   private:
       float** itemsParameters;
-      int givenItemsNum;
       float maxVolume;
 
 };
