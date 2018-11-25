@@ -35,9 +35,10 @@ void CGeneticAlgorithm::generateParameters(){
    mutProb = randFloat();
 }
 
-void CGeneticAlgorithm::generatePopulation(){
+vector<CIndividual*> CGeneticAlgorithm::generatePopulation(){
 
   if(DEBUG) cout << "~ Generate population method\n" << endl;
+  vector<CIndividual*> population;
   int fitness;
 
   for(int i = 0; i < popSize; i++){
@@ -49,6 +50,7 @@ void CGeneticAlgorithm::generatePopulation(){
     if(DEBUG) cout << " fitness: " << fitness << endl;
 
   }
+  return population;
 }
 
 CIndividual* CGeneticAlgorithm::run(int times){
@@ -62,9 +64,10 @@ CIndividual* CGeneticAlgorithm::run(int times){
     pp_population = population[i];
   }
 
-  
+
 
   */
+
   return testIndividual;
 }
 

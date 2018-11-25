@@ -16,6 +16,7 @@ using namespace std;
 
 int main(){
 
+  /*
   srand (time(NULL));
 
   int paramSize = 2;
@@ -63,7 +64,7 @@ int main(){
 
   CKnapsackProblem* cKnapsackProblem = new CKnapsackProblem(10, pParameters, 12.0);
   cout << cKnapsackProblem -> toString();
-
+*/
 /*
   vector<float> testGenotype;
   testGenotype.push_back(2);
@@ -115,12 +116,22 @@ int main(){
   testInd1 -> mutate(0.70);
   testInd1 -> printGenotype();
 */
-
+/*
   CGeneticAlgorithm cGeneticAlgorithm(cKnapsackProblem);
   cGeneticAlgorithm.setPopSize();
   cGeneticAlgorithm.generateParameters();
   cGeneticAlgorithm.generatePopulation();
+*/
+vector<int> test;
+test.push_back(1);
+test.push_back(2);
+test.push_back(3);
 
+cout << "index 0 : " << test[0];
+
+test.clear();
+
+cout << "index 1: " << test[1];  
 
 
   return 0;

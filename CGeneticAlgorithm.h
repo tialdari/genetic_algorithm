@@ -17,7 +17,7 @@ class CGeneticAlgorithm{
     CGeneticAlgorithm(CProblem* cKnapsackProblem);
     ~CGeneticAlgorithm();
     void generateParameters();
-    void generatePopulation();
+    vector<CIndividual*> generatePopulation();
     CIndividual* run(int times);
     CIndividual* randIndividual();
     vector<CIndividual*> crossIndividuals();
@@ -30,7 +30,6 @@ class CGeneticAlgorithm{
 
   private:
     int popSize;
-    //CIndividual* CKnapsackIndividual;
     CProblem* cKnapsackProblem;
     vector<CIndividual*> population;
     float crossProb;
