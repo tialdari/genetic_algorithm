@@ -84,10 +84,7 @@ CIndividual* CGeneticAlgorithm::run(int times){
       return newPopulation.at(0);
     }
 
-    //startPopulation = newPopulation
-    //newPopulation - > clear
-
-
+    revaluePopVectors(startPopulation, newPopulation);
   }
   sort(startPopulation.begin(), startPopulation.end(), ComparatorByFitness());
   return startPopulation.at(0);
@@ -162,7 +159,12 @@ string CGeneticAlgorithm::toString(){
 
 void CGeneticAlgorithm::revaluePopVectors(vector<CIndividual*> oldPopulation, vector<CIndividual*> newPopulation){
 
-
+  erasePop(oldPopulation);
+  int popSize = newPopulation.size();
+  for(int i = 0; i < popSize; i++ ){
+    oldPopulation.push_back(newPopulation[i]);
+  }
+  erasePop(newPopulation);
 }
 
 void CGeneticAlgorithm::erasePop(vector<CIndividual*> population){
