@@ -1,4 +1,4 @@
-
+#include <vector>
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
@@ -10,13 +10,14 @@
 #include "CGeneticAlgorithm.h"
 #include "CGeneticAlgorithm.cpp"
 
+
 #define DEBUG true
 
 using namespace std;
 
 int main(){
 
-  /*
+
   srand (time(NULL));
 
   int paramSize = 2;
@@ -37,6 +38,7 @@ int main(){
   pParameters[3] = new float[paramSize];
   pParameters[3][0] = 2.5;
   pParameters[3][1] = 3.0;
+/*
 
   pParameters[4] = new float[paramSize];
   pParameters[4][0] = 1.2;
@@ -61,10 +63,11 @@ int main(){
   pParameters[9] = new float[paramSize];
   pParameters[9][0] = 2.3;
   pParameters[9][1] = 2.2;
-
-  CKnapsackProblem* cKnapsackProblem = new CKnapsackProblem(10, pParameters, 12.0);
-  cout << cKnapsackProblem -> toString();
 */
+
+  CKnapsackProblem* cKnapsackProblem = new CKnapsackProblem(4, pParameters, 20.0);
+  cout << cKnapsackProblem -> toString();
+
 /*
   vector<float> testGenotype;
   testGenotype.push_back(2);
@@ -122,17 +125,70 @@ int main(){
   cGeneticAlgorithm.generateParameters();
   cGeneticAlgorithm.generatePopulation();
 */
-vector<int> test;
-test.push_back(1);
-test.push_back(2);
-test.push_back(3);
+/*
+  vector<int> myvector;
 
-cout << "index 0 : " << test[0];
+  // set some values (from 1 to 10)
+   myvector.push_back(1);
+   myvector.push_back(2);
+   myvector.push_back(3);
+   myvector.push_back(4);
+   myvector.push_back(5);
+   myvector.push_back(6);
+   myvector.push_back(7);
+   myvector.push_back(8);
+   myvector.push_back(9);
+   myvector.push_back(10);
 
-test.clear();
 
-cout << "index 1: " << test[1];  
+  myvector.erase (myvector.begin(),myvector.begin()+3);
 
+  cout << "myvector contains:";
+  for (unsigned i=0; i<myvector.size(); ++i)
+    cout << ' ' << myvector[i];
+  cout << '\n';
+  */
+  vector<float> testGenotype;
+  testGenotype.push_back(1);
+  testGenotype.push_back(1);
+  testGenotype.push_back(1);
+  testGenotype.push_back(1);
+
+  vector<float> testGenotype2;
+  testGenotype2.push_back(1);
+  testGenotype2.push_back(0);
+  testGenotype2.push_back(0);
+  testGenotype2.push_back(0);
+
+  vector<float> testGenotype3;
+  testGenotype3.push_back(1);
+  testGenotype3.push_back(1);
+  testGenotype3.push_back(0);
+  testGenotype3.push_back(0);
+
+
+  vector<CIndividual*> testVector;
+  CIndividual* testPoint = new CKnapsackIndividual(cKnapsackProblem, testGenotype);
+  CIndividual* testPoint2 = new CKnapsackIndividual(cKnapsackProblem, testGenotype2);
+  CIndividual* testPoint3 = new CKnapsackIndividual(cKnapsackProblem, testGenotype3);
+
+  testVector.push_back(testPoint);
+  testVector.push_back(testPoint2);
+  testVector.push_back(testPoint3);
+
+  sort(testVector.begin(), testVector.end());
+
+
+  for(int i = 0; i < testVector.size(); i++){
+      cout << "fitness: " << testVector[i] -> fitness() << endl;
+  }
+
+
+  for(int i = 0; i < testVector.size(); i++){
+    cout << i << ". ";
+    testVector[i] -> printGenotype();
+    cout << endl;
+  }
 
   return 0;
 }

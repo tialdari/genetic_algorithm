@@ -35,6 +35,7 @@ void CKnapsackProblem::setMaxVolume(float maxVolume){
 
 void CKnapsackProblem::setNewProblemParameters(int solutionSize, float** newParameters, int maxVolume){
   if(DEBUG) cout << "~ Setting problem's parameters to: " << "\n" << endl;
+  if(solutionSize < 0) if(DEBUG) cout << "ERROR: [setNewProblemParameters] solutionSize < 0 " << endl;
   setSolutionSize(solutionSize);
   setItemsParameters(newParameters);
   setMaxVolume(maxVolume);

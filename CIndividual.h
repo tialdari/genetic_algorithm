@@ -27,6 +27,7 @@ class CIndividual{
     float getFitness();
     int randInt(int range);
     float randFloat();
+    bool operator <(const CIndividual& ind);
 
 
   protected:
@@ -37,6 +38,8 @@ class CIndividual{
     vector<float> genotype;
     CProblem* cProblem;
     float f_fitness;
+
+
 };
 
 class CKnapsackIndividual: public CIndividual{

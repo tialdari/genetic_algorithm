@@ -150,6 +150,10 @@ float CIndividual::getFitness(){
   return f_fitness;
 }
 
+bool CIndividual::operator < (const CIndividual& ind) {
+  return f_fitness < ind.f_fitness;
+}
+
 
 CKnapsackIndividual::~CKnapsackIndividual(){
 

@@ -21,7 +21,6 @@ CGeneticAlgorithm::CGeneticAlgorithm(CProblem* cKnapsackProblem){
   this -> cKnapsackProblem = cKnapsackProblem;
 }
 
-
 CGeneticAlgorithm::~CGeneticAlgorithm(){
 
   if(DEBUG) cout << "- Deleting a CGeneticAlgorithm object\n" << endl;
@@ -55,23 +54,38 @@ vector<CIndividual*> CGeneticAlgorithm::generatePopulation(){
 
 CIndividual* CGeneticAlgorithm::run(int times){
 
-  if(DEBUG) cout << "~ Default run method\n" << endl;
-  CIndividual* testIndividual;
-
+  if(DEBUG) cout << "~ Run method\n" << endl;
   /*
-  CIndividual* pp_population;
-  for(int i = 0; i < popSize; i++){
-    pp_population = population[i];
+  vector<CIndividual*> startPopulation = generatePopulation();
+  int counter = 0;
+  vector<CIndividual*> newPopulation;
+
+  while(counter <= times){
+
+    for(int i = 0; i < popSize; i++){
+      startPopulation[i] -> fitness();
+    }
+
+    for(int i = 0; i < popSize/2; i++){
+      vector<CIndividual*> children = crossIndividuals(startPopulation);
+      for(int j = 0; j < 2; j++){
+        newPopulation.push_back(children[i]);
+      }
+    }
+
+    for(int i = 0; i < popSize; i++){
+      newPopulation[i] -> mutate(mutProb);
+    }
+  //  if(counter == times) return
+
   }
 
-
-
   */
-
+  CIndividual* testIndividual;
   return testIndividual;
 }
 
-CIndividual* CGeneticAlgorithm::randIndividual(){
+CIndividual* CGeneticAlgorithm::randIndividual(vector<CIndividual*> population){
 
   int randIndx1 = randInt(popSize - 1);
   int randIndx2 = randInt(popSize - 1);
@@ -83,10 +97,10 @@ CIndividual* CGeneticAlgorithm::randIndividual(){
   else return individual2;
 }
 
-vector<CIndividual*> CGeneticAlgorithm::crossIndividuals(){
+vector<CIndividual*> CGeneticAlgorithm::crossIndividuals(vector<CIndividual*> population){
 
-  CIndividual* parent1 = randIndividual();
-  CIndividual* parent2 = randIndividual();
+  CIndividual* parent1 = randIndividual(population);
+  CIndividual* parent2 = randIndividual(population);
 
   float randCrossProb = randFloat();
   return parent1 -> cross(crossProb, randCrossProb, parent2);
