@@ -9,6 +9,8 @@
 #include "CProblem.cpp"
 #include "CGeneticAlgorithm.h"
 #include "CGeneticAlgorithm.cpp"
+#include <algorithm>
+
 
 
 #define DEBUG true
@@ -168,25 +170,26 @@ int main(){
 
 
   vector<CIndividual*> testVector;
-  CIndividual* testPoint = new CKnapsackIndividual(cKnapsackProblem, testGenotype);
-  CIndividual* testPoint2 = new CKnapsackIndividual(cKnapsackProblem, testGenotype2);
-  CIndividual* testPoint3 = new CKnapsackIndividual(cKnapsackProblem, testGenotype3);
-
-  testVector.push_back(testPoint);
-  testVector.push_back(testPoint2);
-  testVector.push_back(testPoint3);
-
-  sort(testVector.begin(), testVector.end());
+  testVector.push_back(new CKnapsackIndividual(cKnapsackProblem, testGenotype));
+  testVector.push_back(new CKnapsackIndividual(cKnapsackProblem, testGenotype2));
+  testVector.push_back(new CKnapsackIndividual(cKnapsackProblem, testGenotype3));
 
 
   for(int i = 0; i < testVector.size(); i++){
-      cout << "fitness: " << testVector[i] -> fitness() << endl;
+      cout << "fitness: " << testVector.at(i)-> fitness() << endl;
+  }
+
+  cout << "sorting... " << endl;
+  sort(testVector.begin(), testVector.end(), ComparatorByFitness());
+
+  for(int i = 0; i < testVector.size(); i++){
+      cout << "fitness: " << testVector.at(i)-> fitness() << endl;
   }
 
 
   for(int i = 0; i < testVector.size(); i++){
     cout << i << ". ";
-    testVector[i] -> printGenotype();
+    testVector.at(i) -> printGenotype();
     cout << endl;
   }
 

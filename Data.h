@@ -3,8 +3,9 @@
 
 using namespace std;
 
+#include <iostream>
 #include <vector>
-
+#include <algorithm>
 
 class Data{
 
@@ -12,12 +13,21 @@ class Data{
     Data(int number){this -> number = number;};
     ~Data(){};
     int getNumber(){return number;};
-    bool operator <(const Data& dataExample) const{
-    return this -> number < dataExample.number;
-}
 
   private:
     int number;
 };
+
+class ComparatorByNum {
+
+  public:
+    ComparatorByNum(){};
+    ~ComparatorByNum(){};
+    bool operator()(Data *a, Data *b) {
+      return a -> getNumber() < b -> getNumber();
+  }
+};
+
+
 
 #endif

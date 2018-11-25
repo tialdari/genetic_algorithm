@@ -21,15 +21,12 @@ class CGeneticAlgorithm{
     CIndividual* run(int times);
     CIndividual* randIndividual(vector<CIndividual*> population);
     vector<CIndividual*> crossIndividuals(vector<CIndividual*> population);
-
-
-
-    
     int getInt();
     void setPopSize();
     int randInt(int range);
     float randFloat();
     string toString();
+  
 
 
   private:

@@ -2,6 +2,8 @@
 #include <vector>
 #include<fstream>
 #include<iostream>
+#include <algorithm>
+
 #include "CGeneticAlgorithm.h"
 
 using namespace std;

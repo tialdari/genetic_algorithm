@@ -27,7 +27,6 @@ class CIndividual{
     float getFitness();
     int randInt(int range);
     float randFloat();
-    bool operator <(const CIndividual& ind);
 
 
   protected:
@@ -41,6 +40,17 @@ class CIndividual{
 
 
 };
+
+class ComparatorByFitness {
+
+  public:
+    ComparatorByFitness(){};
+    ~ComparatorByFitness(){};
+    bool operator()(CIndividual *ind1, CIndividual *ind2) {
+      return ind1 -> getFitness() < ind2 -> getFitness();
+  }
+};
+
 
 class CKnapsackIndividual: public CIndividual{
 
