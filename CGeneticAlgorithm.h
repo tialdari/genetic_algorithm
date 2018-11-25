@@ -26,7 +26,8 @@ class CGeneticAlgorithm{
     int randInt(int range);
     float randFloat();
     string toString();
-  
+    void revaluePopVectors(vector<CIndividual*> oldPopulation, vector<CIndividual*> newPopulation);
+    void erasePop(vector<CIndividual*> population);
 
 
   private:

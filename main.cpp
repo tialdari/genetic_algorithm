@@ -193,5 +193,10 @@ int main(){
     cout << endl;
   }
 
+  CGeneticAlgorithm cGeneticAlgorithm;
+  cGeneticAlgorithm.erasePop(testVector);
+
+
+
   return 0;
 }

@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>
-#include<fstream>
-#include<iostream>
+#include <fstream>
+#include <iostream>
 #include <algorithm>
 
 #include "CGeneticAlgorithm.h"
@@ -57,7 +57,7 @@ vector<CIndividual*> CGeneticAlgorithm::generatePopulation(){
 CIndividual* CGeneticAlgorithm::run(int times){
 
   if(DEBUG) cout << "~ Run method\n" << endl;
-  /*
+
   vector<CIndividual*> startPopulation = generatePopulation();
   int counter = 0;
   vector<CIndividual*> newPopulation;
@@ -78,13 +78,19 @@ CIndividual* CGeneticAlgorithm::run(int times){
     for(int i = 0; i < popSize; i++){
       newPopulation[i] -> mutate(mutProb);
     }
-  //  if(counter == times) return
+
+    if(counter == times){
+      sort(newPopulation.begin(), newPopulation.end(), ComparatorByFitness());
+      return newPopulation.at(0);
+    }
+
+    //startPopulation = newPopulation
+    //newPopulation - > clear
+
 
   }
-
-  */
-  CIndividual* testIndividual;
-  return testIndividual;
+  sort(startPopulation.begin(), startPopulation.end(), ComparatorByFitness());
+  return startPopulation.at(0);
 }
 
 CIndividual* CGeneticAlgorithm::randIndividual(vector<CIndividual*> population){
@@ -152,4 +158,19 @@ string CGeneticAlgorithm::toString(){
   return "popSize: " + to_string(popSize) + "\n" +
          "crossProb: " + to_string(crossProb) + "\n" +
          "mutProb: " + to_string(mutProb) + "\n";
+}
+
+void CGeneticAlgorithm::revaluePopVectors(vector<CIndividual*> oldPopulation, vector<CIndividual*> newPopulation){
+
+
+}
+
+void CGeneticAlgorithm::erasePop(vector<CIndividual*> population){
+
+  if(DEBUG) cout << "~ Erase population method\n" << endl;
+
+  int size = population.size();
+  for(int i = 0; i < size; i++){
+    delete population[i];
+  }
 }
