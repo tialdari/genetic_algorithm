@@ -47,8 +47,11 @@ float CKnapsackProblem::solutionValue(vector<float> solution){
   float value;
 
   for(int i = 0; i < solutionSize; i++){
+    cout << to_string(itemsParameters[i][0]) << " ";
     value += itemsParameters[i][0] * solution[i];
   }
+
+  
   return value;
 }
 

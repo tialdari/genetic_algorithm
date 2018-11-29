@@ -28,11 +28,12 @@ class CGeneticAlgorithm{
     string toString();
     void revaluePopVectors(vector<CIndividual*> &oldPopulation, vector<CIndividual*> &newPopulation);
     void erasePop(vector<CIndividual*> &population);
+    void printPopulation(vector<CIndividual*> population);
 
 
   private:
     int popSize;
-    CProblem* cKnapsackProblem;
+    CProblem* cProblem;
     float crossProb;
     float mutProb;
 

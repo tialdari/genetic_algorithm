@@ -46,37 +46,37 @@ vector<CIndividual*> CIndividual::cross(float globalProb, float givenProb, CIndi
     pSucc = true;
     resultChildren.push_back(this);
     resultChildren.push_back(otherParent);
-    return resultChildren;
   }else{
 
-  int cutIndex = randInt(genotype.size() - 1);
-  if(DEBUG) cout << " cutIndex: " << cutIndex << endl;
+    int cutIndex = randInt(genotype.size() - 1);
+    if(DEBUG) cout << " cutIndex: " << cutIndex << endl;
 
-  vector<vector<float> > firstGenotypeParts = cutParent(this, cutIndex);
-  vector<vector<float> > secondGenotypeParts = cutParent(otherParent, cutIndex);
+    vector<vector<float> > firstGenotypeParts = cutParent(this, cutIndex);
+    vector<vector<float> > secondGenotypeParts = cutParent(otherParent, cutIndex);
 
-  vector<float> fstGenotype = mergeGenotypes(firstGenotypeParts[0],secondGenotypeParts[1]);
-  vector<float> sndGenotype = mergeGenotypes(firstGenotypeParts[1],secondGenotypeParts[0]);
+    vector<float> fstGenotype = mergeGenotypes(firstGenotypeParts[0],secondGenotypeParts[1]);
+    vector<float> sndGenotype = mergeGenotypes(secondGenotypeParts[0],firstGenotypeParts[1]);
 
-  CIndividual* fstChild = new CKnapsackIndividual(cProblem, fstGenotype);
-  CIndividual* sndChild = new CKnapsackIndividual(cProblem, sndGenotype);
+    CIndividual* fstChild = new CKnapsackIndividual(cProblem, fstGenotype);
+    CIndividual* sndChild = new CKnapsackIndividual(cProblem, sndGenotype);
 
+    resultChildren.push_back(fstChild);
+    resultChildren.push_back(sndChild);
+
+    pSucc = true;
+  }
 
   cout << "children's genotype: " << endl;
-  fstChild -> printGenotype();
-  sndChild -> printGenotype();
+  resultChildren[0] -> printGenotype();
+  resultChildren[1] -> printGenotype();
 
-  resultChildren.push_back(fstChild);
-  resultChildren.push_back(sndChild);
-
-  pSucc = true;
   return resultChildren;
-  }
 }
+
 
 vector<vector<float> > CIndividual::cutParent(CIndividual* parent, int cutIndex){
 
-  if(DEBUG) cout << "\n~ Cut parent method\n" << endl;
+  if(DEBUG) cout << "~ Cut parent method\n" << endl;
 
   vector<vector<float> > genotypeParts;
   vector<float> parentGenotype = parent -> getGenotype();
@@ -84,36 +84,15 @@ vector<vector<float> > CIndividual::cutParent(CIndividual* parent, int cutIndex)
 
   if(cutIndex >= parentGenSize){
     if(DEBUG) cout << "ERROR: [cutParent] cutIndec out of range\n" << endl;
-    return genotypeParts;
   }
 
   vector<float> genotypePart1;
   vector<float> genotypePart2;
 
   for(int i = 0; i < parentGenSize; i++){
-    //cout << to_string(parentGenotype[i]);
-    if(i < cutIndex){
-      genotypePart1.push_back(parentGenotype[i]);
-      //cout << " goes to 1"<< endl;
-    }
-    else{
-    //  cout << " goes to 2" << endl;
-      genotypePart2.push_back(parentGenotype[i]);
-    }
-  }
 
-  cout << "parent genotype: ";
-  parent -> printGenotype();
-
-  cout << "genotype p1:";
-  for(int i = 0; i < 2; i++){
-    cout << to_string(genotypePart1[i]) << " ";
-  }
-
-  cout << "genotype p2:";
-  for(int i = 0; i < 2; i++){
-    cout << to_string(genotypePart2[i]) << " ";
-
+    if(i <= cutIndex) genotypePart1.push_back(parentGenotype[i]);
+    else genotypePart2.push_back(parentGenotype[i]);
   }
 
   genotypeParts.push_back(genotypePart1);
@@ -131,12 +110,19 @@ vector<float> CIndividual::mergeGenotypes(vector<float> fstGenotype, vector<floa
   for(int i = 0; i < sndGenotypeSize; i++){
     fstGenotype.push_back(sndGenotype[i]);
   }
+
+  cout << "child genotype: ";
+  for(int i = 0; i < fstGenotype.size(); i++){
+    cout << to_string(fstGenotype[i]) << " ";
+  }
+  cout << endl;
+
   return fstGenotype;
 }
 
 void CIndividual::mutate(float globalProb){
 
-  if(DEBUG) cout << "~ Mutate method\n" << endl;
+  if(DEBUG) cout << "\n~ Mutate method\n" << endl;
 
   float randProb = randFloat();
   int genotypeSize = genotype.size();
@@ -205,10 +191,10 @@ vector<float> CKnapsackIndividual::generateGenotype(){
 
 float CKnapsackIndividual::fitness(){
 
-  if(DEBUG) cout << "~ fitness method\n" << endl;
+  if(DEBUG) cout << "\n~ fitness method\n" << endl;
 
   if(cProblem -> isValid(genotype)){
-    f_fitness = cProblem -> solutionValue(genotype);
+    f_fitness = cProblem -> solutionValue(genotype);  
     return f_fitness;
   }
   else return 0.0;

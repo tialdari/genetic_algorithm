@@ -17,10 +17,10 @@ CGeneticAlgorithm::CGeneticAlgorithm(){
   mutProb = 0.0;
 }
 
-CGeneticAlgorithm::CGeneticAlgorithm(CProblem* cKnapsackProblem){
+CGeneticAlgorithm::CGeneticAlgorithm(CProblem* cProblem){
 
-  if(DEBUG) cout << "+ New CGeneticAlgorithm object with cKnapsackProblem\n" << endl;
-  this -> cKnapsackProblem = cKnapsackProblem;
+  if(DEBUG) cout << "+ New CGeneticAlgorithm object with cProblem\n" << endl;
+  this -> cProblem = cProblem;
 }
 
 CGeneticAlgorithm::~CGeneticAlgorithm(){
@@ -40,15 +40,15 @@ vector<CIndividual*> CGeneticAlgorithm::generatePopulation(){
 
   if(DEBUG) cout << "~ Generate population method\n" << endl;
   vector<CIndividual*> population;
-  int fitness;
+  float fitness;
 
   for(int i = 0; i < popSize; i++){
-    CIndividual* newCKnapsachIndividual = new CKnapsackIndividual(cKnapsackProblem);
+    CIndividual* newCKnapsachIndividual = new CKnapsackIndividual(cProblem);
     newCKnapsachIndividual -> generateGenotype();
     population.push_back(newCKnapsachIndividual);
     newCKnapsachIndividual -> printGenotype();
     fitness = newCKnapsachIndividual -> fitness();
-    if(DEBUG) cout << " fitness: " << fitness << endl;
+    if(DEBUG) cout << " fitness: " << to_string(fitness) << endl;
 
   }
   return population;
@@ -224,6 +224,15 @@ void CGeneticAlgorithm::erasePop(vector<CIndividual*> &population){
 
   for(int i = 0; i < size; i++){
      delete population[i];
-     population.clear();
   }
+
+  population.clear();
+
+}
+
+void CGeneticAlgorithm::printPopulation(vector<CIndividual*> population){
+
+    for(int i = 0; i < population.size(); i++){
+      population[i] -> printGenotype();
+    }
 }
