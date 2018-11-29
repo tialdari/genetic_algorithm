@@ -20,14 +20,14 @@ class CGeneticAlgorithm{
     vector<CIndividual*> generatePopulation();
     CIndividual* run(int times);
     CIndividual* randIndividual(vector<CIndividual*> population);
-    vector<CIndividual*> crossIndividuals(vector<CIndividual*> population);
+    vector<CIndividual*> crossIndividuals(vector<CIndividual*> population, bool &pSucc);
     int getInt();
     void setPopSize();
     int randInt(int range);
     float randFloat();
     string toString();
-    void revaluePopVectors(vector<CIndividual*> oldPopulation, vector<CIndividual*> newPopulation);
-    void erasePop(vector<CIndividual*> population);
+    void revaluePopVectors(vector<CIndividual*> &oldPopulation, vector<CIndividual*> &newPopulation);
+    void erasePop(vector<CIndividual*> &population);
 
 
   private:

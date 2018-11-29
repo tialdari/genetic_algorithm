@@ -87,7 +87,8 @@ string CKnapsackProblem::toString(){
 
 
   return "~ CKnapsackProblem object\n -> solutionSize: " + result +
-          "\n -> max volume: " + result2 + "\n\n";
+          "\n -> max volume: " + result2 +
+          "\n -> itemsParameters: " +  itemsParametersToString() +"\n\n";
 }
 
 string CKnapsackProblem::itemsParametersToString(){

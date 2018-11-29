@@ -56,6 +56,7 @@ vector<CIndividual*> CGeneticAlgorithm::generatePopulation(){
 
 CIndividual* CGeneticAlgorithm::run(int times){
 
+  bool succ = true;
   if(DEBUG) cout << "~ Run method\n" << endl;
 
   vector<CIndividual*> startPopulation = generatePopulation();
@@ -64,19 +65,28 @@ CIndividual* CGeneticAlgorithm::run(int times){
 
   while(counter <= times){
 
+    if(DEBUG) cout << "----------- ROUND " << counter << " ----------- " << endl;
+
     for(int i = 0; i < popSize; i++){
       startPopulation[i] -> fitness();
     }
 
     for(int i = 0; i < popSize/2; i++){
-      vector<CIndividual*> children = crossIndividuals(startPopulation);
-      for(int j = 0; j < 2; j++){
-        newPopulation.push_back(children[i]);
+      vector<CIndividual*> children = crossIndividuals(startPopulation, succ);
+        for(int j = 0; j < 2; j++){
+          //  if(DEBUG) cout << "child added to the newPopulation\n" << endl;
+            newPopulation.push_back(children[j]);
       }
     }
 
-    for(int i = 0; i < popSize; i++){
+    cout << "newPopSize: " << newPopulation.size() << endl;
+
+    for(int i = 0; i < newPopulation.size(); i++){
       newPopulation[i] -> mutate(mutProb);
+      cout << "mutating new pop: " << endl;
+    //  cout << "CHILD " << i << " GENOTYPE: ";
+      newPopulation[i] -> printGenotype();
+      cout << endl;
     }
 
     if(counter == times){
@@ -84,8 +94,16 @@ CIndividual* CGeneticAlgorithm::run(int times){
       return newPopulation.at(0);
     }
 
+    cout << "before revaluing " << endl;
+
+    for(int i = 0; i < newPopulation.size(); i++){
+      cout << "CHILD " << i << " GENOTYPE: ";
+      newPopulation[i] -> printGenotype();
+    }
     revaluePopVectors(startPopulation, newPopulation);
+    counter++;
   }
+
   sort(startPopulation.begin(), startPopulation.end(), ComparatorByFitness());
   return startPopulation.at(0);
 }
@@ -102,13 +120,18 @@ CIndividual* CGeneticAlgorithm::randIndividual(vector<CIndividual*> population){
   else return individual2;
 }
 
-vector<CIndividual*> CGeneticAlgorithm::crossIndividuals(vector<CIndividual*> population){
+vector<CIndividual*> CGeneticAlgorithm::crossIndividuals(vector<CIndividual*> population, bool &pSucc){
+
+  if(DEBUG) cout << "~ crossIndividuals method\n" << endl;
 
   CIndividual* parent1 = randIndividual(population);
   CIndividual* parent2 = randIndividual(population);
 
   float randCrossProb = randFloat();
-  return parent1 -> cross(crossProb, randCrossProb, parent2);
+  bool succ = true;
+  vector<CIndividual*> children = parent1 -> cross(crossProb, randCrossProb, parent2, succ);
+  pSucc = succ;
+  return children;
 }
 
 int CGeneticAlgorithm::getInt(){
@@ -157,22 +180,50 @@ string CGeneticAlgorithm::toString(){
          "mutProb: " + to_string(mutProb) + "\n";
 }
 
-void CGeneticAlgorithm::revaluePopVectors(vector<CIndividual*> oldPopulation, vector<CIndividual*> newPopulation){
+void CGeneticAlgorithm::revaluePopVectors(vector<CIndividual*> &oldPopulation, vector<CIndividual*> &newPopulation){
+
+  if(DEBUG) cout << "~ revaluePopVectors method\n" << endl;
+
+  cout << "oldPopulation: " << endl;
+    for(int i = 0; i < oldPopulation.size(); i++){
+    oldPopulation[i] -> printGenotype();
+  }
 
   erasePop(oldPopulation);
-  int popSize = newPopulation.size();
-  for(int i = 0; i < popSize; i++ ){
-    oldPopulation.push_back(newPopulation[i]);
+
+  cout << "newPopulation: " << endl;
+    for(int i = 0; i < newPopulation.size(); i++){
+    newPopulation[i] -> printGenotype();
   }
+
+  cout << "oldPopulation after copying: " << endl;
+  int popSize = newPopulation.size();
+  for(int i = 0; i < popSize; i++){
+    oldPopulation.push_back(newPopulation[i]);
+    oldPopulation[i] -> printGenotype();
+  }
+/*
+  cout << "oldPopulation after copying: " << endl;
+    for(int i = 0; i < oldPopulation.size(); i++){
+    oldPopulation[i] -> printGenotype();
+  }
+  */
+
+
+
   erasePop(newPopulation);
 }
 
-void CGeneticAlgorithm::erasePop(vector<CIndividual*> population){
+void CGeneticAlgorithm::erasePop(vector<CIndividual*> &population){
 
   if(DEBUG) cout << "~ Erase population method\n" << endl;
+  if(DEBUG) cout << "~ test\n" << endl;
 
   int size = population.size();
+  if(DEBUG) cout << "popSize: \n" << size << endl;
+
   for(int i = 0; i < size; i++){
-    delete population[i];
+     delete population[i];
+     population.clear();
   }
 }

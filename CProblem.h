@@ -39,7 +39,6 @@ class CKnapsackProblem: public CProblem{
         this -> maxVolume = maxVolume;
       };
       ~CKnapsackProblem();
-      //void setMaxItemsNum(int maxItemsNum);
       void setItemsParameters(float** newParameters);
       void setMaxVolume(float maxVolume);
       void setNewProblemParameters(int solutionSize, float** newParameters, int maxVolume);

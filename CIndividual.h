@@ -18,7 +18,7 @@ class CIndividual{
     void setGenotype(vector<float> newGenotype);
     vector<float> getGenotype();
     void printGenotype();
-    vector<CIndividual*> cross(float globalProb, float givenProb, CIndividual* otherParent);
+    vector<CIndividual*> cross(float globalProb, float givenProb, CIndividual* otherParent, bool &pSucc);
     vector<vector<float> > cutParent(CIndividual* parent, int cutIndex);
     vector<float> mergeGenotypes(vector<float> fstChild, vector<float> sndChild);
     void mutate(float globalProb);

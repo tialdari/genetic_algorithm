@@ -21,14 +21,14 @@ vector<float> CIndividual::getGenotype(){
 
 void CIndividual::printGenotype(){
 
-  if(DEBUG) cout << "~ individual's genotype:\n" << endl;
+  //if(DEBUG) cout << "~ individual's genotype:\n" << endl;
   for(int i = 0; i < genotype.size(); i++){
     cout << genotype[i];
   }
-  cout << "\n\n";
+  cout << " ";
 }
 
-vector<CIndividual*> CIndividual::cross(float globalProb, float givenProb, CIndividual* otherParent){
+vector<CIndividual*> CIndividual::cross(float globalProb, float givenProb, CIndividual* otherParent, bool &pSucc){
 
   if(DEBUG) cout << "~ Cross method\n" << endl;
 
@@ -43,8 +43,11 @@ vector<CIndividual*> CIndividual::cross(float globalProb, float givenProb, CIndi
   vector<CIndividual*> resultChildren;
   if(givenProb > globalProb){
     if(DEBUG) cout << " ERROR: [cross] Too big probability\n" << endl;
+    pSucc = true;
+    resultChildren.push_back(this);
+    resultChildren.push_back(otherParent);
     return resultChildren;
-  }
+  }else{
 
   int cutIndex = randInt(genotype.size() - 1);
   if(DEBUG) cout << " cutIndex: " << cutIndex << endl;
@@ -58,15 +61,22 @@ vector<CIndividual*> CIndividual::cross(float globalProb, float givenProb, CIndi
   CIndividual* fstChild = new CKnapsackIndividual(cProblem, fstGenotype);
   CIndividual* sndChild = new CKnapsackIndividual(cProblem, sndGenotype);
 
+
+  cout << "children's genotype: " << endl;
+  fstChild -> printGenotype();
+  sndChild -> printGenotype();
+
   resultChildren.push_back(fstChild);
   resultChildren.push_back(sndChild);
 
+  pSucc = true;
   return resultChildren;
+  }
 }
 
 vector<vector<float> > CIndividual::cutParent(CIndividual* parent, int cutIndex){
 
-  if(DEBUG) cout << "~ Cut parent method\n" << endl;
+  if(DEBUG) cout << "\n~ Cut parent method\n" << endl;
 
   vector<vector<float> > genotypeParts;
   vector<float> parentGenotype = parent -> getGenotype();
@@ -81,9 +91,29 @@ vector<vector<float> > CIndividual::cutParent(CIndividual* parent, int cutIndex)
   vector<float> genotypePart2;
 
   for(int i = 0; i < parentGenSize; i++){
+    //cout << to_string(parentGenotype[i]);
+    if(i < cutIndex){
+      genotypePart1.push_back(parentGenotype[i]);
+      //cout << " goes to 1"<< endl;
+    }
+    else{
+    //  cout << " goes to 2" << endl;
+      genotypePart2.push_back(parentGenotype[i]);
+    }
+  }
 
-    if(i <= cutIndex) genotypePart1.push_back(parentGenotype[i]);
-    else genotypePart2.push_back(parentGenotype[i]);
+  cout << "parent genotype: ";
+  parent -> printGenotype();
+
+  cout << "genotype p1:";
+  for(int i = 0; i < 2; i++){
+    cout << to_string(genotypePart1[i]) << " ";
+  }
+
+  cout << "genotype p2:";
+  for(int i = 0; i < 2; i++){
+    cout << to_string(genotypePart2[i]) << " ";
+
   }
 
   genotypeParts.push_back(genotypePart1);
@@ -112,10 +142,12 @@ void CIndividual::mutate(float globalProb){
   int genotypeSize = genotype.size();
 
   for(int i = 0; i < genotypeSize; i++){
+    if(DEBUG) cout << "gene no " << i;
     if(randProb <= globalProb){
       negate(genotype[i]);
-      randProb = randFloat();
-    }
+      cout << " + " << endl;
+    }else cout << " - " << endl;
+    randProb = randFloat();
   }
 }
 
@@ -158,7 +190,7 @@ CKnapsackIndividual::~CKnapsackIndividual(){
 
 vector<float> CKnapsackIndividual::generateGenotype(){
 
-  if(DEBUG) cout << "~ Generate genotype method\n" << endl;
+  if(DEBUG) cout << "\n~ Generate genotype method\n" << endl;
 
   int size = cProblem -> getSolutionSize();
   float randNum;

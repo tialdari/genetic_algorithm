@@ -1,0 +1,25 @@
+/*
+  pParameters[4] = new float[paramSize];
+  pParameters[4][0] = 1.2;
+  pParameters[4][1] = 2.9;
+
+  pParameters[5] = new float[paramSize];
+  pParameters[5][0] = 1.2;
+  pParameters[5][1] = 1.4;
+
+  pParameters[6] = new float[paramSize];
+  pParameters[6][0] = 3.0;
+  pParameters[6][1] = 1.0;
+
+  pParameters[7] = new float[paramSize];
+  pParameters[7][0] = 5.0;
+  pParameters[7][1] = 6.0;
+
+  pParameters[8] = new float[paramSize];
+  pParameters[8][0] = 4.0;
+  pParameters[8][1] = 2.0;
+
+  pParameters[9] = new float[paramSize];
+  pParameters[9][0] = 2.3;
+  pParameters[9][1] = 2.2;
+*/
