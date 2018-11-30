@@ -65,6 +65,72 @@ int main(){
   CGeneticAlgorithm cGeneticAlgorithm(cKnapsackProblem);
   cGeneticAlgorithm.setPopSize();
 
+
+  vector<CIndividual*> testPopulation;
+  vector<CIndividual*> newPopulation;
+
+  cGeneticAlgorithm.generatePopulation(testPopulation, 4);
+  cGeneticAlgorithm.generatePopulation(newPopulation, 4);
+
+  cout << "test population: " << endl;
+  for(int i = 0; i < testPopulation.size(); i++){
+      testPopulation[i] -> printGenotype();
+  }
+  cout << endl;
+
+  cout << "new population: " << endl;
+  for(int i = 0; i < newPopulation.size(); i++){
+      newPopulation[i] -> printGenotype();
+  }
+  cout << endl;
+
+
+  cGeneticAlgorithm.erasePop(testPopulation);
+
+  cout << "test population: " << endl;
+  for(int i = 0; i < testPopulation.size(); i++){
+      testPopulation[i] -> printGenotype();
+  }
+  cout << endl;
+
+  CIndividual* newCKnapsachIndividual;
+
+  cout << "pushing to test population: " << endl;
+  for(int i = 0; i < newPopulation.size(); i ++){
+    newCKnapsachIndividual = new CKnapsackIndividual(cKnapsackProblem, newPopulation[i] -> getGenotype());
+    testPopulation.push_back(newCKnapsachIndividual);
+    newPopulation[i] -> printGenotype();
+  }
+  cout << endl;
+
+
+  cout << "test population: " << endl;
+  for(int i = 0; i < testPopulation.size(); i++){
+      testPopulation[i] -> printGenotype();
+  }
+  cout << endl;
+
+  cGeneticAlgorithm.erasePop(newPopulation);
+
+  cout << "generating new population: " << endl;
+  cGeneticAlgorithm.generatePopulation(newPopulation, 4);
+
+
+  cout << "test population: " << endl;
+  for(int i = 0; i < testPopulation.size(); i++){
+      testPopulation[i] -> printGenotype();
+  }
+  cout << endl;
+
+
+  cout << "new population: " << endl;
+  for(int i = 0; i < newPopulation.size(); i++){
+      newPopulation[i] -> printGenotype();
+  }
+  cout << endl;
+
+
+/*
   vector<CIndividual*> testPopulation = cGeneticAlgorithm.generatePopulation();
   vector<CIndividual*> testPopulation2 = cGeneticAlgorithm.generatePopulation();
 
@@ -116,6 +182,6 @@ int main(){
   cGeneticAlgorithm.erasePop(testPopulation2);
 
   delete cKnapsackProblem;
-
+*/
   return 0;
 }
