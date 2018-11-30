@@ -7,7 +7,6 @@
 
 using namespace std;
 
-
 void CIndividual::setGenotype(vector<float> newGenotype){
 
   if(DEBUG) cout << "~ Setting new genotype\n" << endl;
@@ -28,7 +27,7 @@ void CIndividual::printGenotype(){
   cout << " ";
 }
 
-vector<CIndividual*> CIndividual::cross(float globalProb, float givenProb, CIndividual* otherParent, bool &pSucc){
+void CIndividual::cross(float globalProb, float givenProb, CIndividual* otherParent, vector<CIndividual*> &population){
 
   if(DEBUG) cout << "~ Cross method\n" << endl;
 
@@ -40,12 +39,10 @@ vector<CIndividual*> CIndividual::cross(float globalProb, float givenProb, CIndi
                cout << "ownSize: " << ownSize << " otherSize: " << otherSize << endl;
   }
 
-  vector<CIndividual*> resultChildren;
   if(givenProb > globalProb){
     if(DEBUG) cout << " ERROR: [cross] Too big probability\n" << endl;
-    pSucc = true;
-    resultChildren.push_back(this);
-    resultChildren.push_back(otherParent);
+    population.push_back(new CKnapsackIndividual(cProblem, genotype));
+    population.push_back(new CKnapsackIndividual(cProblem, otherParent -> getGenotype()));
   }else{
 
     int cutIndex = randInt(genotype.size() - 1);
@@ -60,19 +57,16 @@ vector<CIndividual*> CIndividual::cross(float globalProb, float givenProb, CIndi
     CIndividual* fstChild = new CKnapsackIndividual(cProblem, fstGenotype);
     CIndividual* sndChild = new CKnapsackIndividual(cProblem, sndGenotype);
 
-    resultChildren.push_back(fstChild);
-    resultChildren.push_back(sndChild);
-
-    pSucc = true;
+    population.push_back(fstChild);
+    population.push_back(sndChild);
   }
-
+/*
   cout << "children's genotype: " << endl;
   resultChildren[0] -> printGenotype();
   resultChildren[1] -> printGenotype();
-
-  return resultChildren;
+  cout << endl;
+*/
 }
-
 
 vector<vector<float> > CIndividual::cutParent(CIndividual* parent, int cutIndex){
 
@@ -194,7 +188,7 @@ float CKnapsackIndividual::fitness(){
   if(DEBUG) cout << "\n~ fitness method\n" << endl;
 
   if(cProblem -> isValid(genotype)){
-    f_fitness = cProblem -> solutionValue(genotype);  
+    f_fitness = cProblem -> solutionValue(genotype);
     return f_fitness;
   }
   else return 0.0;

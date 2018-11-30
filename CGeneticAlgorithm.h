@@ -17,10 +17,12 @@ class CGeneticAlgorithm{
     CGeneticAlgorithm(CProblem* cKnapsackProblem);
     ~CGeneticAlgorithm();
     void generateParameters();
-    void generatePopulation(vector<CIndividual*> &population, int size);
-  //  CIndividual* run(int times);
+    void generateInitPopulation(vector<CIndividual*> &population);
+    void generateNextPopulation(vector<CIndividual*> oldPopulation, vector<CIndividual*> &newPopulation);
+    //CIndividual* run(int times);
+    void countPopulationFitness(vector<CIndividual*> &population);
     CIndividual* randIndividual(vector<CIndividual*> population);
-    vector<CIndividual*> crossIndividuals(vector<CIndividual*> population, bool &pSucc);
+    void crossIndividuals(vector<CIndividual*> oldPopulation, vector<CIndividual*> &newPopulation);
     int getInt();
     void setPopSize();
     int randInt(int range);

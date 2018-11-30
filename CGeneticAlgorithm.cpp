@@ -36,13 +36,13 @@ void CGeneticAlgorithm::generateParameters(){
    mutProb = randFloat();
 }
 
-void CGeneticAlgorithm::generatePopulation(vector<CIndividual*> &population, int size){
+void CGeneticAlgorithm::generateInitPopulation(vector<CIndividual*> &population){
 
   if(DEBUG) cout << "~ Generate population method\n" << endl;
 
   float fitness;
 
-  for(int i = 0; i < size; i++){
+  for(int i = 0; i < popSize; i++){
       CIndividual* newCKnapsachIndividual = new CKnapsackIndividual(cProblem);
       newCKnapsachIndividual -> generateGenotype();
       population.push_back(newCKnapsachIndividual);
@@ -50,78 +50,38 @@ void CGeneticAlgorithm::generatePopulation(vector<CIndividual*> &population, int
       fitness = newCKnapsachIndividual -> fitness();
       if(DEBUG) cout << " fitness: " << to_string(fitness) << endl;
   }
-/*
-  if(DEBUG) cout << "~ Generate population method\n" << endl;
-  vector<CIndividual*> population;
-  float fitness;
+}
 
-  for(int i = 0; i < popSize; i++){
-    CIndividual* newCKnapsachIndividual = new CKnapsackIndividual(cProblem);
-    newCKnapsachIndividual -> generateGenotype();
-    population.push_back(newCKnapsachIndividual);
-    newCKnapsachIndividual -> printGenotype();
-    fitness = newCKnapsachIndividual -> fitness();
-    if(DEBUG) cout << " fitness: " << to_string(fitness) << endl;
+void CGeneticAlgorithm::generateNextPopulation(vector<CIndividual*> oldPopulation, vector<CIndividual*> &newPopulation){
 
+  for(int i = 0; i < popSize/2; i++){
+    crossIndividuals(oldPopulation, newPopulation);
   }
-  return population;
-    */
 }
 /*
 CIndividual* CGeneticAlgorithm::run(int times){
 
-  bool succ = true;
-  if(DEBUG) cout << "~ Run method\n" << endl;
+  vector<CIndividual*> initialPopulation;
+  generatePopulation(initialPopulation, popSize);
 
-  vector<CIndividual*> startPopulation = generatePopulation();
   int counter = 0;
-  vector<CIndividual*> newPopulation;
+  while(counter < times){
+    countPopulationFitness(initialPopulation);
 
-  while(counter <= times){
 
-    if(DEBUG) cout << "----------- ROUND " << counter << " ----------- " << endl;
-
-    for(int i = 0; i < popSize; i++){
-      startPopulation[i] -> fitness();
-    }
-
-    for(int i = 0; i < popSize/2; i++){
-      vector<CIndividual*> children = crossIndividuals(startPopulation, succ);
-        for(int j = 0; j < 2; j++){
-          //  if(DEBUG) cout << "child added to the newPopulation\n" << endl;
-            newPopulation.push_back(children[j]);
-      }
-    }
-
-    cout << "newPopSize: " << newPopulation.size() << endl;
-
-    for(int i = 0; i < newPopulation.size(); i++){
-      newPopulation[i] -> mutate(mutProb);
-      cout << "mutating new pop: " << endl;
-    //  cout << "CHILD " << i << " GENOTYPE: ";
-      newPopulation[i] -> printGenotype();
-      cout << endl;
-    }
-
-    if(counter == times){
-      sort(newPopulation.begin(), newPopulation.end(), ComparatorByFitness());
-      return newPopulation.at(0);
-    }
-
-    cout << "before revaluing " << endl;
-
-    for(int i = 0; i < newPopulation.size(); i++){
-      cout << "CHILD " << i << " GENOTYPE: ";
-      newPopulation[i] -> printGenotype();
-    }
-    revaluePopVectors(startPopulation, newPopulation);
-    counter++;
   }
 
-  sort(startPopulation.begin(), startPopulation.end(), ComparatorByFitness());
-  return startPopulation.at(0);
+
+
 }
 */
+
+void CGeneticAlgorithm::countPopulationFitness(vector<CIndividual*> &population){
+
+  for(int i = 0; i < popSize; i++){
+    population[i] -> fitness();
+  }
+}
 
 CIndividual* CGeneticAlgorithm::randIndividual(vector<CIndividual*> population){
 
@@ -135,18 +95,15 @@ CIndividual* CGeneticAlgorithm::randIndividual(vector<CIndividual*> population){
   else return individual2;
 }
 
-vector<CIndividual*> CGeneticAlgorithm::crossIndividuals(vector<CIndividual*> population, bool &pSucc){
+void CGeneticAlgorithm::crossIndividuals(vector<CIndividual*> oldPopulation, vector<CIndividual*> &newPopulation){
 
   if(DEBUG) cout << "~ crossIndividuals method\n" << endl;
 
-  CIndividual* parent1 = randIndividual(population);
-  CIndividual* parent2 = randIndividual(population);
+  CIndividual* parent1 = randIndividual(oldPopulation);
+  CIndividual* parent2 = randIndividual(oldPopulation);
 
   float randCrossProb = randFloat();
-  bool succ = true;
-  vector<CIndividual*> children = parent1 -> cross(crossProb, randCrossProb, parent2, succ);
-  pSucc = succ;
-  return children;
+  parent1 -> cross(crossProb, randCrossProb, parent2, newPopulation);
 }
 
 int CGeneticAlgorithm::getInt(){
@@ -199,34 +156,15 @@ void CGeneticAlgorithm::revaluePopVectors(vector<CIndividual*> &oldPopulation, v
 
   if(DEBUG) cout << "~ revaluePopVectors method\n" << endl;
 
-  cout << "oldPopulation: " << endl;
-    for(int i = 0; i < oldPopulation.size(); i++){
-    oldPopulation[i] -> printGenotype();
-  }
-
   erasePop(oldPopulation);
+  CIndividual* newCKnapsachIndividual;
 
-  cout << "newPopulation: " << endl;
-    for(int i = 0; i < newPopulation.size(); i++){
-    newPopulation[i] -> printGenotype();
+  for(int i = 0; i < newPopulation.size(); i ++){
+    newCKnapsachIndividual = new CKnapsackIndividual(cProblem, newPopulation[i] -> getGenotype());
+    oldPopulation.push_back(newCKnapsachIndividual);
   }
-
-  cout << "oldPopulation after copying: " << endl;
-  int popSize = newPopulation.size();
-  for(int i = 0; i < popSize; i++){
-    oldPopulation.push_back(newPopulation[i]);
-    oldPopulation[i] -> printGenotype();
-  }
-/*
-  cout << "oldPopulation after copying: " << endl;
-    for(int i = 0; i < oldPopulation.size(); i++){
-    oldPopulation[i] -> printGenotype();
-  }
-  */
-
-
-
   erasePop(newPopulation);
+  generateNextPopulation(oldPopulation, newPopulation);
 }
 
 void CGeneticAlgorithm::erasePop(vector<CIndividual*> &population){
@@ -234,10 +172,9 @@ void CGeneticAlgorithm::erasePop(vector<CIndividual*> &population){
   if(DEBUG) cout << "~ Erase population method\n" << endl;
   if(DEBUG) cout << "~ test\n" << endl;
 
-  int size = population.size();
-  if(DEBUG) cout << "popSize: \n" << size << endl;
+  if(DEBUG) cout << "popSize: \n" << popSize << endl;
 
-  for(int i = 0; i < size; i++){
+  for(int i = 0; i < popSize; i++){
      delete population[i];
   }
 
@@ -249,5 +186,7 @@ void CGeneticAlgorithm::printPopulation(vector<CIndividual*> population){
 
     for(int i = 0; i < population.size(); i++){
       population[i] -> printGenotype();
+      cout << " ";
     }
+    cout << "\n";
 }
