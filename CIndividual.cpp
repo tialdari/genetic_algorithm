@@ -18,6 +18,17 @@ vector<float> CIndividual::getGenotype(){
   return genotype;
 }
 
+float CIndividual::getVolume(){
+  return volume;
+}
+
+void CIndividual::countVolume(){
+
+  for(int i = 0; i < genotype.size(); i++){
+    
+  }
+}
+
 void CIndividual::printGenotype(){
 
   //if(DEBUG) cout << "~ individual's genotype:\n" << endl;

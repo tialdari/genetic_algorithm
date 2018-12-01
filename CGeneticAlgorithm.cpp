@@ -58,28 +58,57 @@ void CGeneticAlgorithm::generateNextPopulation(vector<CIndividual*> oldPopulatio
     crossIndividuals(oldPopulation, newPopulation);
   }
 }
-/*
+
 CIndividual* CGeneticAlgorithm::run(int times){
 
+  CIndividual* bestIndividual;
+
   vector<CIndividual*> initialPopulation;
-  generatePopulation(initialPopulation, popSize);
+  generateInitPopulation(initialPopulation);
+
+  vector<CIndividual*> nextPopulation;
 
   int counter = 0;
-  while(counter < times){
+  while(counter <= times){
+
+    if(DEBUG) cout << "initialPopulation: ";
+    printPopulation(initialPopulation);
+    cout << endl;
+
     countPopulationFitness(initialPopulation);
+    generateNextPopulation(initialPopulation, nextPopulation);
 
+    if(DEBUG) cout << "nextPopulation: ";
+    printPopulation(nextPopulation);
+    cout << endl;
 
+    mutatePopulation(nextPopulation);
+
+    if(counter == times){
+      sort(initialPopulation.begin(), initialPopulation.end(), ComparatorByFitness());
+
+      if(DEBUG) cout << "nextPopulatio after sorting: ";
+      printPopulation(initialPopulation);
+      cout << endl;
+
+      bestIndividual = findValidSolution(initialPopulation);
+      cout << "best individual fitness: " << bestIndividual -> getFitness() << endl;
+      erasePop(initialPopulation);
+      erasePop(nextPopulation);
+      return bestIndividual;
+    }
+
+    revaluePopVectors(initialPopulation, nextPopulation);
+    counter++;
   }
-
-
-
+  return bestIndividual;
 }
-*/
 
 void CGeneticAlgorithm::countPopulationFitness(vector<CIndividual*> &population){
 
   for(int i = 0; i < popSize; i++){
     population[i] -> fitness();
+    cout << population[i] -> getFitness() << " ";
   }
 }
 
@@ -104,6 +133,26 @@ void CGeneticAlgorithm::crossIndividuals(vector<CIndividual*> oldPopulation, vec
 
   float randCrossProb = randFloat();
   parent1 -> cross(crossProb, randCrossProb, parent2, newPopulation);
+}
+
+void CGeneticAlgorithm::mutatePopulation(vector<CIndividual*> &population){
+
+  for(int i = 0; i < popSize; i++){
+    population[i] -> mutate(mutProb);
+  }
+}
+
+CIndividual* CGeneticAlgorithm::findValidSolution(vector<CIndividual*> population){
+
+  if(DEBUG) cout << "~ find valid solution method\n" << endl;
+
+  for(int i = 0; i < popSize; i++){
+    if(cProblem -> isValid(population[i] -> getGenotype())){
+      return new CKnapsackIndividual(cProblem, population[i] -> getGenotype());
+    }
+  }
+  if(DEBUG) cout << "no valid solution!!!" << endl;
+  return new CKnapsackIndividual(cProblem);
 }
 
 int CGeneticAlgorithm::getInt(){
@@ -164,7 +213,6 @@ void CGeneticAlgorithm::revaluePopVectors(vector<CIndividual*> &oldPopulation, v
     oldPopulation.push_back(newCKnapsachIndividual);
   }
   erasePop(newPopulation);
-  generateNextPopulation(oldPopulation, newPopulation);
 }
 
 void CGeneticAlgorithm::erasePop(vector<CIndividual*> &population){
@@ -179,13 +227,13 @@ void CGeneticAlgorithm::erasePop(vector<CIndividual*> &population){
   }
 
   population.clear();
-
 }
 
 void CGeneticAlgorithm::printPopulation(vector<CIndividual*> population){
 
     for(int i = 0; i < population.size(); i++){
       population[i] -> printGenotype();
+      cout << "(" << population[i] -> getFitness() << ")";
       cout << " ";
     }
     cout << "\n";

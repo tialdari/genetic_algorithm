@@ -50,8 +50,6 @@ float CKnapsackProblem::solutionValue(vector<float> solution){
     cout << to_string(itemsParameters[i][0]) << " ";
     value += itemsParameters[i][0] * solution[i];
   }
-
-  
   return value;
 }
 

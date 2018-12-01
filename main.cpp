@@ -26,11 +26,11 @@ int main(){
 
   pParameters[0] = new float[paramSize];
   pParameters[0][0] = 5.3;
-  pParameters[0][1] = 3.0;
+  pParameters[0][1] = 1.5;
 
   pParameters[1] = new float[paramSize];
   pParameters[1][0] = 1.9;
-  pParameters[1][1] = 3.0;
+  pParameters[1][1] = 2.0;
 
   pParameters[2] = new float[paramSize];
   pParameters[2][0] = 1.5;
@@ -40,73 +40,29 @@ int main(){
   pParameters[3][0] = 2.5;
   pParameters[3][1] = 3.0;
 
-  CKnapsackProblem* cKnapsackProblem = new CKnapsackProblem(4, pParameters, 20.0);
+  CKnapsackProblem* cKnapsackProblem = new CKnapsackProblem(4, pParameters, 4.0);
   cout << cKnapsackProblem -> toString();
   bool succ = true;
 
-/*
-  CIndividual* testIndividual = new CKnapsackIndividual(cKnapsackProblem);
-  testIndividual -> generateGenotype();
-  testIndividual -> printGenotype();
-  cout << endl;
-
-
-  CIndividual* testIndividual2 = new CKnapsackIndividual(cKnapsackProblem);
-  testIndividual2 -> generateGenotype();
-  testIndividual2 -> printGenotype();
-  cout << endl;
-  */
-
-  //float fitness = cKnapsackProblem -> solutionValue(testIndividual -> getGenotype());
-
-//  cout << "\n" << to_string(fitness);
-
-
   CGeneticAlgorithm cGeneticAlgorithm(cKnapsackProblem);
+  cGeneticAlgorithm.generateParameters();
   cGeneticAlgorithm.setPopSize();
 
-
-  vector<CIndividual*> testPopulation;
-  vector<CIndividual*> newPopulation;
-
-  cGeneticAlgorithm.generateInitPopulation(testPopulation);
-  cGeneticAlgorithm.generateInitPopulation(newPopulation);
-
-  cout << "test population: " << endl;
-  for(int i = 0; i < testPopulation.size(); i++){
-      testPopulation[i] -> printGenotype();
-  }
+  CIndividual* bestSolution = cGeneticAlgorithm.run(10);
+  cout << "best solution:";
+  bestSolution -> printGenotype();
   cout << endl;
+  cout << bestSolution -> getFitness();
 
-  cout << "new population: " << endl;
-  for(int i = 0; i < newPopulation.size(); i++){
-      newPopulation[i] -> printGenotype();
-  }
   cout << endl;
-
-  cGeneticAlgorithm.revaluePopVectors(testPopulation, newPopulation);
-
-  cout << "test population: " << endl;
-  for(int i = 0; i < testPopulation.size(); i++){
-      testPopulation[i] -> printGenotype();
-  }
-  cout << endl;
-
-  cout << "new population: " << endl;
-  for(int i = 0; i < newPopulation.size(); i++){
-      newPopulation[i] -> printGenotype();
-  }
-  cout << endl;
-
-
 
   cout << "---------END----------" << endl;
-
+/*
   cGeneticAlgorithm.erasePop(testPopulation);
   cout << "testPopulation deleted" << endl;
   cGeneticAlgorithm.erasePop(newPopulation);
   cout << "newPopulation deleted" << endl;
-
+*/
   delete cKnapsackProblem;
   return 0;
 }

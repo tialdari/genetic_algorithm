@@ -17,6 +17,8 @@ class CIndividual{
     };
     void setGenotype(vector<float> newGenotype);
     vector<float> getGenotype();
+    float getVolume();
+    void countVolume();
     void printGenotype();
     void cross(float globalProb, float givenProb, CIndividual* otherParent, vector<CIndividual*> &population);
     vector<vector<float> > cutParent(CIndividual* parent, int cutIndex);
@@ -38,6 +40,7 @@ class CIndividual{
     vector<float> genotype;
     CProblem* cProblem;
     float f_fitness;
+    float volume;
 
 
 };
@@ -48,7 +51,7 @@ class ComparatorByFitness {
     ComparatorByFitness(){};
     ~ComparatorByFitness(){};
     bool operator()(CIndividual *ind1, CIndividual *ind2) {
-      return ind1 -> getFitness() < ind2 -> getFitness();
+      return ind1 -> getFitness() > ind2 -> getFitness();
   }
 };
 
