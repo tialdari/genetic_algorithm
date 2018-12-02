@@ -19,7 +19,7 @@ class CGeneticAlgorithm{
     void generateParameters();
     void generateInitPopulation(vector<CIndividual*> &population);
     void generateNextPopulation(vector<CIndividual*> oldPopulation, vector<CIndividual*> &newPopulation);
-    CIndividual* run(int times);
+    CIndividual* run(double seconds);
     void countPopulationFitness(vector<CIndividual*> &population);
     CIndividual* randIndividual(vector<CIndividual*> population);
     void crossIndividuals(vector<CIndividual*> oldPopulation, vector<CIndividual*> &newPopulation);

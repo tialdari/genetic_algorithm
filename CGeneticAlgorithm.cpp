@@ -3,6 +3,8 @@
 #include <fstream>
 #include <iostream>
 #include <algorithm>
+#include <ctime>
+
 
 #include "CGeneticAlgorithm.h"
 
@@ -59,7 +61,7 @@ void CGeneticAlgorithm::generateNextPopulation(vector<CIndividual*> oldPopulatio
   }
 }
 
-CIndividual* CGeneticAlgorithm::run(int times){
+CIndividual* CGeneticAlgorithm::run(double seconds){
 
   CIndividual* bestIndividual;
 
@@ -68,13 +70,17 @@ CIndividual* CGeneticAlgorithm::run(int times){
 
   vector<CIndividual*> nextPopulation;
 
-  int counter = 0;
-  while(counter <= times){
+  clock_t begin;
+  clock_t end;
+  double elapsed_secs;
+
+  begin = clock();
+  
+  while(elapsed_secs <= seconds){
 
     if(DEBUG) cout << "\ninitialPopulation: ";
     printPopulation(initialPopulation);
     cout << endl;
-
     countPopulationFitness(initialPopulation);
     generateNextPopulation(initialPopulation, nextPopulation);
 
@@ -85,25 +91,23 @@ CIndividual* CGeneticAlgorithm::run(int times){
   */
 
     mutatePopulation(nextPopulation);
-
-    if(counter == times){
-      sort(initialPopulation.begin(), initialPopulation.end(), ComparatorByFitness());
-
-      if(DEBUG) cout << "nextPopulation after sorting: ";
-      printPopulation(initialPopulation);
-      cout << endl;
-
-      bestIndividual = findValidSolution(initialPopulation);
-      cout << "best individual fitness: " << bestIndividual -> getFitness() << endl;
-      erasePop(initialPopulation);
-      erasePop(nextPopulation);
-      return bestIndividual;
-    }
-
     revaluePopVectors(initialPopulation, nextPopulation);
-    counter++;
+    end = clock();
+    elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
   }
-  return bestIndividual;
+
+    sort(initialPopulation.begin(), initialPopulation.end(), ComparatorByFitness());
+
+    if(DEBUG) cout << "initialPopulation after sorting: ";
+    printPopulation(initialPopulation);
+    cout << endl;
+
+    bestIndividual = findValidSolution(initialPopulation);
+    cout << "best individual fitness: " << bestIndividual -> getFitness() << endl;
+    erasePop(initialPopulation);
+    //erasePop(nextPopulation);
+    return bestIndividual;
+
 }
 
 void CGeneticAlgorithm::countPopulationFitness(vector<CIndividual*> &population){
@@ -150,7 +154,9 @@ CIndividual* CGeneticAlgorithm::findValidSolution(vector<CIndividual*> populatio
 
   for(int i = 0; i < popSize; i++){
     if(cProblem -> isValid(population[i] -> getGenotype())){
-      return new CKnapsackIndividual(cProblem, population[i] -> getGenotype());
+      CIndividual* bestSolution = new CKnapsackIndividual(cProblem, population[i] -> getGenotype());
+      bestSolution -> fitness();
+      return bestSolution;
     }
   }
   if(DEBUG) cout << "no valid solution!!!" << endl;

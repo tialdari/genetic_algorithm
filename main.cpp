@@ -47,8 +47,8 @@ int main(){
   cGeneticAlgorithm.generateParameters();
   cGeneticAlgorithm.setPopSize();
 
-  CIndividual* bestSolution = cGeneticAlgorithm.run(2);
-  
+  CIndividual* bestSolution = cGeneticAlgorithm.run(0.1);
+
 
   cout << "---------END----------" << endl;
 
