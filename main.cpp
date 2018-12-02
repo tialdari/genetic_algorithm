@@ -42,27 +42,16 @@ int main(){
 
   CKnapsackProblem* cKnapsackProblem = new CKnapsackProblem(4, pParameters, 4.0);
   cout << cKnapsackProblem -> toString();
-  bool succ = true;
 
   CGeneticAlgorithm cGeneticAlgorithm(cKnapsackProblem);
   cGeneticAlgorithm.generateParameters();
   cGeneticAlgorithm.setPopSize();
 
-  CIndividual* bestSolution = cGeneticAlgorithm.run(10);
-  cout << "best solution:";
-  bestSolution -> printGenotype();
-  cout << endl;
-  cout << bestSolution -> getFitness();
-
-  cout << endl;
+  CIndividual* bestSolution = cGeneticAlgorithm.run(2);
+  
 
   cout << "---------END----------" << endl;
-/*
-  cGeneticAlgorithm.erasePop(testPopulation);
-  cout << "testPopulation deleted" << endl;
-  cGeneticAlgorithm.erasePop(newPopulation);
-  cout << "newPopulation deleted" << endl;
-*/
+
   delete cKnapsackProblem;
   return 0;
 }

@@ -33,7 +33,7 @@ class CKnapsackProblem: public CProblem{
       CKnapsackProblem();
       CKnapsackProblem(int solutionSize, float** itemsParameters, float maxVolume)
       :CProblem(solutionSize){
-        if(DEBUG) cout << "+ New CKnapsackProblem object with parameters\n" << endl;
+        if(DEBUG) cout << "+ New CKnapsackProblem object with parameters" << endl;
         this -> solutionSize = solutionSize;
         this -> itemsParameters = itemsParameters;
         this -> maxVolume = maxVolume;

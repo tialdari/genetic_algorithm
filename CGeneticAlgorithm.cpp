@@ -11,7 +11,7 @@ using namespace std;
 
 CGeneticAlgorithm::CGeneticAlgorithm(){
 
-  if(DEBUG) cout << "+ New CGeneticAlgorithm object\n" << endl;
+  if(DEBUG) cout << "+ New CGeneticAlgorithm object" << endl;
   popSize = 0;
   crossProb = 0.0;
   mutProb = 0.0;
@@ -19,18 +19,18 @@ CGeneticAlgorithm::CGeneticAlgorithm(){
 
 CGeneticAlgorithm::CGeneticAlgorithm(CProblem* cProblem){
 
-  if(DEBUG) cout << "+ New CGeneticAlgorithm object with cProblem\n" << endl;
+  if(DEBUG) cout << "+ New CGeneticAlgorithm object with cProblem" << endl;
   this -> cProblem = cProblem;
 }
 
 CGeneticAlgorithm::~CGeneticAlgorithm(){
 
-  if(DEBUG) cout << "- Deleting a CGeneticAlgorithm object\n" << endl;
+  if(DEBUG) cout << "- Deleting a CGeneticAlgorithm object" << endl;
 }
 
 void CGeneticAlgorithm::generateParameters(){
 
-  if(DEBUG) cout << "~ Generate parameters method\n" << endl;
+  if(DEBUG) cout << "~ Generate parameters method" << endl;
 
    crossProb = randFloat();
    mutProb = randFloat();
@@ -38,7 +38,7 @@ void CGeneticAlgorithm::generateParameters(){
 
 void CGeneticAlgorithm::generateInitPopulation(vector<CIndividual*> &population){
 
-  if(DEBUG) cout << "~ Generate population method\n" << endl;
+  if(DEBUG) cout << "~ Generate population method" << endl;
 
   float fitness;
 
@@ -46,9 +46,9 @@ void CGeneticAlgorithm::generateInitPopulation(vector<CIndividual*> &population)
       CIndividual* newCKnapsachIndividual = new CKnapsackIndividual(cProblem);
       newCKnapsachIndividual -> generateGenotype();
       population.push_back(newCKnapsachIndividual);
-      newCKnapsachIndividual -> printGenotype();
+      //newCKnapsachIndividual -> printGenotype();
       fitness = newCKnapsachIndividual -> fitness();
-      if(DEBUG) cout << " fitness: " << to_string(fitness) << endl;
+      //if(DEBUG) cout << " fitness: " << to_string(fitness) << endl;
   }
 }
 
@@ -71,23 +71,25 @@ CIndividual* CGeneticAlgorithm::run(int times){
   int counter = 0;
   while(counter <= times){
 
-    if(DEBUG) cout << "initialPopulation: ";
+    if(DEBUG) cout << "\ninitialPopulation: ";
     printPopulation(initialPopulation);
     cout << endl;
 
     countPopulationFitness(initialPopulation);
     generateNextPopulation(initialPopulation, nextPopulation);
 
+/*
     if(DEBUG) cout << "nextPopulation: ";
     printPopulation(nextPopulation);
     cout << endl;
+  */
 
     mutatePopulation(nextPopulation);
 
     if(counter == times){
       sort(initialPopulation.begin(), initialPopulation.end(), ComparatorByFitness());
 
-      if(DEBUG) cout << "nextPopulatio after sorting: ";
+      if(DEBUG) cout << "nextPopulation after sorting: ";
       printPopulation(initialPopulation);
       cout << endl;
 
@@ -108,7 +110,7 @@ void CGeneticAlgorithm::countPopulationFitness(vector<CIndividual*> &population)
 
   for(int i = 0; i < popSize; i++){
     population[i] -> fitness();
-    cout << population[i] -> getFitness() << " ";
+    //cout << population[i] -> getFitness() << " ";
   }
 }
 
@@ -218,9 +220,6 @@ void CGeneticAlgorithm::revaluePopVectors(vector<CIndividual*> &oldPopulation, v
 void CGeneticAlgorithm::erasePop(vector<CIndividual*> &population){
 
   if(DEBUG) cout << "~ Erase population method\n" << endl;
-  if(DEBUG) cout << "~ test\n" << endl;
-
-  if(DEBUG) cout << "popSize: \n" << popSize << endl;
 
   for(int i = 0; i < popSize; i++){
      delete population[i];
@@ -234,7 +233,7 @@ void CGeneticAlgorithm::printPopulation(vector<CIndividual*> population){
     for(int i = 0; i < population.size(); i++){
       population[i] -> printGenotype();
       cout << "(" << population[i] -> getFitness() << ")";
-      cout << " ";
+        cout << " ";
     }
     cout << "\n";
 }

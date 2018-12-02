@@ -19,22 +19,22 @@ CKnapsackProblem::CKnapsackProblem(){
 }
 
 CKnapsackProblem::~CKnapsackProblem(){
-  if(DEBUG) cout << "- Deleting a CKnapsackProblem object\n" << endl;
+  if(DEBUG) cout << "- Deleting a CKnapsackProblem object" << endl;
 }
 
 void CKnapsackProblem::setItemsParameters(float** newParameters){
-  if(DEBUG) cout << "~ Setting itemsParameters" << "\n" << endl;
+  if(DEBUG) cout << "~ Setting itemsParameters" << endl;
   this -> itemsParameters = newParameters;
 }
 
 
 void CKnapsackProblem::setMaxVolume(float maxVolume){
-  if(DEBUG) cout << "~ Setting maxVolume to: " << maxVolume << "\n" << endl;
+  if(DEBUG) cout << "~ Setting maxVolume to: " << maxVolume << endl;
   maxVolume = maxVolume;
 }
 
 void CKnapsackProblem::setNewProblemParameters(int solutionSize, float** newParameters, int maxVolume){
-  if(DEBUG) cout << "~ Setting problem's parameters to: " << "\n" << endl;
+  if(DEBUG) cout << "~ Setting problem's parameters to: " << endl;
   if(solutionSize < 0) if(DEBUG) cout << "ERROR: [setNewProblemParameters] solutionSize < 0 " << endl;
   setSolutionSize(solutionSize);
   setItemsParameters(newParameters);
@@ -43,18 +43,18 @@ void CKnapsackProblem::setNewProblemParameters(int solutionSize, float** newPara
 
 float CKnapsackProblem::solutionValue(vector<float> solution){
 
-  if(DEBUG) cout << "~ Solution value method " << endl;
+  //if(DEBUG) cout << "~ Solution value method " << endl;
   float value;
 
   for(int i = 0; i < solutionSize; i++){
-    cout << to_string(itemsParameters[i][0]) << " ";
+  //  cout << to_string(itemsParameters[i][0]) << " ";
     value += itemsParameters[i][0] * solution[i];
   }
   return value;
 }
 
 bool CKnapsackProblem::isValid(vector<float> solution){
-  if(DEBUG) cout << "~ isValid method" << endl;
+  //if(DEBUG) cout << "~ isValid method" << endl;
 
   float solutionVolume;
 
@@ -62,14 +62,14 @@ bool CKnapsackProblem::isValid(vector<float> solution){
     solutionVolume += itemsParameters[i][1] * solution[i];
   }
 
-  if(DEBUG) cout << " solution volume: " << solutionVolume << endl;
-  if(DEBUG) cout << " solution volume is ";
+  //if(DEBUG) cout << " solution volume: " << solutionVolume << endl;
+  //if(DEBUG) cout << " solution volume is ";
 
   if(solutionVolume > maxVolume){
-    if(DEBUG) cout << "not valid" << endl;
+    //if(DEBUG) cout << "not valid" << endl;
     return false;
   }else {
-    if(DEBUG) cout << "valid" << endl;
+    //if(DEBUG) cout << "valid" << endl;
     return true;
   }
 }
