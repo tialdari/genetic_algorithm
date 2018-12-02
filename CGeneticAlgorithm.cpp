@@ -88,6 +88,7 @@ CIndividual* CGeneticAlgorithm::run(double seconds){
     generateNextPopulation(initialPopulation, nextPopulation);
     mutatePopulation(nextPopulation);
     revaluePopVectors(initialPopulation, nextPopulation);
+    countPopulationFitness(initialPopulation);
     end = clock();
     elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
   }
