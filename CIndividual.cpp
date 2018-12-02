@@ -35,12 +35,13 @@ void CIndividual::printGenotype(){
   cout << " ";
 }
 
-void CIndividual::cross(float globalProb, float givenProb, CIndividual* otherParent, vector<CIndividual*> &population){
+void CIndividual::cross(float globalProb, float givenProb, CIndividual* otherParent, vector<CIndividual*> &population, bool even){
 
   if(DEBUG) cout << "~ Cross method" << endl;
 
   int ownSize = genotype.size();
   int otherSize = otherParent -> getGenotype().size();
+  vector<float> betterGenotype;
 
   if(ownSize != otherSize)
     if(DEBUG) {cout << "ERROR: [cross] different genotypes size";
@@ -49,32 +50,49 @@ void CIndividual::cross(float globalProb, float givenProb, CIndividual* otherPar
 
   if(givenProb > globalProb){
     if(DEBUG) cout << " ERROR: [cross] Too big probability" << endl;
-    population.push_back(new CKnapsackIndividual(cProblem, genotype));
-    population.push_back(new CKnapsackIndividual(cProblem, otherParent -> getGenotype()));
+    if(even){
+      population.push_back(new CKnapsackIndividual(cProblem, genotype));
+      population.push_back(new CKnapsackIndividual(cProblem, otherParent -> getGenotype()));
+    }else{
+      if(f_fitness > otherParent -> getFitness()) betterGenotype = genotype;
+      else betterGenotype = otherParent -> getGenotype();
+      population.push_back(new CKnapsackIndividual(cProblem, betterGenotype));
+    }
+
   }else{
 
-    int cutIndex = randInt(genotype.size() - 1);
-  //  if(DEBUG) cout << " cutIndex: " << cutIndex << endl;
+      int cutIndex = randInt(genotype.size() - 1);
+    //  if(DEBUG) cout << " cutIndex: " << cutIndex << endl;
 
-    vector<vector<float> > firstGenotypeParts = cutParent(this, cutIndex);
-    vector<vector<float> > secondGenotypeParts = cutParent(otherParent, cutIndex);
+      vector<vector<float> > firstGenotypeParts = cutParent(this, cutIndex);
+      vector<vector<float> > secondGenotypeParts = cutParent(otherParent, cutIndex);
 
-    vector<float> fstGenotype = mergeGenotypes(firstGenotypeParts[0],secondGenotypeParts[1]);
-    vector<float> sndGenotype = mergeGenotypes(secondGenotypeParts[0],firstGenotypeParts[1]);
+      vector<float> fstGenotype = mergeGenotypes(firstGenotypeParts[0],secondGenotypeParts[1]);
+      vector<float> sndGenotype = mergeGenotypes(secondGenotypeParts[0],firstGenotypeParts[1]);
 
-    CIndividual* fstChild = new CKnapsackIndividual(cProblem, fstGenotype);
-    CIndividual* sndChild = new CKnapsackIndividual(cProblem, sndGenotype);
+      CIndividual* fstChild = new CKnapsackIndividual(cProblem, fstGenotype);
+      CIndividual* sndChild = new CKnapsackIndividual(cProblem, sndGenotype);
 
-    population.push_back(fstChild);
-    population.push_back(sndChild);
+    if(even){
+      population.push_back(fstChild);
+      population.push_back(sndChild);
+
+    }else{
+      if(fstChild -> getFitness() > sndChild -> getFitness()) betterGenotype = fstChild -> getGenotype();
+      else betterGenotype = sndChild -> getGenotype();
+      population.push_back(new CKnapsackIndividual(cProblem, betterGenotype));
+    }
   }
+}
+
+
 /*
   cout << "children's genotype: " << endl;
   resultChildren[0] -> printGenotype();
   resultChildren[1] -> printGenotype();
   cout << endl;
 */
-}
+
 
 vector<vector<float> > CIndividual::cutParent(CIndividual* parent, int cutIndex){
 
@@ -166,6 +184,11 @@ float CIndividual::randFloat(){
     randNum = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
   }
   return randNum;
+}
+
+CIndividual* CIndividual::operator>(CIndividual* &pOther){
+  if(pOther -> f_fitness > this -> f_fitness) return pOther;
+  else return this;
 }
 
 float CIndividual::getFitness(){

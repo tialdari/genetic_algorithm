@@ -22,7 +22,8 @@ class CGeneticAlgorithm{
     CIndividual* run(double seconds);
     void countPopulationFitness(vector<CIndividual*> &population);
     CIndividual* randIndividual(vector<CIndividual*> population);
-    void crossIndividuals(vector<CIndividual*> oldPopulation, vector<CIndividual*> &newPopulation);
+    void crossIndividuals(vector<CIndividual*> oldPopulation, vector<CIndividual*> &newPopulation, bool even);
+    bool ifEven(int num);
     void mutatePopulation(vector<CIndividual*> &population);
     CIndividual* findValidSolution(vector<CIndividual*> population);
     int getInt();

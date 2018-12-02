@@ -56,9 +56,12 @@ void CGeneticAlgorithm::generateInitPopulation(vector<CIndividual*> &population)
 
 void CGeneticAlgorithm::generateNextPopulation(vector<CIndividual*> oldPopulation, vector<CIndividual*> &newPopulation){
 
+  bool evenSize = ifEven(popSize);
+
   for(int i = 0; i < popSize/2; i++){
-    crossIndividuals(oldPopulation, newPopulation);
+    crossIndividuals(oldPopulation, newPopulation, true);
   }
+  if(!evenSize) crossIndividuals(oldPopulation, newPopulation, false);
 }
 
 CIndividual* CGeneticAlgorithm::run(double seconds){
@@ -75,7 +78,7 @@ CIndividual* CGeneticAlgorithm::run(double seconds){
   double elapsed_secs;
 
   begin = clock();
-  
+
   while(elapsed_secs <= seconds){
 
     if(DEBUG) cout << "\ninitialPopulation: ";
@@ -83,13 +86,6 @@ CIndividual* CGeneticAlgorithm::run(double seconds){
     cout << endl;
     countPopulationFitness(initialPopulation);
     generateNextPopulation(initialPopulation, nextPopulation);
-
-/*
-    if(DEBUG) cout << "nextPopulation: ";
-    printPopulation(nextPopulation);
-    cout << endl;
-  */
-
     mutatePopulation(nextPopulation);
     revaluePopVectors(initialPopulation, nextPopulation);
     end = clock();
@@ -130,7 +126,7 @@ CIndividual* CGeneticAlgorithm::randIndividual(vector<CIndividual*> population){
   else return individual2;
 }
 
-void CGeneticAlgorithm::crossIndividuals(vector<CIndividual*> oldPopulation, vector<CIndividual*> &newPopulation){
+void CGeneticAlgorithm::crossIndividuals(vector<CIndividual*> oldPopulation, vector<CIndividual*> &newPopulation, bool even){
 
   if(DEBUG) cout << "~ crossIndividuals method\n" << endl;
 
@@ -138,7 +134,12 @@ void CGeneticAlgorithm::crossIndividuals(vector<CIndividual*> oldPopulation, vec
   CIndividual* parent2 = randIndividual(oldPopulation);
 
   float randCrossProb = randFloat();
-  parent1 -> cross(crossProb, randCrossProb, parent2, newPopulation);
+  parent1 -> cross(crossProb, randCrossProb, parent2, newPopulation, even);
+}
+
+bool CGeneticAlgorithm::ifEven(int num){
+  if(num % 2 == 0) return true;
+  else return false;
 }
 
 void CGeneticAlgorithm::mutatePopulation(vector<CIndividual*> &population){

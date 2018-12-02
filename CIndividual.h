@@ -20,7 +20,7 @@ class CIndividual{
     float getVolume();
     void countVolume();
     void printGenotype();
-    void cross(float globalProb, float givenProb, CIndividual* otherParent, vector<CIndividual*> &population);
+    void cross(float globalProb, float givenProb, CIndividual* otherParent, vector<CIndividual*> &population, bool even);
     vector<vector<float> > cutParent(CIndividual* parent, int cutIndex);
     vector<float> mergeGenotypes(vector<float> fstChild, vector<float> sndChild);
     void mutate(float globalProb);
@@ -29,7 +29,7 @@ class CIndividual{
     float getFitness();
     int randInt(int range);
     float randFloat();
-
+    CIndividual* operator>(CIndividual* &pOther);
 
   protected:
 

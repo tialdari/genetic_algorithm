@@ -9,7 +9,7 @@ int main(){
 
   cout << "I'm measuring time..." << endl;
   cout << "and measuring..." << endl;
-
+  cout << 15/2 << endl;
 
   clock_t end = clock();
   double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
