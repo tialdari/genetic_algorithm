@@ -47,11 +47,16 @@ int main(){
   cGeneticAlgorithm.generateParameters();
   cGeneticAlgorithm.setPopSize();
 
-  CIndividual* bestSolution = cGeneticAlgorithm.run(0.1);
-
+  cGeneticAlgorithm.run(2.5);
+  cout << "best solution: ";
+  cGeneticAlgorithm.getBestSolution() -> printGenotype();
 
   cout << "---------END----------" << endl;
 
   delete cKnapsackProblem;
   return 0;
 }
+
+//check potential memory leaks
+//enable the user to set all the parameters
+//make the algorithm compatible with any problem

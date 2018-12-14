@@ -27,7 +27,6 @@ void CKnapsackProblem::setItemsParameters(float** newParameters){
   this -> itemsParameters = newParameters;
 }
 
-
 void CKnapsackProblem::setMaxVolume(float maxVolume){
   if(DEBUG) cout << "~ Setting maxVolume to: " << maxVolume << endl;
   maxVolume = maxVolume;
@@ -55,7 +54,6 @@ float CKnapsackProblem::solutionValue(vector<float> solution){
 
 bool CKnapsackProblem::isValid(vector<float> solution){
   //if(DEBUG) cout << "~ isValid method" << endl;
-
   float solutionVolume;
 
   for(int i = 0; i < solutionSize; i++){
