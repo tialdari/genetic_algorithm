@@ -11,6 +11,38 @@
 
 using namespace std;
 
+
+CIndividual::CIndividual(CProblem* cProblem){
+  this -> cProblem = cProblem;
+}
+
+CIndividual::CIndividual(CProblem* cProblem, vector<float> genotype){
+  this -> cProblem = cProblem;
+  this -> genotype = genotype;
+}
+
+CIndividual::~CIndividual(){
+
+  if(DEBUG) cout << "-Deleting CIndividual" << endl;
+}
+
+
+vector<float> CIndividual::generateGenotype(){
+
+  //if(DEBUG) cout << "~ Generate genotype method" << endl;
+
+  int size = cProblem -> getSolutionSize();
+  float randNum;
+
+  for(int i = 0; i < size; i++){
+    randNum = randInt(1);
+    genotype.push_back(randNum);
+  }
+  this -> genotype = genotype;
+
+  return genotype;
+};
+
 void CIndividual::setGenotype(vector<float> newGenotype){
 
   if(DEBUG) cout << "~ Setting new genotype" << endl;
@@ -19,17 +51,6 @@ void CIndividual::setGenotype(vector<float> newGenotype){
 
 vector<float> CIndividual::getGenotype(){
   return genotype;
-}
-
-float CIndividual::getVolume(){
-  return volume;
-}
-
-void CIndividual::countVolume(){
-
-  for(int i = 0; i < genotype.size(); i++){
-
-  }
 }
 
 void CIndividual::printGenotype(){
@@ -55,12 +76,12 @@ void CIndividual::cross(float globalProb, float givenProb, CIndividual* otherPar
   if(givenProb > globalProb){
     if(DEBUG) cout << " ERROR: [cross] Too big probability" << endl;
     if(even){
-      population.push_back(new CKnapsackIndividual(cProblem, genotype));
-      population.push_back(new CKnapsackIndividual(cProblem, otherParent -> getGenotype()));
+      population.push_back(new CIndividual(cProblem, genotype));
+      population.push_back(new CIndividual(cProblem, otherParent -> getGenotype()));
     }else{
       if(f_fitness > otherParent -> getFitness()) betterGenotype = genotype;
       else betterGenotype = otherParent -> getGenotype();
-      population.push_back(new CKnapsackIndividual(cProblem, betterGenotype));
+      population.push_back(new CIndividual(cProblem, betterGenotype));
     }
 
   }else{
@@ -74,8 +95,8 @@ void CIndividual::cross(float globalProb, float givenProb, CIndividual* otherPar
       vector<float> fstGenotype = mergeGenotypes(firstGenotypeParts[0],secondGenotypeParts[1]);
       vector<float> sndGenotype = mergeGenotypes(secondGenotypeParts[0],firstGenotypeParts[1]);
 
-      CIndividual* fstChild = new CKnapsackIndividual(cProblem, fstGenotype);
-      CIndividual* sndChild = new CKnapsackIndividual(cProblem, sndGenotype);
+      CIndividual* fstChild = new CIndividual(cProblem, fstGenotype);
+      CIndividual* sndChild = new CIndividual(cProblem, sndGenotype);
 
     if(even){
       population.push_back(fstChild);
@@ -84,19 +105,10 @@ void CIndividual::cross(float globalProb, float givenProb, CIndividual* otherPar
     }else{
       if(fstChild -> getFitness() > sndChild -> getFitness()) betterGenotype = fstChild -> getGenotype();
       else betterGenotype = sndChild -> getGenotype();
-      population.push_back(new CKnapsackIndividual(cProblem, betterGenotype));
+      population.push_back(new CIndividual(cProblem, betterGenotype));
     }
   }
 }
-
-
-/*
-  cout << "children's genotype: " << endl;
-  resultChildren[0] -> printGenotype();
-  resultChildren[1] -> printGenotype();
-  cout << endl;
-*/
-
 
 vector<vector<float> > CIndividual::cutParent(CIndividual* parent, int cutIndex){
 
@@ -134,14 +146,6 @@ vector<float> CIndividual::mergeGenotypes(vector<float> fstGenotype, vector<floa
   for(int i = 0; i < sndGenotypeSize; i++){
     fstGenotype.push_back(sndGenotype[i]);
   }
-
-/*
-  cout << "child genotype: ";
-  for(int i = 0; i < fstGenotype.size(); i++){
-    cout << to_string(fstGenotype[i]) << " ";
-  }
-  cout << endl;
-  */
 
   return fstGenotype;
 }
@@ -199,36 +203,13 @@ float CIndividual::getFitness(){
   return f_fitness;
 }
 
-CKnapsackIndividual::~CKnapsackIndividual(){
-
-  //if(DEBUG) cout << "- Deleting CKnapsackIndividual object" << endl;
-};
-
-vector<float> CKnapsackIndividual::generateGenotype(){
-
-  //if(DEBUG) cout << "~ Generate genotype method" << endl;
-
-  int size = cProblem -> getSolutionSize();
-  float randNum;
-
-  for(int i = 0; i < size; i++){
-    randNum = randInt(1);
-    genotype.push_back(randNum);
-  }
-  this -> genotype = genotype;
-
-  return genotype;
-};
-
-float CKnapsackIndividual::fitness(){
+void CIndividual::fitness(){
 
   //if(DEBUG) cout << "\n~ fitness method" << endl;
 
   if(cProblem -> isValid(genotype)){
     f_fitness = cProblem -> solutionValue(genotype);
-    return f_fitness;
   }
-  else return 0.0;
 }
 
 
@@ -266,11 +247,12 @@ void CGeneticAlgorithm::generateInitPopulation(vector<CIndividual*> &population)
   float fitness;
 
   for(int i = 0; i < popSize; i++){
-      CIndividual* newCKnapsachIndividual = new CKnapsackIndividual(cProblem);
-      newCKnapsachIndividual -> generateGenotype();
-      population.push_back(newCKnapsachIndividual);
+      CIndividual* newCIndividual = new CIndividual(cProblem);
+      newCIndividual -> generateGenotype();
+      population.push_back(newCIndividual);
       //newCKnapsachIndividual -> printGenotype();
-      fitness = newCKnapsachIndividual -> fitness();
+      newCIndividual -> fitness();
+      fitness = newCIndividual -> getFitness();
       //if(DEBUG) cout << " fitness: " << to_string(fitness) << endl;
   }
 }
@@ -278,6 +260,8 @@ void CGeneticAlgorithm::generateInitPopulation(vector<CIndividual*> &population)
 void CGeneticAlgorithm::generateNextPopulation(vector<CIndividual*> oldPopulation, vector<CIndividual*> &newPopulation){
 
   bool evenSize = ifEven(popSize);
+
+  sort(oldPopulation.begin(), oldPopulation.end(), ComparatorByFitness());
 
   for(int i = 0; i < popSize/2; i++){
     crossIndividuals(oldPopulation, newPopulation, true);
@@ -302,9 +286,10 @@ void CGeneticAlgorithm::generateNextPopulation(vector<CIndividual*> oldPopulatio
 
   while(elapsed_secs <= seconds){
 
-    if(DEBUG) cout << "\ninitialPopulation: ";
-    printPopulation(initialPopulation);
-    cout << endl;
+    if(DEBUG){cout << "\ninitialPopulation: ";
+      printPopulation(initialPopulation);
+      cout << endl;
+    }
     countPopulationFitness(initialPopulation);
     generateNextPopulation(initialPopulation, nextPopulation);
     mutatePopulation(nextPopulation);
@@ -317,11 +302,10 @@ void CGeneticAlgorithm::generateNextPopulation(vector<CIndividual*> oldPopulatio
     sort(initialPopulation.begin(), initialPopulation.end(), ComparatorByFitness());
 
     if(DEBUG) cout << "initialPopulation after sorting: ";
-    printPopulation(initialPopulation);
-    cout << endl;
+    if(DEBUG) {printPopulation(initialPopulation);
+      cout << endl;}
 
     bestIndividual = findValidSolution(initialPopulation);
-    cout << "best individual fitness: " << bestIndividual -> getFitness() << endl;
     erasePop(initialPopulation);
     //erasePop(nextPopulation);
     bestSolution = bestIndividual;
@@ -376,13 +360,13 @@ CIndividual* CGeneticAlgorithm::findValidSolution(vector<CIndividual*> populatio
 
   for(int i = 0; i < popSize; i++){
     if(cProblem -> isValid(population[i] -> getGenotype())){
-      CIndividual* bestSolution = new CKnapsackIndividual(cProblem, population[i] -> getGenotype());
+      CIndividual* bestSolution = new CIndividual(cProblem, population[i] -> getGenotype());
       bestSolution -> fitness();
       return bestSolution;
     }
   }
   if(DEBUG) cout << "no valid solution!!!" << endl;
-  return new CKnapsackIndividual(cProblem);
+  return new CIndividual(cProblem);
 }
 
 int CGeneticAlgorithm::getInt(){
@@ -456,11 +440,12 @@ void CGeneticAlgorithm::erasePop(vector<CIndividual*> &population){
 void CGeneticAlgorithm::printPopulation(vector<CIndividual*> population){
 
     for(int i = 0; i < population.size(); i++){
-      population[i] -> printGenotype();
+      if(DEBUG) {population[i] -> printGenotype();
       cout << "(" << population[i] -> getFitness() << ")";
         cout << " ";
+      }
     }
-    cout << "\n";
+    if(DEBUG) cout << "\n";
 }
 
 CIndividual* CGeneticAlgorithm::getBestSolution(){

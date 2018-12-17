@@ -2,23 +2,21 @@
 #define CGENETICALGORITHM_H
 
 #include <vector>
-#include "CIndividual.h"
 #include "CProblem.h"
 
 using namespace std;
 
-#define DEBUG true
-
+#define DEBUG false
 
 
 class CIndividual{
 
   public:
-    virtual CIndividual(){};
-    virtual vector<float> generateGenotype(){
-      vector<float> testVec;
-      return testVec;
-    };
+    CIndividual();
+    CIndividual(CProblem* cProblem);
+    CIndividual(CProblem* cProblem, vector<float> genotype);
+    ~CIndividual();
+    vector<float> generateGenotype();
     void setGenotype(vector<float> newGenotype);
     vector<float> getGenotype();
     float getVolume();
@@ -29,23 +27,18 @@ class CIndividual{
     vector<float> mergeGenotypes(vector<float> fstChild, vector<float> sndChild);
     void mutate(float globalProb);
     void negate(float &number);
-    virtual float fitness() = 0;
+    void fitness();
     float getFitness();
     int randInt(int range);
     float randFloat();
     CIndividual* operator>(CIndividual* &pOther);
 
-  protected:
+  private:
 
-    CIndividual(CProblem* cProblem)
-    :cProblem(cProblem){}
-    CIndividual(CProblem* cProblem, vector<float> genotype)
-    :cProblem(cProblem),genotype(genotype){}
     vector<float> genotype;
     CProblem* cProblem;
     float f_fitness;
     float volume;
-
 
 };
 
@@ -57,28 +50,6 @@ class ComparatorByFitness {
     bool operator()(CIndividual *ind1, CIndividual *ind2) {
       return ind1 -> getFitness() > ind2 -> getFitness();
   }
-};
-
-
-class CKnapsackIndividual: public CIndividual{
-
-  public:
-      CKnapsackIndividual(CProblem* cProblem)
-      :CIndividual(cProblem)
-      {this -> cProblem = cProblem;
-       vector<float> initalGenotype;
-       genotype = initalGenotype;};
-       CKnapsackIndividual(CProblem* cProblem, vector<float> genotype)
-       :CIndividual(cProblem, genotype){
-         this -> cProblem = cProblem;
-         this -> genotype = genotype;
-         f_fitness = 0.0;
-       };
-      ~CKnapsackIndividual();
-      vector<float> generateGenotype();
-      float fitness();
-
-
 };
 
 class CGeneticAlgorithm{

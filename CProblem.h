@@ -5,7 +5,7 @@
 
 using namespace std;
 
-#define DEBUG true
+#define DEBUG false
 #define itemsCharacteritics 2
 
 class CProblem{
