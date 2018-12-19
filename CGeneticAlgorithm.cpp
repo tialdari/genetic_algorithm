@@ -23,7 +23,7 @@ CIndividual::CIndividual(CProblem* cProblem, vector<float> genotype){
 
 CIndividual::~CIndividual(){
 
-  if(DEBUG) cout << "-Deleting CIndividual" << endl;
+  //if(DEBUG) cout << "-Deleting CIndividual" << endl;
 }
 
 
@@ -172,7 +172,7 @@ void CIndividual::negate(float &number){
   if(number == 1.0) number = 0.0;
   else if(number == 0.0) number = 1.0;
   else{
-    if(DEBUG) cout << " ERROR: [negation] number not allowed " << endl;
+    //if(DEBUG) cout << " ERROR: [negation] number not allowed " << endl;
   }
 }
 
@@ -230,6 +230,7 @@ CGeneticAlgorithm::CGeneticAlgorithm(CProblem* cProblem){
 CGeneticAlgorithm::~CGeneticAlgorithm(){
 
   if(DEBUG) cout << "- Deleting a CGeneticAlgorithm object" << endl;
+  delete bestSolution;
 }
 
 void CGeneticAlgorithm::generateParameters(){
@@ -255,13 +256,12 @@ void CGeneticAlgorithm::generateInitPopulation(vector<CIndividual*> &population)
       fitness = newCIndividual -> getFitness();
       //if(DEBUG) cout << " fitness: " << to_string(fitness) << endl;
   }
+
 }
 
 void CGeneticAlgorithm::generateNextPopulation(vector<CIndividual*> oldPopulation, vector<CIndividual*> &newPopulation){
 
   bool evenSize = ifEven(popSize);
-
-  sort(oldPopulation.begin(), oldPopulation.end(), ComparatorByFitness());
 
   for(int i = 0; i < popSize/2; i++){
     crossIndividuals(oldPopulation, newPopulation, true);
@@ -269,13 +269,14 @@ void CGeneticAlgorithm::generateNextPopulation(vector<CIndividual*> oldPopulatio
   if(!evenSize) crossIndividuals(oldPopulation, newPopulation, false);
 }
 
-  void CGeneticAlgorithm::run(double seconds){
+  void CGeneticAlgorithm::run(double seconds, int saveBestNum){
 
   CIndividual* bestIndividual;
 
   vector<CIndividual*> initialPopulation;
   generateInitPopulation(initialPopulation);
 
+  if(DEBUG) cout << " SUCCES: generateInitPopulation(initialPopulation)";
   vector<CIndividual*> nextPopulation;
 
   clock_t begin;
@@ -291,10 +292,30 @@ void CGeneticAlgorithm::generateNextPopulation(vector<CIndividual*> oldPopulatio
       cout << endl;
     }
     countPopulationFitness(initialPopulation);
+    if(DEBUG) cout << " SUCCES: countPopulationFitness(initialPopulation)";
+    sort(initialPopulation.begin(), initialPopulation.end(), ComparatorByFitness());
+    if(DEBUG) cout << " SUCCES: sort";
+
+    //take x best individuals from the initPop
+    vector<CIndividual*> bestIndividuals = takeBest(initialPopulation, saveBestNum);
+    if(DEBUG) cout << " SUCCES: takeBest";
+
     generateNextPopulation(initialPopulation, nextPopulation);
+    if(DEBUG) cout << " SUCCES: generateNextPopulation";
+
+    //junta los x mejores soluciones y la proxima generacion
+    exchangeIndividuals(bestIndividuals, nextPopulation, saveBestNum);
+    if(DEBUG) cout << " SUCCES: exchangeIndividuals";
+
     mutatePopulation(nextPopulation);
+    if(DEBUG) cout << " SUCCES: mutatePopulation";
+
     revaluePopVectors(initialPopulation, nextPopulation);
+    if(DEBUG) cout << " SUCCES: revaluePopVectors";
+
     countPopulationFitness(initialPopulation);
+    if(DEBUG) cout << " SUCCES: countPopulationFitness";
+
     end = clock();
     elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
   }
@@ -309,6 +330,24 @@ void CGeneticAlgorithm::generateNextPopulation(vector<CIndividual*> oldPopulatio
     erasePop(initialPopulation);
     //erasePop(nextPopulation);
     bestSolution = bestIndividual;
+}
+
+vector<CIndividual*> CGeneticAlgorithm::takeBest(vector<CIndividual*> population, int numOfBestInd){
+
+    vector<CIndividual*> bestIndividuals;
+
+    for(int i = 0; i < numOfBestInd; i++){
+      bestIndividuals.push_back(new CIndividual(cProblem, population[i] -> getGenotype()));
+    }
+    return bestIndividuals;
+}
+
+void CGeneticAlgorithm::exchangeIndividuals(vector<CIndividual*> &bestIndividuals, vector<CIndividual*> &modifiedPopulation, int numOfBestInd){
+
+      for(int i = 0; i < numOfBestInd; i++){
+          delete modifiedPopulation[i];
+          modifiedPopulation[i] = bestIndividuals[i];
+      }
 }
 
 void CGeneticAlgorithm::countPopulationFitness(vector<CIndividual*> &population){

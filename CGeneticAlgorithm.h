@@ -61,7 +61,9 @@ class CGeneticAlgorithm{
     void generateParameters();
     void generateInitPopulation(vector<CIndividual*> &population);
     void generateNextPopulation(vector<CIndividual*> oldPopulation, vector<CIndividual*> &newPopulation);
-    void run(double seconds);
+    void run(double seconds, int saveBestNum);
+    vector<CIndividual*> takeBest(vector<CIndividual*> population, int numOfBestInd);
+    void exchangeIndividuals(vector<CIndividual*> &bestIndividuals, vector<CIndividual*> &modifiedPopulation, int numOfBestInd);
     void countPopulationFitness(vector<CIndividual*> &population);
     CIndividual* randIndividual(vector<CIndividual*> population);
     void crossIndividuals(vector<CIndividual*> oldPopulation, vector<CIndividual*> &newPopulation, bool even);

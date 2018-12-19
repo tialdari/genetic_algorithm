@@ -20,30 +20,44 @@ static vector<string> splitString(string dataString);
 static float** createParametersArray(vector<string> floatsString, float &externalSize, float &maxVolume);
 static void getInputData(string &fileName, int &popSize, float &time);
 
-
 int main(){
 
   srand (time(NULL));
   float solutionSize = 0;
   float maxVolume = 0;
+  int saveBestNum = 10;
 
-  float** pParameters = getFileData("test2.txt", solutionSize, maxVolume);
+  float** pParameters = getFileData("test3.txt", solutionSize, maxVolume);
 
-  CKnapsackProblem* cKnapsackProblem = new CKnapsackProblem(solutionSize, pParameters, maxVolume);
-  cout << cKnapsackProblem -> toString();
+  if(saveBestNum > solutionSize){
+      cout << "saveBestNum is bigger than the solutionSize!" << endl;
+      return(0);
+  }else if(saveBestNum < 0){
+    cout << "saveBestNum is less than the 0!" << endl;
+    return(0);
+  }else if(maxVolume < 0.0){
+    cout << "maxVolume is less than 0!" << endl;
+    return(0);
+  }else if(solutionSize < 0.0){
+    cout << "solutionSize is less than 0.0!" << endl;
+    return(0);
+  }
 
-  CGeneticAlgorithm cGeneticAlgorithm(cKnapsackProblem);
+  CKnapsackProblem cKnapsackProblem(solutionSize, pParameters, maxVolume);
+  cout << cKnapsackProblem.toString();
+
+  CGeneticAlgorithm cGeneticAlgorithm(&cKnapsackProblem);
   cGeneticAlgorithm.generateParameters();
   cGeneticAlgorithm.setPopSize();
 
-  cGeneticAlgorithm.run(15.0);
+  cGeneticAlgorithm.run(5.0, 50);
   cout << "best solution: ";
   cGeneticAlgorithm.getBestSolution() -> printGenotype();
   cout << "Solution fitness:" << cGeneticAlgorithm.getBestSolution() -> getFitness() << endl;
 
   if(DEBUG) cout << "---------END----------" << endl;
 
-  delete cKnapsackProblem;
+  //delete cKnapsackProblem;
   return 0;
 
 }
