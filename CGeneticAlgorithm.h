@@ -8,7 +8,6 @@ using namespace std;
 
 #define DEBUG false
 
-
 class CIndividual{
 
   public:
@@ -31,7 +30,7 @@ class CIndividual{
     float getFitness();
     int randInt(int range);
     float randFloat();
-    CIndividual* operator>(CIndividual* &pOther);
+    //CIndividual* operator>(CIndividual* &pOther);
 
   private:
 

@@ -271,6 +271,8 @@ void CGeneticAlgorithm::generateNextPopulation(vector<CIndividual*> oldPopulatio
 
   void CGeneticAlgorithm::run(double seconds, int saveBestNum){
 
+  cout << " computing...please, wait" << endl;
+
   CIndividual* bestIndividual;
 
   vector<CIndividual*> initialPopulation;
