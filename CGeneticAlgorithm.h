@@ -8,24 +8,25 @@ using namespace std;
 
 #define DEBUG false
 
+template <class T>
 class CIndividual{
 
   public:
     CIndividual();
-    CIndividual(CProblem* cProblem);
-    CIndividual(CProblem* cProblem, vector<float> genotype);
+    CIndividual(CProblem<T>* cProblem);
+    CIndividual(CProblem<T>* cProblem, vector<T> genotype);
     ~CIndividual();
-    vector<float> generateGenotype();
-    void setGenotype(vector<float> newGenotype);
-    vector<float> getGenotype();
+    vector<T> generateGenotype();
+    void setGenotype(vector<T> newGenotype);
+    vector<T> getGenotype();
     float getVolume();
     void countVolume();
     void printGenotype();
-    void cross(float globalProb, float givenProb, CIndividual* otherParent, vector<CIndividual*> &population, bool even);
-    vector<vector<float> > cutParent(CIndividual* parent, int cutIndex);
-    vector<float> mergeGenotypes(vector<float> fstChild, vector<float> sndChild);
+    void cross(float globalProb, float givenProb, CIndividual<T>* otherParent, vector<CIndividual<T>*> &population, bool even);
+    vector<vector<T> > cutParent(CIndividual<T>* parent, int cutIndex);
+    vector<T> mergeGenotypes(vector<T> fstChild, vector<T> sndChild);
     void mutate(float globalProb);
-    void negate(float &number);
+    void negate(T number);
     void fitness();
     float getFitness();
     int randInt(int range);
@@ -34,8 +35,8 @@ class CIndividual{
 
   private:
 
-    vector<float> genotype;
-    CProblem* cProblem;
+    vector<T> genotype;
+    CProblem<T>* cProblem;
     float f_fitness;
     float volume;
 
@@ -46,46 +47,47 @@ class ComparatorByFitness {
   public:
     ComparatorByFitness(){};
     ~ComparatorByFitness(){};
-    bool operator()(CIndividual *ind1, CIndividual *ind2) {
+    template<class T> bool operator()(CIndividual<T> *ind1, CIndividual<T> *ind2) {
       return ind1 -> getFitness() > ind2 -> getFitness();
   }
 };
 
+template <class T>
 class CGeneticAlgorithm{
 
   public:
-    CGeneticAlgorithm();
-    CGeneticAlgorithm(CProblem* cKnapsackProblem);
+    CGeneticAlgorithm<T>();
+    CGeneticAlgorithm<T>(CProblem<T>* cKnapsackProblem);
     ~CGeneticAlgorithm();
     void generateParameters();
-    void generateInitPopulation(vector<CIndividual*> &population);
-    void generateNextPopulation(vector<CIndividual*> oldPopulation, vector<CIndividual*> &newPopulation);
+    void generateInitPopulation(vector<CIndividual<T>*> &population);
+    void generateNextPopulation(vector<CIndividual<T>*> oldPopulation, vector<CIndividual<T>*> &newPopulation);
     void run(double seconds, int saveBestNum);
-    vector<CIndividual*> takeBest(vector<CIndividual*> population, int numOfBestInd);
-    void exchangeIndividuals(vector<CIndividual*> &bestIndividuals, vector<CIndividual*> &modifiedPopulation, int numOfBestInd);
-    void countPopulationFitness(vector<CIndividual*> &population);
-    CIndividual* randIndividual(vector<CIndividual*> population);
-    void crossIndividuals(vector<CIndividual*> oldPopulation, vector<CIndividual*> &newPopulation, bool even);
+    vector<CIndividual<T>*> takeBest(vector<CIndividual<T>*> population, int numOfBestInd);
+    void exchangeIndividuals(vector<CIndividual<T>*> &bestIndividuals, vector<CIndividual<T>*> &modifiedPopulation, int numOfBestInd);
+    void countPopulationFitness(vector<CIndividual<T>*> &population);
+    CIndividual<T>* randIndividual(vector<CIndividual<T>*> population);
+    void crossIndividuals(vector<CIndividual<T>*> oldPopulation, vector<CIndividual<T>*> &newPopulation, bool even);
     bool ifEven(int num);
-    void mutatePopulation(vector<CIndividual*> &population);
-    CIndividual* findValidSolution(vector<CIndividual*> population);
+    void mutatePopulation(vector<CIndividual<T>*> &population);
+    CIndividual<T>* findValidSolution(vector<CIndividual<T>*> population);
     int getInt();
     void setPopSize();
     int randInt(int range);
     float randFloat();
     string toString();
-    void revaluePopVectors(vector<CIndividual*> &oldPopulation, vector<CIndividual*> &newPopulation);
-    void erasePop(vector<CIndividual*> &population);
-    void printPopulation(vector<CIndividual*> population);
-    CIndividual* getBestSolution();
+    void revaluePopVectors(vector<CIndividual<T>*> &oldPopulation, vector<CIndividual<T>*> &newPopulation);
+    void erasePop(vector<CIndividual<T>*> &population);
+    void printPopulation(vector<CIndividual<T>*> population);
+    CIndividual<T>* getBestSolution();
 
 
   private:
     int popSize;
-    CProblem* cProblem;
+    CProblem<T>* cProblem;
     float crossProb;
     float mutProb;
-    CIndividual* bestSolution;
+    CIndividual<T>* bestSolution;
 
 };
 

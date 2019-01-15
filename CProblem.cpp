@@ -5,58 +5,58 @@
 
 using namespace std;
 
-CProblem::CProblem(){
+template<class T> CProblem<T>::CProblem(){
   if(DEBUG) cout << "+ New cProblem object" << endl;
 }
 
-CProblem::~CProblem(){
+template<class T> CProblem<T>::~CProblem(){
 
   if(DEBUG) cout << "- Deleting a CProblem object" << endl;
 }
 
-CKnapsackProblem::CKnapsackProblem(){
+template<class T> CKnapsackProblem<T>::CKnapsackProblem(){
   if(DEBUG) cout << "New CKnapsackProblem object" << endl;
 }
 
-CKnapsackProblem::~CKnapsackProblem(){
+template<class T> CKnapsackProblem<T>::~CKnapsackProblem(){
   if(DEBUG) cout << "- Deleting a CKnapsackProblem object" << endl;
 }
 
-void CKnapsackProblem::setItemsParameters(float** newParameters){
+template<class T> void CKnapsackProblem<T>::setItemsParameters(float** newParameters){
   if(DEBUG) cout << "~ Setting itemsParameters" << endl;
   this -> itemsParameters = newParameters;
 }
 
-void CKnapsackProblem::setMaxVolume(float maxVolume){
+template<class T> void CKnapsackProblem<T>::setMaxVolume(float maxVolume){
   if(DEBUG) cout << "~ Setting maxVolume to: " << maxVolume << endl;
-  maxVolume = maxVolume;
+  this -> maxVolume = maxVolume;
 }
 
-void CKnapsackProblem::setNewProblemParameters(int solutionSize, float** newParameters, int maxVolume){
+template<class T> void CKnapsackProblem<T>::setNewProblemParameters(int solutionSize, float** newParameters, int maxVolume){
   if(DEBUG) cout << "~ Setting problem's parameters to: " << endl;
   if(solutionSize < 0) if(DEBUG) cout << "ERROR: [setNewProblemParameters] solutionSize < 0 " << endl;
-  setSolutionSize(solutionSize);
+  this -> setSolutionSize(this -> solutionSize);
   setItemsParameters(newParameters);
   setMaxVolume(maxVolume);
 }
 
-float CKnapsackProblem::solutionValue(vector<float> solution){
+template<> float CKnapsackProblem<bool>::solutionValue(vector<bool> solution){
 
   //if(DEBUG) cout << "~ Solution value method " << endl;
   float value;
 
-  for(int i = 0; i < solutionSize; i++){
+  for(int i = 0; i < this -> solutionSize; i++){
   //  cout << to_string(itemsParameters[i][0]) << " ";
     value += itemsParameters[i][0] * solution[i];
   }
   return value;
 }
 
-bool CKnapsackProblem::isValid(vector<float> solution){
+template<> bool CKnapsackProblem<bool>::isValid(vector<bool> solution){
   //if(DEBUG) cout << "~ isValid method" << endl;
   float solutionVolume;
 
-  for(int i = 0; i < solutionSize; i++){
+  for(int i = 0; i < this -> solutionSize; i++){
     solutionVolume += itemsParameters[i][1] * solution[i];
   }
 
@@ -72,11 +72,11 @@ bool CKnapsackProblem::isValid(vector<float> solution){
   }
 }
 
-string CKnapsackProblem::toString(){
+template<class T> string CKnapsackProblem<T>::toString(){
 
   string result;
   stringstream itemsNumber;
-  itemsNumber << solutionSize;
+  itemsNumber << this -> solutionSize;
   result = itemsNumber.str();
 
   string result2;
@@ -90,17 +90,17 @@ string CKnapsackProblem::toString(){
           "\n -> itemsParameters: " +  itemsParametersToString() +"\n\n";
 }
 
-string CKnapsackProblem::itemsParametersToString(){
+template<class T> string CKnapsackProblem<T>::itemsParametersToString(){
 
   string parametersString = "{";
-  for(int i = 0; i < solutionSize; i++){
+  for(int i = 0; i < this -> solutionSize; i++){
     parametersString += "(";
     for(int j = 0; j < itemsCharacteritics; j++){
        parametersString += to_string(itemsParameters[i][j]);
        if(j != 1) parametersString += ",";
     }
     parametersString += ")";
-    if(i != solutionSize - 1) parametersString += ",";
+    if(i != this -> solutionSize - 1) parametersString += ",";
   }
   parametersString += "}";
 

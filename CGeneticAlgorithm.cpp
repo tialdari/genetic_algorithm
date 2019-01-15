@@ -12,22 +12,20 @@
 using namespace std;
 
 
-CIndividual::CIndividual(CProblem* cProblem){
+template<class T> CIndividual<T>::CIndividual(CProblem<T>* cProblem){
   this -> cProblem = cProblem;
 }
 
-CIndividual::CIndividual(CProblem* cProblem, vector<float> genotype){
+template<> CIndividual<bool>::CIndividual(CProblem<bool>* cProblem, vector<bool> genotype){
   this -> cProblem = cProblem;
   this -> genotype = genotype;
 }
 
-CIndividual::~CIndividual(){
-
+template<class T> CIndividual<T>::~CIndividual(){
   //if(DEBUG) cout << "-Deleting CIndividual" << endl;
 }
 
-
-vector<float> CIndividual::generateGenotype(){
+template<> vector<bool> CIndividual<bool>::generateGenotype(){
 
   //if(DEBUG) cout << "~ Generate genotype method" << endl;
 
@@ -43,87 +41,37 @@ vector<float> CIndividual::generateGenotype(){
   return genotype;
 };
 
-void CIndividual::setGenotype(vector<float> newGenotype){
+template<> void CIndividual<bool>::setGenotype(vector<bool> newGenotype){
 
   if(DEBUG) cout << "~ Setting new genotype" << endl;
   genotype = newGenotype;
 }
 
-vector<float> CIndividual::getGenotype(){
+template<> vector<bool> CIndividual<bool>::getGenotype(){
   return genotype;
 }
 
-void CIndividual::printGenotype(){
+template<class T> void CIndividual<T>::printGenotype(){
   for(int i = 0; i < genotype.size(); i++){
     cout << genotype[i];
   }
   cout << " ";
 }
 
-void CIndividual::cross(float globalProb, float givenProb, CIndividual* otherParent, vector<CIndividual*> &population, bool even){
-
-  if(DEBUG) cout << "~ Cross method" << endl;
-
-  int ownSize = genotype.size();
-  int otherSize = otherParent -> getGenotype().size();
-  vector<float> betterGenotype;
-
-  if(ownSize != otherSize)
-    if(DEBUG) {cout << "ERROR: [cross] different genotypes size";
-               cout << "ownSize: " << ownSize << " otherSize: " << otherSize << endl;
-  }
-
-  if(givenProb > globalProb){
-    if(DEBUG) cout << " ERROR: [cross] Too big probability" << endl;
-    if(even){
-      population.push_back(new CIndividual(cProblem, genotype));
-      population.push_back(new CIndividual(cProblem, otherParent -> getGenotype()));
-    }else{
-      if(f_fitness > otherParent -> getFitness()) betterGenotype = genotype;
-      else betterGenotype = otherParent -> getGenotype();
-      population.push_back(new CIndividual(cProblem, betterGenotype));
-    }
-
-  }else{
-
-      int cutIndex = randInt(genotype.size() - 1);
-    //  if(DEBUG) cout << " cutIndex: " << cutIndex << endl;
-
-      vector<vector<float> > firstGenotypeParts = cutParent(this, cutIndex);
-      vector<vector<float> > secondGenotypeParts = cutParent(otherParent, cutIndex);
-
-      vector<float> fstGenotype = mergeGenotypes(firstGenotypeParts[0],secondGenotypeParts[1]);
-      vector<float> sndGenotype = mergeGenotypes(secondGenotypeParts[0],firstGenotypeParts[1]);
-
-      CIndividual* fstChild = new CIndividual(cProblem, fstGenotype);
-      CIndividual* sndChild = new CIndividual(cProblem, sndGenotype);
-
-    if(even){
-      population.push_back(fstChild);
-      population.push_back(sndChild);
-
-    }else{
-      if(fstChild -> getFitness() > sndChild -> getFitness()) betterGenotype = fstChild -> getGenotype();
-      else betterGenotype = sndChild -> getGenotype();
-      population.push_back(new CIndividual(cProblem, betterGenotype));
-    }
-  }
-}
-
-vector<vector<float> > CIndividual::cutParent(CIndividual* parent, int cutIndex){
+template<> vector< vector<bool> > CIndividual<bool>::cutParent(CIndividual<bool>* parent, int cutIndex){
 
   if(DEBUG) cout << "~ Cut parent method" << endl;
 
-  vector<vector<float> > genotypeParts;
-  vector<float> parentGenotype = parent -> getGenotype();
+  vector<vector<bool> > genotypeParts;
+  vector<bool> parentGenotype = parent -> getGenotype();
   int parentGenSize = parentGenotype.size();
 
   if(cutIndex >= parentGenSize){
     if(DEBUG) cout << "ERROR: [cutParent] cutIndec out of range" << endl;
   }
 
-  vector<float> genotypePart1;
-  vector<float> genotypePart2;
+  vector<bool> genotypePart1;
+  vector<bool> genotypePart2;
 
   for(int i = 0; i < parentGenSize; i++){
 
@@ -137,7 +85,7 @@ vector<vector<float> > CIndividual::cutParent(CIndividual* parent, int cutIndex)
   return genotypeParts;
 }
 
-vector<float> CIndividual::mergeGenotypes(vector<float> fstGenotype, vector<float> sndGenotype){
+template<> vector<bool> CIndividual<bool>::mergeGenotypes(vector<bool> fstGenotype, vector<bool> sndGenotype){
 
   if(DEBUG) cout << "~ Merge children method" << endl;
 
@@ -150,7 +98,67 @@ vector<float> CIndividual::mergeGenotypes(vector<float> fstGenotype, vector<floa
   return fstGenotype;
 }
 
-void CIndividual::mutate(float globalProb){
+
+template<> void CIndividual<bool>::cross(float globalProb, float givenProb, CIndividual<bool>* otherParent, vector<CIndividual<bool>*> &population, bool even){
+
+  if(DEBUG) cout << "~ Cross method" << endl;
+
+  int ownSize = genotype.size();
+  int otherSize = otherParent -> getGenotype().size();
+  vector<bool> betterGenotype;
+
+  if(ownSize != otherSize)
+    if(DEBUG) {cout << "ERROR: [cross] different genotypes size";
+               cout << "ownSize: " << ownSize << " otherSize: " << otherSize << endl;
+  }
+
+  if(givenProb > globalProb){
+    if(DEBUG) cout << " ERROR: [cross] Too big probability" << endl;
+    if(even){
+      population.push_back(new CIndividual<bool>(cProblem, genotype));
+      population.push_back(new CIndividual<bool>(cProblem, otherParent -> getGenotype()));
+    }else{
+      if(f_fitness > otherParent -> getFitness()) betterGenotype = genotype;
+      else betterGenotype = otherParent -> getGenotype();
+      population.push_back(new CIndividual(cProblem, betterGenotype));
+    }
+
+  }else{
+
+      int cutIndex = randInt(genotype.size() - 1);
+    //  if(DEBUG) cout << " cutIndex: " << cutIndex << endl;
+
+      vector<vector<bool> > firstGenotypeParts = cutParent(this, cutIndex);
+      vector<vector<bool> > secondGenotypeParts = cutParent(otherParent, cutIndex);
+
+      vector<bool> fstGenotype = mergeGenotypes(firstGenotypeParts[0],secondGenotypeParts[1]);
+      vector<bool> sndGenotype = mergeGenotypes(secondGenotypeParts[0],firstGenotypeParts[1]);
+
+      CIndividual<bool>* fstChild = new CIndividual(cProblem, fstGenotype);
+      CIndividual<bool>* sndChild = new CIndividual(cProblem, sndGenotype);
+
+    if(even){
+      population.push_back(fstChild);
+      population.push_back(sndChild);
+
+    }else{
+      if(fstChild -> getFitness() > sndChild -> getFitness()) betterGenotype = fstChild -> getGenotype();
+      else betterGenotype = sndChild -> getGenotype();
+      population.push_back(new CIndividual(cProblem, betterGenotype));
+    }
+  }
+}
+
+template<> void CIndividual<bool>::negate(bool number){
+
+  if(number == true) number = false;
+  else if(number == false) number = true;
+  else{
+    if(DEBUG) cout << " ERROR: [negation] number not allowed " << endl;
+  }
+}
+
+template<> void CIndividual<bool>::mutate(float globalProb){
 
   //if(DEBUG) cout << "~ Mutate method" << endl;
 
@@ -162,21 +170,14 @@ void CIndividual::mutate(float globalProb){
     if(randProb <= globalProb){
       negate(genotype[i]);
       //cout << " + " << endl;
-    }else{} //cout << " - " << endl;
+    } //cout << " - " << endl;
     randProb = randFloat();
   }
 }
 
-void CIndividual::negate(float &number){
 
-  if(number == 1.0) number = 0.0;
-  else if(number == 0.0) number = 1.0;
-  else{
-    //if(DEBUG) cout << " ERROR: [negation] number not allowed " << endl;
-  }
-}
 
-int CIndividual::randInt(int range){
+template<class T> int CIndividual<T>::randInt(int range){
 
   float randNum;
   for(int i = 0; i < 3; i++){
@@ -185,7 +186,7 @@ int CIndividual::randInt(int range){
   return randNum;
 }
 
-float CIndividual::randFloat(){
+template<class T> float CIndividual<T>::randFloat(){
 
   float randNum;{}
   for(int i = 0; i < 4; i++){
@@ -194,16 +195,18 @@ float CIndividual::randFloat(){
   return randNum;
 }
 
-CIndividual* CIndividual::operator>(CIndividual* &pOther){
+/*
+template<class T> CIndividual<T>* CIndividual<T>::operator>(CIndividual<T>* &pOther){
   if(pOther -> f_fitness > this -> f_fitness) return pOther;
   else return this;
 }
+*/
 
-float CIndividual::getFitness(){
+template<class T> float CIndividual<T>::getFitness(){
   return f_fitness;
 }
 
-void CIndividual::fitness(){
+template<class T> void CIndividual<T>::fitness(){
 
   //if(DEBUG) cout << "\n~ fitness method" << endl;
 
@@ -213,7 +216,7 @@ void CIndividual::fitness(){
 }
 
 
-CGeneticAlgorithm::CGeneticAlgorithm(){
+template<class T> CGeneticAlgorithm<T>::CGeneticAlgorithm(){
 
   if(DEBUG) cout << "+ New CGeneticAlgorithm object" << endl;
   popSize = 0;
@@ -221,19 +224,20 @@ CGeneticAlgorithm::CGeneticAlgorithm(){
   mutProb = 0.0;
 }
 
-CGeneticAlgorithm::CGeneticAlgorithm(CProblem* cProblem){
+template<class T> CGeneticAlgorithm<T>::CGeneticAlgorithm(CProblem<T>* cProblem){
 
   if(DEBUG) cout << "+ New CGeneticAlgorithm object with cProblem" << endl;
   this -> cProblem = cProblem;
 }
 
-CGeneticAlgorithm::~CGeneticAlgorithm(){
+template<class T> CGeneticAlgorithm<T>::~CGeneticAlgorithm(){
 
   if(DEBUG) cout << "- Deleting a CGeneticAlgorithm object" << endl;
   delete bestSolution;
+  
 }
 
-void CGeneticAlgorithm::generateParameters(){
+template<class T> void CGeneticAlgorithm<T>::generateParameters(){
 
   if(DEBUG) cout << "~ Generate parameters method" << endl;
 
@@ -241,14 +245,14 @@ void CGeneticAlgorithm::generateParameters(){
    mutProb = randFloat();
 }
 
-void CGeneticAlgorithm::generateInitPopulation(vector<CIndividual*> &population){
+template<class T> void CGeneticAlgorithm<T>::generateInitPopulation(vector<CIndividual<T>*> &population){
 
   if(DEBUG) cout << "~ Generate population method" << endl;
 
   float fitness;
 
   for(int i = 0; i < popSize; i++){
-      CIndividual* newCIndividual = new CIndividual(cProblem);
+      CIndividual<T>* newCIndividual = new CIndividual<T>(cProblem);
       newCIndividual -> generateGenotype();
       population.push_back(newCIndividual);
       //newCKnapsachIndividual -> printGenotype();
@@ -259,7 +263,7 @@ void CGeneticAlgorithm::generateInitPopulation(vector<CIndividual*> &population)
 
 }
 
-void CGeneticAlgorithm::generateNextPopulation(vector<CIndividual*> oldPopulation, vector<CIndividual*> &newPopulation){
+template<class T> void CGeneticAlgorithm<T>::generateNextPopulation(vector<CIndividual<T>*> oldPopulation, vector<CIndividual<T>*> &newPopulation){
 
   bool evenSize = ifEven(popSize);
 
@@ -269,17 +273,17 @@ void CGeneticAlgorithm::generateNextPopulation(vector<CIndividual*> oldPopulatio
   if(!evenSize) crossIndividuals(oldPopulation, newPopulation, false);
 }
 
-  void CGeneticAlgorithm::run(double seconds, int saveBestNum){
+template<class T> void CGeneticAlgorithm<T>::run(double seconds, int saveBestNum){
 
   cout << " computing...please, wait" << endl;
 
-  CIndividual* bestIndividual;
+  CIndividual<T>* bestIndividual;
 
-  vector<CIndividual*> initialPopulation;
+  vector<CIndividual<T>*> initialPopulation;
   generateInitPopulation(initialPopulation);
 
   if(DEBUG) cout << " SUCCES: generateInitPopulation(initialPopulation)";
-  vector<CIndividual*> nextPopulation;
+  vector<CIndividual<T>*> nextPopulation;
 
   clock_t begin;
   clock_t end;
@@ -299,7 +303,7 @@ void CGeneticAlgorithm::generateNextPopulation(vector<CIndividual*> oldPopulatio
     if(DEBUG) cout << " SUCCES: sort";
 
     //take x best individuals from the initPop
-    vector<CIndividual*> bestIndividuals = takeBest(initialPopulation, saveBestNum);
+    vector<CIndividual<T>*> bestIndividuals = takeBest(initialPopulation, saveBestNum);
     if(DEBUG) cout << " SUCCES: takeBest";
 
     generateNextPopulation(initialPopulation, nextPopulation);
@@ -334,17 +338,17 @@ void CGeneticAlgorithm::generateNextPopulation(vector<CIndividual*> oldPopulatio
     bestSolution = bestIndividual;
 }
 
-vector<CIndividual*> CGeneticAlgorithm::takeBest(vector<CIndividual*> population, int numOfBestInd){
+template<class T> vector<CIndividual<T>*> CGeneticAlgorithm<T>::takeBest(vector<CIndividual<T>*> population, int numOfBestInd){
 
-    vector<CIndividual*> bestIndividuals;
+    vector<CIndividual<T>*> bestIndividuals;
 
     for(int i = 0; i < numOfBestInd; i++){
-      bestIndividuals.push_back(new CIndividual(cProblem, population[i] -> getGenotype()));
+      bestIndividuals.push_back(new CIndividual<T>(cProblem, population[i] -> getGenotype()));
     }
     return bestIndividuals;
 }
 
-void CGeneticAlgorithm::exchangeIndividuals(vector<CIndividual*> &bestIndividuals, vector<CIndividual*> &modifiedPopulation, int numOfBestInd){
+template<class T> void CGeneticAlgorithm<T>::exchangeIndividuals(vector<CIndividual<T>*> &bestIndividuals, vector<CIndividual<T>*> &modifiedPopulation, int numOfBestInd){
 
       for(int i = 0; i < numOfBestInd; i++){
           delete modifiedPopulation[i];
@@ -352,7 +356,7 @@ void CGeneticAlgorithm::exchangeIndividuals(vector<CIndividual*> &bestIndividual
       }
 }
 
-void CGeneticAlgorithm::countPopulationFitness(vector<CIndividual*> &population){
+template<class T> void CGeneticAlgorithm<T>::countPopulationFitness(vector<CIndividual<T>*> &population){
 
   for(int i = 0; i < popSize; i++){
     population[i] -> fitness();
@@ -360,57 +364,57 @@ void CGeneticAlgorithm::countPopulationFitness(vector<CIndividual*> &population)
   }
 }
 
-CIndividual* CGeneticAlgorithm::randIndividual(vector<CIndividual*> population){
+template<class T> CIndividual<T>* CGeneticAlgorithm<T>::randIndividual(vector<CIndividual<T>*> population){
 
   int randIndx1 = randInt(popSize - 1);
   int randIndx2 = randInt(popSize - 1);
 
-  CIndividual* individual1 = population[randIndx1];
-  CIndividual* individual2 = population[randIndx2];
+  CIndividual<T>* individual1 = population[randIndx1];
+  CIndividual<T>* individual2 = population[randIndx2];
 
   if(individual1 -> getFitness() >= individual2 -> getFitness()) return individual1;
   else return individual2;
 }
 
-void CGeneticAlgorithm::crossIndividuals(vector<CIndividual*> oldPopulation, vector<CIndividual*> &newPopulation, bool even){
+template<class T> void CGeneticAlgorithm<T>::crossIndividuals(vector<CIndividual<T>*> oldPopulation, vector<CIndividual<T>*> &newPopulation, bool even){
 
   if(DEBUG) cout << "~ crossIndividuals method\n" << endl;
 
-  CIndividual* parent1 = randIndividual(oldPopulation);
-  CIndividual* parent2 = randIndividual(oldPopulation);
+  CIndividual<T>* parent1 = randIndividual(oldPopulation);
+  CIndividual<T>* parent2 = randIndividual(oldPopulation);
 
   float randCrossProb = randFloat();
   parent1 -> cross(crossProb, randCrossProb, parent2, newPopulation, even);
 }
 
-bool CGeneticAlgorithm::ifEven(int num){
+template<class T> bool CGeneticAlgorithm<T>::ifEven(int num){
   if(num % 2 == 0) return true;
   else return false;
 }
 
-void CGeneticAlgorithm::mutatePopulation(vector<CIndividual*> &population){
+template<class T> void CGeneticAlgorithm<T>::mutatePopulation(vector<CIndividual<T>*> &population){
 
   for(int i = 0; i < popSize; i++){
     population[i] -> mutate(mutProb);
   }
 }
 
-CIndividual* CGeneticAlgorithm::findValidSolution(vector<CIndividual*> population){
+template<class T> CIndividual<T>* CGeneticAlgorithm<T>::findValidSolution(vector<CIndividual<T>*> population){
 
   if(DEBUG) cout << "~ find valid solution method\n" << endl;
 
   for(int i = 0; i < popSize; i++){
     if(cProblem -> isValid(population[i] -> getGenotype())){
-      CIndividual* bestSolution = new CIndividual(cProblem, population[i] -> getGenotype());
+      CIndividual<T>* bestSolution = new CIndividual<T>(cProblem, population[i] -> getGenotype());
       bestSolution -> fitness();
       return bestSolution;
     }
   }
   if(DEBUG) cout << "no valid solution!!!" << endl;
-  return new CIndividual(cProblem);
+  return new CIndividual<T>(cProblem);
 }
 
-int CGeneticAlgorithm::getInt(){
+template<class T> int CGeneticAlgorithm<T>::getInt(){
 
   int someInt;
 
@@ -425,13 +429,13 @@ int CGeneticAlgorithm::getInt(){
   return someInt;
 }
 
-void CGeneticAlgorithm::setPopSize(){
+template<class T> void CGeneticAlgorithm<T>::setPopSize(){
 
   cout << "Give popSize: ";
   popSize = getInt();
 }
 
-int CGeneticAlgorithm::randInt(int range){
+template<class T> int CGeneticAlgorithm<T>::randInt(int range){
 
   float randNum;
   for(int i = 0; i < 3; i++){
@@ -440,7 +444,7 @@ int CGeneticAlgorithm::randInt(int range){
   return randNum;
 }
 
-float CGeneticAlgorithm::randFloat(){
+template<class T> float CGeneticAlgorithm<T>::randFloat(){
 
   float randNum;{}
   for(int i = 0; i < 4; i++){
@@ -449,14 +453,14 @@ float CGeneticAlgorithm::randFloat(){
   return randNum;
 }
 
-string CGeneticAlgorithm::toString(){
+template<class T> string CGeneticAlgorithm<T>::toString(){
 
   return "popSize: " + to_string(popSize) + "\n" +
          "crossProb: " + to_string(crossProb) + "\n" +
          "mutProb: " + to_string(mutProb) + "\n";
 }
 
-void CGeneticAlgorithm::revaluePopVectors(vector<CIndividual*> &oldPopulation, vector<CIndividual*> &newPopulation){
+template<class T> void CGeneticAlgorithm<T>::revaluePopVectors(vector<CIndividual<T>*> &oldPopulation, vector<CIndividual<T>*> &newPopulation){
 
   if(DEBUG) cout << "~ revaluePopVectors method\n" << endl;
   erasePop(oldPopulation);
@@ -467,7 +471,7 @@ void CGeneticAlgorithm::revaluePopVectors(vector<CIndividual*> &oldPopulation, v
   newPopulation.clear();
 }
 
-void CGeneticAlgorithm::erasePop(vector<CIndividual*> &population){
+template<class T> void CGeneticAlgorithm<T>::erasePop(vector<CIndividual<T>*> &population){
 
   if(DEBUG) cout << "~ Erase population method\n" << endl;
 
@@ -478,7 +482,7 @@ void CGeneticAlgorithm::erasePop(vector<CIndividual*> &population){
   population.clear();
 }
 
-void CGeneticAlgorithm::printPopulation(vector<CIndividual*> population){
+template<class T> void CGeneticAlgorithm<T>::printPopulation(vector<CIndividual<T>*> population){
 
     for(int i = 0; i < population.size(); i++){
       if(DEBUG) {population[i] -> printGenotype();
@@ -489,6 +493,6 @@ void CGeneticAlgorithm::printPopulation(vector<CIndividual*> population){
     if(DEBUG) cout << "\n";
 }
 
-CIndividual* CGeneticAlgorithm::getBestSolution(){
+template<class T> CIndividual<T>* CGeneticAlgorithm<T>::getBestSolution(){
   return bestSolution;
 }
