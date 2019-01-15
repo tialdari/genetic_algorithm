@@ -12,11 +12,11 @@
 using namespace std;
 
 
-template<class T> CIndividual<T>::CIndividual(CProblem<T>* cProblem){
+template<class T> CIndividual<T>::CIndividual(CKnapsackProblem<T>* cProblem){
   this -> cProblem = cProblem;
 }
 
-template<> CIndividual<bool>::CIndividual(CProblem<bool>* cProblem, vector<bool> genotype){
+template<class T> CIndividual<T>::CIndividual(CKnapsackProblem<T>* cProblem, vector<T> genotype){
   this -> cProblem = cProblem;
   this -> genotype = genotype;
 }
@@ -31,10 +31,12 @@ template<> vector<bool> CIndividual<bool>::generateGenotype(){
 
   int size = cProblem -> getSolutionSize();
   float randNum;
+  bool isTaken;
 
   for(int i = 0; i < size; i++){
     randNum = randInt(1);
-    genotype.push_back(randNum);
+    isTaken = randNum;
+    genotype.push_back(isTaken);
   }
   this -> genotype = genotype;
 
@@ -224,7 +226,7 @@ template<class T> CGeneticAlgorithm<T>::CGeneticAlgorithm(){
   mutProb = 0.0;
 }
 
-template<class T> CGeneticAlgorithm<T>::CGeneticAlgorithm(CProblem<T>* cProblem){
+template<class T> CGeneticAlgorithm<T>::CGeneticAlgorithm(CKnapsackProblem<T>* cProblem){
 
   if(DEBUG) cout << "+ New CGeneticAlgorithm object with cProblem" << endl;
   this -> cProblem = cProblem;
@@ -234,7 +236,7 @@ template<class T> CGeneticAlgorithm<T>::~CGeneticAlgorithm(){
 
   if(DEBUG) cout << "- Deleting a CGeneticAlgorithm object" << endl;
   delete bestSolution;
-  
+
 }
 
 template<class T> void CGeneticAlgorithm<T>::generateParameters(){

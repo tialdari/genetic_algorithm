@@ -13,8 +13,8 @@ class CIndividual{
 
   public:
     CIndividual();
-    CIndividual(CProblem<T>* cProblem);
-    CIndividual(CProblem<T>* cProblem, vector<T> genotype);
+    CIndividual(CKnapsackProblem<T>* cProblem);
+    CIndividual(CKnapsackProblem<T>* cProblem, vector<T> genotype);
     ~CIndividual();
     vector<T> generateGenotype();
     void setGenotype(vector<T> newGenotype);
@@ -36,7 +36,7 @@ class CIndividual{
   private:
 
     vector<T> genotype;
-    CProblem<T>* cProblem;
+    CKnapsackProblem<T>* cProblem;
     float f_fitness;
     float volume;
 
@@ -57,7 +57,7 @@ class CGeneticAlgorithm{
 
   public:
     CGeneticAlgorithm<T>();
-    CGeneticAlgorithm<T>(CProblem<T>* cKnapsackProblem);
+    CGeneticAlgorithm<T>(CKnapsackProblem<T>* cKnapsackProblem);
     ~CGeneticAlgorithm();
     void generateParameters();
     void generateInitPopulation(vector<CIndividual<T>*> &population);
@@ -84,7 +84,7 @@ class CGeneticAlgorithm{
 
   private:
     int popSize;
-    CProblem<T>* cProblem;
+    CKnapsackProblem<T>* cProblem;
     float crossProb;
     float mutProb;
     CIndividual<T>* bestSolution;

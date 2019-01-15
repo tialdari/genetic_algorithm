@@ -18,9 +18,7 @@ using namespace std;
 
 int main(){
 
-
   //CProblem<bool>* pProblem = new CKnapsackProblem<bool>();
-
 
   IO io;
   srand (time(NULL));
@@ -44,10 +42,16 @@ int main(){
     return(0);
   }
 
-  CKnapsackProblem<> cKnapsackProblem(solutionSize, pParameters, maxVolume);
-  cout << cKnapsackProblem.toString();
+  CKnapsackProblem<bool>* cKnapsackProblem = new CKnapsackProblem<bool>(solutionSize, pParameters, maxVolume);
+  cout << cKnapsackProblem -> toString();
 
-  CGeneticAlgorithm<> cGeneticAlgorithm(&cKnapsackProblem);
+  CIndividual<bool>* cIndividual = new CIndividual<bool>(cKnapsackProblem);
+  cIndividual -> generateGenotype();
+  cIndividual -> printGenotype();
+
+
+/*
+  CGeneticAlgorithm<bool> cGeneticAlgorithm(cKnapsackProblem);
   cGeneticAlgorithm.generateParameters();
   cGeneticAlgorithm.setPopSize();
 
@@ -57,6 +61,7 @@ int main(){
   cout << "Solution fitness:" << cGeneticAlgorithm.getBestSolution() -> getFitness() << endl;
 
   if(DEBUG) cout << "---------END----------" << endl;
+*/
 
   //delete cKnapsackProblem;
   return 0;

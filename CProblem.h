@@ -27,18 +27,22 @@
 };
 
 template <class T>
-class CKnapsackProblem: public CProblem<T>{
+class CKnapsackProblem{
 
     public:
       CKnapsackProblem<T>();
       inline CKnapsackProblem<T>(int solutionSize, float** itemsParameters, float maxVolume)
-      :CProblem<T>(solutionSize){
+    {
         if(DEBUG) cout << "+ New CKnapsackProblem object with parameters" << endl;
         this -> solutionSize = solutionSize;
         this -> itemsParameters = itemsParameters;
         this -> maxVolume = maxVolume;
       };
       ~CKnapsackProblem();
+      void setSolutionSize(int solutionSize){
+        this -> solutionSize = solutionSize;
+      };
+      int getSolutionSize(){return solutionSize;};
       void setItemsParameters(float** newParameters);
       void setMaxVolume(float maxVolume);
       void setNewProblemParameters(int solutionSize, float** newParameters, int maxVolume);
@@ -50,6 +54,8 @@ class CKnapsackProblem: public CProblem<T>{
   private:
       float** itemsParameters;
       float maxVolume;
+      int solutionSize;
+
 };
 
 
