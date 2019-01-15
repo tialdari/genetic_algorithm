@@ -45,14 +45,9 @@ int main(){
   CKnapsackProblem<int>* cKnapsackProblem = new CKnapsackProblem<int>(solutionSize, pParameters, maxVolume);
   cout << cKnapsackProblem -> toString();
 
-  CIndividual<int>* cIndividual = new CIndividual<int>(cKnapsackProblem);
-  cIndividual -> generateGenotype();
-  cIndividual -> printGenotype();
-
-
-
   CGeneticAlgorithm<int> cGeneticAlgorithm(cKnapsackProblem);
   cGeneticAlgorithm.generateParameters();
+
   cGeneticAlgorithm.setPopSize();
 
   cGeneticAlgorithm.run(5.0, 50);
@@ -62,8 +57,7 @@ int main(){
 
   if(DEBUG) cout << "---------END----------" << endl;
 
-
-  //delete cKnapsackProblem;
+  delete cKnapsackProblem;
   return 0;
 
 }

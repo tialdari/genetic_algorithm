@@ -6,15 +6,15 @@
 
 using namespace std;
 
-#define DEBUG false
+#define DEBUG true
 
 template <class T>
 class CIndividual{
 
   public:
     CIndividual();
-    CIndividual(CKnapsackProblem<T>* cProblem);
-    CIndividual(CKnapsackProblem<T>* cProblem, vector<T> genotype);
+    CIndividual(CKnapsackProblem<T>* cProblem, float globalMutProb, float globalCrossProb);
+    CIndividual(CKnapsackProblem<T>* cProblem, vector<T> genotype, float globalMutProb, float globalCrossProb);
     ~CIndividual();
     vector<T> generateGenotype();
     void setGenotype(vector<T> newGenotype);
@@ -25,8 +25,10 @@ class CIndividual{
     void cross(float globalProb, float givenProb, CIndividual<T>* otherParent, vector<CIndividual<T>*> &population, bool even);
     vector<vector<T> > cutParent(CIndividual<T>* parent, int cutIndex);
     vector<T> mergeGenotypes(vector<T> fstChild, vector<T> sndChild);
-    void mutate(float globalProb);
-    void negate(T number);
+    vector<T> operator +(CIndividual<T>* otherParent);
+    void operator ++();
+    void mutate();
+    void negate(T &number);
     void fitness();
     float getFitness();
     int randInt(int range);
@@ -39,6 +41,8 @@ class CIndividual{
     CKnapsackProblem<T>* cProblem;
     float f_fitness;
     float volume;
+    float globalMutProb;
+    float globalCrossProb;
 
 };
 
@@ -59,15 +63,18 @@ class CGeneticAlgorithm{
     CGeneticAlgorithm<T>();
     CGeneticAlgorithm<T>(CKnapsackProblem<T>* cKnapsackProblem);
     ~CGeneticAlgorithm();
+    float getMutProb(){return mutProb;};
+    float getCrossProb(){return crossProb;};
     void generateParameters();
     void generateInitPopulation(vector<CIndividual<T>*> &population);
     void generateNextPopulation(vector<CIndividual<T>*> oldPopulation, vector<CIndividual<T>*> &newPopulation);
+    void addToPopulation(CIndividual<T>* newCIndividual, vector<CIndividual<T>*> &destPopulation);
     void run(double seconds, int saveBestNum);
     vector<CIndividual<T>*> takeBest(vector<CIndividual<T>*> population, int numOfBestInd);
     void exchangeIndividuals(vector<CIndividual<T>*> &bestIndividuals, vector<CIndividual<T>*> &modifiedPopulation, int numOfBestInd);
     void countPopulationFitness(vector<CIndividual<T>*> &population);
     CIndividual<T>* randIndividual(vector<CIndividual<T>*> population);
-    void crossIndividuals(vector<CIndividual<T>*> oldPopulation, vector<CIndividual<T>*> &newPopulation, bool even);
+    void crossIndividuals(vector<CIndividual<T>*> oldPopulation, vector<CIndividual<T>*> &newPopulation);
     bool ifEven(int num);
     void mutatePopulation(vector<CIndividual<T>*> &population);
     CIndividual<T>* findValidSolution(vector<CIndividual<T>*> population);

@@ -12,13 +12,17 @@
 using namespace std;
 
 
-template<class T> CIndividual<T>::CIndividual(CKnapsackProblem<T>* cProblem){
+template<class T> CIndividual<T>::CIndividual(CKnapsackProblem<T>* cProblem, float globalMutProb, float globalCrossProb){
   this -> cProblem = cProblem;
+  this -> globalMutProb = globalMutProb;
+  this -> globalCrossProb = globalCrossProb;
 }
 
-template<class T> CIndividual<T>::CIndividual(CKnapsackProblem<T>* cProblem, vector<T> genotype){
+template<class T> CIndividual<T>::CIndividual(CKnapsackProblem<T>* cProblem, vector<T> genotype, float globalMutProb, float globalCrossProb){
   this -> cProblem = cProblem;
   this -> genotype = genotype;
+  this -> globalMutProb = globalMutProb;
+  this -> globalCrossProb = globalCrossProb;
 }
 
 template<class T> CIndividual<T>::~CIndividual(){
@@ -137,6 +141,7 @@ template<class T> vector<T> CIndividual<T>::mergeGenotypes(vector<T> fstGenotype
 }
 
 
+
 template<class T> void CIndividual<T>::cross(float globalProb, float givenProb, CIndividual<T>* otherParent, vector<CIndividual<T>*> &population, bool even){
 
   if(DEBUG) cout << "~ Cross method" << endl;
@@ -153,12 +158,12 @@ template<class T> void CIndividual<T>::cross(float globalProb, float givenProb, 
   if(givenProb > globalProb){
     if(DEBUG) cout << " ERROR: [cross] Too big probability" << endl;
     if(even){
-      population.push_back(new CIndividual<T>(cProblem, genotype));
-      population.push_back(new CIndividual<T>(cProblem, otherParent -> getGenotype()));
+      population.push_back(new CIndividual<T>(cProblem, genotype, globalProb, otherParent -> globalCrossProb));
+      population.push_back(new CIndividual<T>(cProblem, otherParent -> getGenotype(), globalProb, otherParent -> globalCrossProb));
     }else{
       if(f_fitness > otherParent -> getFitness()) betterGenotype = genotype;
       else betterGenotype = otherParent -> getGenotype();
-      population.push_back(new CIndividual<T>(cProblem, betterGenotype));
+      population.push_back(new CIndividual<T>(cProblem, betterGenotype, globalProb, otherParent -> globalCrossProb));
     }
 
   }else{
@@ -172,8 +177,8 @@ template<class T> void CIndividual<T>::cross(float globalProb, float givenProb, 
       vector<T> fstGenotype = mergeGenotypes(firstGenotypeParts[0],secondGenotypeParts[1]);
       vector<T> sndGenotype = mergeGenotypes(secondGenotypeParts[0],firstGenotypeParts[1]);
 
-      CIndividual<T>* fstChild = new CIndividual(cProblem, fstGenotype);
-      CIndividual<T>* sndChild = new CIndividual(cProblem, sndGenotype);
+      CIndividual<T>* fstChild = new CIndividual(cProblem, fstGenotype, globalProb, otherParent -> globalCrossProb);
+      CIndividual<T>* sndChild = new CIndividual(cProblem, sndGenotype, globalProb, otherParent -> globalCrossProb);
 
     if(even){
       population.push_back(fstChild);
@@ -182,12 +187,12 @@ template<class T> void CIndividual<T>::cross(float globalProb, float givenProb, 
     }else{
       if(fstChild -> getFitness() > sndChild -> getFitness()) betterGenotype = fstChild -> getGenotype();
       else betterGenotype = sndChild -> getGenotype();
-      population.push_back(new CIndividual(cProblem, betterGenotype));
+      population.push_back(new CIndividual<T>(cProblem, betterGenotype, globalProb, otherParent -> globalCrossProb));
     }
   }
 }
 
-template<> void CIndividual<bool>::negate(bool number){
+template<> void CIndividual<bool>::negate(bool &number){
 
   if(number == true) number = false;
   else if(number == false) number = true;
@@ -196,7 +201,7 @@ template<> void CIndividual<bool>::negate(bool number){
   }
 }
 
-template<> void CIndividual<double>::negate(double number){
+template<> void CIndividual<double>::negate(double &number){
 
   if(number == 0.0) number = 1.0;
   else if(number >= 1.0) number = 0.0;
@@ -205,7 +210,7 @@ template<> void CIndividual<double>::negate(double number){
   }
 }
 
-template<> void CIndividual<int>::negate(int number){
+template<> void CIndividual<int>::negate(int &number){
 
   if(number == 0) number = 1;
   else if(number >= 1) number = 0;
@@ -214,16 +219,60 @@ template<> void CIndividual<int>::negate(int number){
   }
 }
 
-template<class T> void CIndividual<T>::mutate(float globalProb){
+template<class T> vector<T> CIndividual<T>::operator +(CIndividual<T>* otherParent){
+
+  float randCrossProb = randFloat();
+
+  int ownSize = genotype.size();
+  int otherSize = otherParent -> getGenotype().size();
+
+  if(ownSize != otherSize)
+    if(DEBUG) {cout << "ERROR: [cross] different genotypes size";
+               cout << "ownSize: " << ownSize << " otherSize: " << otherSize << endl;
+
+//    CIndividual<T>* thisCopy = new CIndividual(cProblem, genotype, globalMutProb, globalCrossProb);
+    return genotype;
+  }
+
+  if(randCrossProb > globalCrossProb){
+
+    //CIndividual<T>* thisCopy = new CIndividual(cProblem, genotype, globalMutProb, globalCrossProb);
+    return genotype;
+
+  }else{
+
+      int cutIndex = randInt(genotype.size() - 1);
+
+      vector<vector<T> > firstGenotypeParts = cutParent(this, cutIndex);
+      vector<vector<T> > secondGenotypeParts = cutParent(otherParent, cutIndex);
+
+      vector<T> fstGenotype = mergeGenotypes(firstGenotypeParts[0], secondGenotypeParts[1]);
+    //  vector<T> sndGenotype = mergeGenotypes(secondGenotypeParts[0], firstGenotypeParts[1]);
+
+    //CIndividual<T>* fstChild = new CIndividual(cProblem, fstGenotype, globalMutProb, globalCrossProb);
+    //  CIndividual<T>* sndChild = new CIndividual(cProblem, sndGenotype, globalMutProb, globalCrossProb);
+
+      return fstGenotype;
+  }
+
+}
+
+template<class T> void CIndividual<T>::operator++(){
+
+    mutate();
+}
+
+template<class T> void CIndividual<T>::mutate(){
 
   //if(DEBUG) cout << "~ Mutate method" << endl;
+
 
   float randProb = randFloat();
   int genotypeSize = genotype.size();
 
   for(int i = 0; i < genotypeSize; i++){
     //if(DEBUG) cout << "gene no " << i;
-    if(randProb <= globalProb){
+    if(randProb <= globalMutProb){
       negate(genotype[i]);
       //cout << " + " << endl;
     } //cout << " - " << endl;
@@ -308,7 +357,7 @@ template<class T> void CGeneticAlgorithm<T>::generateInitPopulation(vector<CIndi
   float fitness;
 
   for(int i = 0; i < popSize; i++){
-      CIndividual<T>* newCIndividual = new CIndividual<T>(cProblem);
+      CIndividual<T>* newCIndividual = new CIndividual<T>(cProblem, mutProb, crossProb);
       newCIndividual -> generateGenotype();
       population.push_back(newCIndividual);
       //newCKnapsachIndividual -> printGenotype();
@@ -321,12 +370,12 @@ template<class T> void CGeneticAlgorithm<T>::generateInitPopulation(vector<CIndi
 
 template<class T> void CGeneticAlgorithm<T>::generateNextPopulation(vector<CIndividual<T>*> oldPopulation, vector<CIndividual<T>*> &newPopulation){
 
-  bool evenSize = ifEven(popSize);
+  crossIndividuals(oldPopulation, newPopulation);
+}
 
-  for(int i = 0; i < popSize/2; i++){
-    crossIndividuals(oldPopulation, newPopulation, true);
-  }
-  if(!evenSize) crossIndividuals(oldPopulation, newPopulation, false);
+template<class T> void CGeneticAlgorithm<T>::addToPopulation(CIndividual<T>* newCIndividual, vector<CIndividual<T>*> &destPopulation){
+
+    destPopulation.push_back(newCIndividual);
 }
 
 template<class T> void CGeneticAlgorithm<T>::run(double seconds, int saveBestNum){
@@ -359,14 +408,14 @@ template<class T> void CGeneticAlgorithm<T>::run(double seconds, int saveBestNum
     if(DEBUG) cout << " SUCCES: sort";
 
     //take x best individuals from the initPop
-    vector<CIndividual<T>*> bestIndividuals = takeBest(initialPopulation, saveBestNum);
+    //vector<CIndividual<T>*> bestIndividuals = takeBest(initialPopulation, saveBestNum);
     if(DEBUG) cout << " SUCCES: takeBest";
 
     generateNextPopulation(initialPopulation, nextPopulation);
     if(DEBUG) cout << " SUCCES: generateNextPopulation";
 
     //junta los x mejores soluciones y la proxima generacion
-    exchangeIndividuals(bestIndividuals, nextPopulation, saveBestNum);
+    //exchangeIndividuals(bestIndividuals, nextPopulation, saveBestNum);
     if(DEBUG) cout << " SUCCES: exchangeIndividuals";
 
     mutatePopulation(nextPopulation);
@@ -399,7 +448,7 @@ template<class T> vector<CIndividual<T>*> CGeneticAlgorithm<T>::takeBest(vector<
     vector<CIndividual<T>*> bestIndividuals;
 
     for(int i = 0; i < numOfBestInd; i++){
-      bestIndividuals.push_back(new CIndividual<T>(cProblem, population[i] -> getGenotype()));
+      bestIndividuals.push_back(new CIndividual<T>(cProblem, population[i] -> getGenotype(), mutProb, crossProb));
     }
     return bestIndividuals;
 }
@@ -432,15 +481,20 @@ template<class T> CIndividual<T>* CGeneticAlgorithm<T>::randIndividual(vector<CI
   else return individual2;
 }
 
-template<class T> void CGeneticAlgorithm<T>::crossIndividuals(vector<CIndividual<T>*> oldPopulation, vector<CIndividual<T>*> &newPopulation, bool even){
+template<class T> void CGeneticAlgorithm<T>::crossIndividuals(vector<CIndividual<T>*> oldPopulation, vector<CIndividual<T>*> &newPopulation){
 
   if(DEBUG) cout << "~ crossIndividuals method\n" << endl;
 
   CIndividual<T>* parent1 = randIndividual(oldPopulation);
   CIndividual<T>* parent2 = randIndividual(oldPopulation);
+  vector<T> childGenotype = parent1 -> operator+(parent2);
 
-  float randCrossProb = randFloat();
-  parent1 -> cross(crossProb, randCrossProb, parent2, newPopulation, even);
+  for(int i = 0; i < popSize; i++){
+    addToPopulation(new CIndividual<T>(cProblem, childGenotype, mutProb, crossProb), newPopulation);
+    parent1 = randIndividual(oldPopulation);
+    parent2 = randIndividual(oldPopulation);
+    childGenotype = parent1 -> operator+(parent2);
+  }
 }
 
 template<class T> bool CGeneticAlgorithm<T>::ifEven(int num){
@@ -451,7 +505,7 @@ template<class T> bool CGeneticAlgorithm<T>::ifEven(int num){
 template<class T> void CGeneticAlgorithm<T>::mutatePopulation(vector<CIndividual<T>*> &population){
 
   for(int i = 0; i < popSize; i++){
-    population[i] -> mutate(mutProb);
+    population[i] -> operator++();
   }
 }
 
@@ -461,13 +515,13 @@ template<class T> CIndividual<T>* CGeneticAlgorithm<T>::findValidSolution(vector
 
   for(int i = 0; i < popSize; i++){
     if(cProblem -> isValid(population[i] -> getGenotype())){
-      CIndividual<T>* bestSolution = new CIndividual<T>(cProblem, population[i] -> getGenotype());
+      CIndividual<T>* bestSolution = new CIndividual<T>(cProblem, population[i] -> getGenotype(), mutProb, crossProb);
       bestSolution -> fitness();
       return bestSolution;
     }
   }
   if(DEBUG) cout << "no valid solution!!!" << endl;
-  return new CIndividual<T>(cProblem);
+  return new CIndividual<T>(cProblem, mutProb, crossProb);
 }
 
 template<class T> int CGeneticAlgorithm<T>::getInt(){
