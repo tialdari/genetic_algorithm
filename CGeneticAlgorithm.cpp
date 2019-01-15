@@ -43,37 +43,73 @@ template<> vector<bool> CIndividual<bool>::generateGenotype(){
   return genotype;
 };
 
-template<> void CIndividual<bool>::setGenotype(vector<bool> newGenotype){
+template<> vector<int> CIndividual<int>::generateGenotype(){
+
+  //if(DEBUG) cout << "~ Generate genotype method" << endl;
+
+  int size = cProblem -> getSolutionSize();
+  float randNum;
+  bool isTaken;
+  const int maxNumOfOneTypeItems = 10;
+
+  for(int i = 0; i < size; i++){
+    randNum = randInt(maxNumOfOneTypeItems);
+    genotype.push_back(randNum);
+  }
+  this -> genotype = genotype;
+
+  return genotype;
+};
+
+template<> vector<double> CIndividual<double>::generateGenotype(){
+
+  //if(DEBUG) cout << "~ Generate genotype method" << endl;
+
+  int size = cProblem -> getSolutionSize();
+  float randNum;
+  bool isTaken;
+  const int maxNumOfOneTypeItems = 10.0;
+
+  for(int i = 0; i < size; i++){
+    randNum = randFloat() + randInt(maxNumOfOneTypeItems);
+    genotype.push_back(randNum);
+  }
+  this -> genotype = genotype;
+
+  return genotype;
+};
+
+template<class T> void CIndividual<T>::setGenotype(vector<T> newGenotype){
 
   if(DEBUG) cout << "~ Setting new genotype" << endl;
   genotype = newGenotype;
 }
 
-template<> vector<bool> CIndividual<bool>::getGenotype(){
+template<class T> vector<T> CIndividual<T>::getGenotype(){
   return genotype;
 }
 
 template<class T> void CIndividual<T>::printGenotype(){
   for(int i = 0; i < genotype.size(); i++){
-    cout << genotype[i];
+    cout << genotype[i] << " ";
   }
   cout << " ";
 }
 
-template<> vector< vector<bool> > CIndividual<bool>::cutParent(CIndividual<bool>* parent, int cutIndex){
+template<class T> vector< vector<T> > CIndividual<T>::cutParent(CIndividual<T>* parent, int cutIndex){
 
   if(DEBUG) cout << "~ Cut parent method" << endl;
 
-  vector<vector<bool> > genotypeParts;
-  vector<bool> parentGenotype = parent -> getGenotype();
+  vector<vector<T> > genotypeParts;
+  vector<T> parentGenotype = parent -> getGenotype();
   int parentGenSize = parentGenotype.size();
 
   if(cutIndex >= parentGenSize){
     if(DEBUG) cout << "ERROR: [cutParent] cutIndec out of range" << endl;
   }
 
-  vector<bool> genotypePart1;
-  vector<bool> genotypePart2;
+  vector<T> genotypePart1;
+  vector<T> genotypePart2;
 
   for(int i = 0; i < parentGenSize; i++){
 
@@ -87,7 +123,7 @@ template<> vector< vector<bool> > CIndividual<bool>::cutParent(CIndividual<bool>
   return genotypeParts;
 }
 
-template<> vector<bool> CIndividual<bool>::mergeGenotypes(vector<bool> fstGenotype, vector<bool> sndGenotype){
+template<class T> vector<T> CIndividual<T>::mergeGenotypes(vector<T> fstGenotype, vector<T> sndGenotype){
 
   if(DEBUG) cout << "~ Merge children method" << endl;
 
@@ -101,13 +137,13 @@ template<> vector<bool> CIndividual<bool>::mergeGenotypes(vector<bool> fstGenoty
 }
 
 
-template<> void CIndividual<bool>::cross(float globalProb, float givenProb, CIndividual<bool>* otherParent, vector<CIndividual<bool>*> &population, bool even){
+template<class T> void CIndividual<T>::cross(float globalProb, float givenProb, CIndividual<T>* otherParent, vector<CIndividual<T>*> &population, bool even){
 
   if(DEBUG) cout << "~ Cross method" << endl;
 
   int ownSize = genotype.size();
   int otherSize = otherParent -> getGenotype().size();
-  vector<bool> betterGenotype;
+  vector<T> betterGenotype;
 
   if(ownSize != otherSize)
     if(DEBUG) {cout << "ERROR: [cross] different genotypes size";
@@ -117,12 +153,12 @@ template<> void CIndividual<bool>::cross(float globalProb, float givenProb, CInd
   if(givenProb > globalProb){
     if(DEBUG) cout << " ERROR: [cross] Too big probability" << endl;
     if(even){
-      population.push_back(new CIndividual<bool>(cProblem, genotype));
-      population.push_back(new CIndividual<bool>(cProblem, otherParent -> getGenotype()));
+      population.push_back(new CIndividual<T>(cProblem, genotype));
+      population.push_back(new CIndividual<T>(cProblem, otherParent -> getGenotype()));
     }else{
       if(f_fitness > otherParent -> getFitness()) betterGenotype = genotype;
       else betterGenotype = otherParent -> getGenotype();
-      population.push_back(new CIndividual(cProblem, betterGenotype));
+      population.push_back(new CIndividual<T>(cProblem, betterGenotype));
     }
 
   }else{
@@ -130,14 +166,14 @@ template<> void CIndividual<bool>::cross(float globalProb, float givenProb, CInd
       int cutIndex = randInt(genotype.size() - 1);
     //  if(DEBUG) cout << " cutIndex: " << cutIndex << endl;
 
-      vector<vector<bool> > firstGenotypeParts = cutParent(this, cutIndex);
-      vector<vector<bool> > secondGenotypeParts = cutParent(otherParent, cutIndex);
+      vector<vector<T> > firstGenotypeParts = cutParent(this, cutIndex);
+      vector<vector<T> > secondGenotypeParts = cutParent(otherParent, cutIndex);
 
-      vector<bool> fstGenotype = mergeGenotypes(firstGenotypeParts[0],secondGenotypeParts[1]);
-      vector<bool> sndGenotype = mergeGenotypes(secondGenotypeParts[0],firstGenotypeParts[1]);
+      vector<T> fstGenotype = mergeGenotypes(firstGenotypeParts[0],secondGenotypeParts[1]);
+      vector<T> sndGenotype = mergeGenotypes(secondGenotypeParts[0],firstGenotypeParts[1]);
 
-      CIndividual<bool>* fstChild = new CIndividual(cProblem, fstGenotype);
-      CIndividual<bool>* sndChild = new CIndividual(cProblem, sndGenotype);
+      CIndividual<T>* fstChild = new CIndividual(cProblem, fstGenotype);
+      CIndividual<T>* sndChild = new CIndividual(cProblem, sndGenotype);
 
     if(even){
       population.push_back(fstChild);
@@ -160,7 +196,25 @@ template<> void CIndividual<bool>::negate(bool number){
   }
 }
 
-template<> void CIndividual<bool>::mutate(float globalProb){
+template<> void CIndividual<double>::negate(double number){
+
+  if(number == 0.0) number = 1.0;
+  else if(number >= 1.0) number = 0.0;
+  else{
+    if(DEBUG) cout << " ERROR: [negation] number not allowed " << endl;
+  }
+}
+
+template<> void CIndividual<int>::negate(int number){
+
+  if(number == 0) number = 1;
+  else if(number >= 1) number = 0;
+  else{
+    if(DEBUG) cout << " ERROR: [negation] number not allowed " << endl;
+  }
+}
+
+template<class T> void CIndividual<T>::mutate(float globalProb){
 
   //if(DEBUG) cout << "~ Mutate method" << endl;
 

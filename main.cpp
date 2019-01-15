@@ -42,16 +42,16 @@ int main(){
     return(0);
   }
 
-  CKnapsackProblem<bool>* cKnapsackProblem = new CKnapsackProblem<bool>(solutionSize, pParameters, maxVolume);
+  CKnapsackProblem<int>* cKnapsackProblem = new CKnapsackProblem<int>(solutionSize, pParameters, maxVolume);
   cout << cKnapsackProblem -> toString();
 
-  CIndividual<bool>* cIndividual = new CIndividual<bool>(cKnapsackProblem);
+  CIndividual<int>* cIndividual = new CIndividual<int>(cKnapsackProblem);
   cIndividual -> generateGenotype();
   cIndividual -> printGenotype();
 
 
-/*
-  CGeneticAlgorithm<bool> cGeneticAlgorithm(cKnapsackProblem);
+
+  CGeneticAlgorithm<int> cGeneticAlgorithm(cKnapsackProblem);
   cGeneticAlgorithm.generateParameters();
   cGeneticAlgorithm.setPopSize();
 
@@ -61,7 +61,7 @@ int main(){
   cout << "Solution fitness:" << cGeneticAlgorithm.getBestSolution() -> getFitness() << endl;
 
   if(DEBUG) cout << "---------END----------" << endl;
-*/
+
 
   //delete cKnapsackProblem;
   return 0;

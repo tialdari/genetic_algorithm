@@ -40,7 +40,7 @@ template<class T> void CKnapsackProblem<T>::setNewProblemParameters(int solution
   setMaxVolume(maxVolume);
 }
 
-template<> float CKnapsackProblem<bool>::solutionValue(vector<bool> solution){
+template<class T> float CKnapsackProblem<T>::solutionValue(vector<T> solution){
 
   //if(DEBUG) cout << "~ Solution value method " << endl;
   float value;
@@ -52,7 +52,7 @@ template<> float CKnapsackProblem<bool>::solutionValue(vector<bool> solution){
   return value;
 }
 
-template<> bool CKnapsackProblem<bool>::isValid(vector<bool> solution){
+template<class T> bool CKnapsackProblem<T>::isValid(vector<T> solution){
   //if(DEBUG) cout << "~ isValid method" << endl;
   float solutionVolume;
 
