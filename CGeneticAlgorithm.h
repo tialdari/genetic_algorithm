@@ -65,6 +65,8 @@ class CGeneticAlgorithm{
     ~CGeneticAlgorithm();
     float getMutProb(){return mutProb;};
     float getCrossProb(){return crossProb;};
+    void setProblem(CKnapsackProblem<T>* cProblem){this -> cProblem = cProblem;};
+    CKnapsackProblem<T>* getProblem(){return cProblem;};
     void generateParameters();
     void generateInitPopulation(vector<CIndividual<T>*> &population);
     void generateNextPopulation(vector<CIndividual<T>*> oldPopulation, vector<CIndividual<T>*> &newPopulation);

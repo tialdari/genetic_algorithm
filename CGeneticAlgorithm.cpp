@@ -358,6 +358,8 @@ template<class T> void CGeneticAlgorithm<T>::generateInitPopulation(vector<CIndi
 
   for(int i = 0; i < popSize; i++){
       CIndividual<T>* newCIndividual = new CIndividual<T>(cProblem, mutProb, crossProb);
+      if(DEBUG) cout << "~ success" << endl;
+
       newCIndividual -> generateGenotype();
       population.push_back(newCIndividual);
       //newCKnapsachIndividual -> printGenotype();
@@ -365,6 +367,7 @@ template<class T> void CGeneticAlgorithm<T>::generateInitPopulation(vector<CIndi
       fitness = newCIndividual -> getFitness();
       //if(DEBUG) cout << " fitness: " << to_string(fitness) << endl;
   }
+
 
 }
 

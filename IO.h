@@ -13,6 +13,8 @@ class IO{
        vector<string> splitString(string dataString);
        float** createParametersArray(vector<string> floatsString, float &externalSize, float &maxVolume);
        void getInputData(string &fileName, int &popSize, float &time);
+       string getString();
+
 };
 
 #endif

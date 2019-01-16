@@ -6,6 +6,8 @@
 #include <time.h>
 #include <algorithm>
 #include <string>
+#include <fstream>
+#include <sstream>
 
 using namespace std;
 
@@ -67,3 +69,15 @@ float** IO::createParametersArray(vector<string> floatsString, float &externalSi
 }
 
 void IO::getInputData(string &fileName, int &popSize, float &time){}
+
+string IO::getString(){
+
+  string someString;
+  cout << "Type a command's name(press the enter key at the end): ";
+  getline(cin, someString);
+
+  cin.clear();
+  cin.ignore(10000, '\n');
+
+  return someString;
+}

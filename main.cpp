@@ -4,13 +4,21 @@
 #include <stdlib.h>
 #include <time.h>
 #include "CProblem.h"
-#include "CProblem.cpp"
+//#include "CProblem.cpp"
 #include "CGeneticAlgorithm.h"
-#include "CGeneticAlgorithm.cpp"
+//#include "CGeneticAlgorithm.cpp"
 #include <algorithm>
 #include <string>
 #include "IO.h"
 #include "IO.cpp"
+#include "Menu.h"
+#include "Menu.cpp"
+#include "MenuObject.h"
+#include "MenuObject.cpp"
+#include "MenuCommand.h"
+#include "MenuCommand.cpp"
+#include "CGeneticAlgorithmCommands.h"
+#include "CGeneticAlgorithmCommands.cpp"
 
 #define DEBUG false
 
@@ -18,10 +26,23 @@ using namespace std;
 
 int main(){
 
-  //CProblem<bool>* pProblem = new CKnapsackProblem<bool>();
 
-  IO io;
   srand (time(NULL));
+  CGeneticAlgorithm<int>* cGeneticAlgorithm = new CGeneticAlgorithm<int>();
+
+  Menu* menu = new Menu("main menu", "main_menu", NULL);
+  MenuObject* introduceData = new MenuCommand("introduceData", "introduce_d", menu, new IntroduceData<int>(cGeneticAlgorithm));
+  MenuObject* runAlgorithm = new MenuCommand("runAlgorithm", "run_alg", menu, new RunAlgorithm<int>(cGeneticAlgorithm));
+
+  menu -> addNewCommand(introduceData);
+  menu -> addNewCommand(runAlgorithm);
+
+  menu -> run();
+  delete menu;
+
+
+/*
+  IO io;
   float solutionSize = 0;
   float maxVolume = 0;
   int saveBestNum = 10;
@@ -43,7 +64,6 @@ int main(){
   }
 
   CKnapsackProblem<int>* cKnapsackProblem = new CKnapsackProblem<int>(solutionSize, pParameters, maxVolume);
-  cout << cKnapsackProblem -> toString();
 
   CGeneticAlgorithm<int> cGeneticAlgorithm(cKnapsackProblem);
   cGeneticAlgorithm.generateParameters();
@@ -58,6 +78,7 @@ int main(){
   if(DEBUG) cout << "---------END----------" << endl;
 
   delete cKnapsackProblem;
+  */
   return 0;
 
 }
